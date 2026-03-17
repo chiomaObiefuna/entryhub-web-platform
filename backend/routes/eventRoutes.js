@@ -7,7 +7,8 @@ const {
   getEventById,
   getEventsByCategory,
   updateEvent,
-  deleteEvent
+  deleteEvent,
+  getEventSeats // 👈 NEW
 } = require("../controllers/eventController");
 
 /**
@@ -21,7 +22,7 @@ const {
  * @swagger
  * /api/events:
  *   post:
- *     summary: Create a new event
+ *     summary: Create a new cinema event (show)
  *     tags: [Events]
  *     requestBody:
  *       required: true
@@ -32,19 +33,25 @@ const {
  *             properties:
  *               title:
  *                 type: string
+ *                 example: Black Panther
  *               description:
  *                 type: string
  *               location:
  *                 type: string
  *               date:
  *                 type: string
- *                 format: date
+ *                 format: date-time
  *               category:
  *                 type: string
+ *                 example: cinema
+ *               screen:
+ *                 type: string
+ *                 description: Screen ID
  *             required:
  *               - title
  *               - date
  *               - category
+ *               - screen
  *     responses:
  *       201:
  *         description: Event created successfully
@@ -96,7 +103,7 @@ router.get("/events/:id", getEventById);
  *         schema:
  *           type: string
  *         required: true
- *         description: Event category (e.g., concert, cinema)
+ *         description: Event category
  *     responses:
  *       200:
  *         description: List of events in the category
@@ -105,23 +112,73 @@ router.get("/events/category/:category", getEventsByCategory);
 
 /**
  * @swagger
- * /api/events/{id}:
- *   put:
- *     summary: Update an event by ID
+ * /api/events/{id}/seats:
+ *   get:
+ *     summary: Get seat availability for an event
  *     tags: [Events]
  *     parameters:
  *       - in: path
  *         name: id
+ *         required: true
  *         schema:
  *           type: string
+ *         description: Event ID
+ *     responses:
+ *       200:
+ *         description: Seat availability returned
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 seats:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       seat_id:
+ *                         type: string
+ *                       row:
+ *                         type: string
+ *                       number:
+ *                         type: number
+ *                       isBooked:
+ *                         type: boolean
+ */
+router.get("/events/:id/seats", getEventSeats); // 👈 NEW CORE ENDPOINT
+
+/**
+ * @swagger
+ * /api/events/{id}:
+ *   put:
+ *     summary: Update an event
+ *     tags: [Events]
+ *     parameters:
+ *       - in: path
+ *         name: id
  *         required: true
+ *         schema:
+ *           type: string
  *         description: Event ID
  *     requestBody:
- *       required: true
+ *       required: false
  *       content:
  *         application/json:
  *           schema:
  *             type: object
+ *             properties:
+ *               title:
+ *                 type: string
+ *               description:
+ *                 type: string
+ *               location:
+ *                 type: string
+ *               date:
+ *                 type: string
+ *               category:
+ *                 type: string
+ *               screen:
+ *                 type: string
  *     responses:
  *       200:
  *         description: Event updated successfully
@@ -134,14 +191,14 @@ router.put("/events/:id", updateEvent);
  * @swagger
  * /api/events/{id}:
  *   delete:
- *     summary: Delete an event by ID
+ *     summary: Delete an event
  *     tags: [Events]
  *     parameters:
  *       - in: path
  *         name: id
+ *         required: true
  *         schema:
  *           type: string
- *         required: true
  *         description: Event ID
  *     responses:
  *       200:

@@ -10,6 +10,7 @@ const PORT = process.env.PORT || 5000;
 connectDB();
 
 // Routes
+const screenRoutes = require("./routes/screenRoutes");
 const eventRoutes = require("./routes/eventRoutes");
 const authRoutes = require("./routes/authRoutes");
 
@@ -18,6 +19,7 @@ app.use(cors());
 app.use(express.json());
 
 // Routes
+app.use("/api", screenRoutes);
 app.use("/api", eventRoutes);
 app.use("/api/auth", authRoutes);
 
