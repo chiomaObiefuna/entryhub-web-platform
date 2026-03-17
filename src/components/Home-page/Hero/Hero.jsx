@@ -1,6 +1,6 @@
 import React from 'react'
 import { useState, useEffect } from 'react'
-import heroImg from '../../assets/images/hero-img.svg';
+import heroImg from '../../../assets/images/hero-img.svg';
 import './Hero.css'
 import { FaSearch} from 'react-icons/fa'
 
@@ -33,7 +33,7 @@ export const Hero = () => {
     <section className={`hero-section ${isVisible ? 'fade-in': ''}`}>
       <div className='hero-content'>
         <div className='hero-text-container'>
-          <h3>Discover <span>And</span> <br /> Book Events Seamlessly</h3>
+          <h1>Discover <span>And</span> <br /> Book Events Seamlessly</h1>
           <p className='hero-subtitle'>Buy tickets,Manage entries and create unforgatable experience all in one piece...</p>
 
             <form className='hero-search-wrapper' onSubmit= {handleSearch}>
