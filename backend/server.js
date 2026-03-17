@@ -1,25 +1,23 @@
 require('dotenv').config();
 
 const express = require('express');
-const mongoose = require('mongoose');
 const cors = require('cors');
 const connectDB = require('./config/db');
+
 const app = express();
 const PORT = process.env.PORT || 5000;
 
 connectDB();
 
+// Routes
 const eventRoutes = require("./routes/eventRoutes");
 const authRoutes = require("./routes/authRoutes");
 
+// Middleware
 app.use(cors());
 app.use(express.json());
 
-// Connect to MongoDB
-mongoose.connect(process.env.MONGO_URI)
-  .then(() => console.log("MongoDB connected successfully"))
-  .catch((err) => console.error("MongoDB connection error:", err));
-
+// Routes
 app.use("/api", eventRoutes);
 app.use("/api/auth", authRoutes);
 
@@ -36,14 +34,21 @@ const options = {
       description: "API documentation for EventHub ticketing app"
     },
     servers: [
-      { url: `http://localhost:${PORT}` }
+      { url: "http://localhost:5000" },
+      { url: "https://eventhub-backend-pxoz.onrender.com" }
     ]
   },
-  apis: ["./routes/*.js"] // where your routes are defined
+  apis: ["./routes/*.js"]
 };
 
 const specs = swaggerJsdoc(options);
 
+// Swagger UI
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
+
+app.get("/api-docs.json", (req, res) => {
+  res.setHeader("Content-Type", "application/json");
+  res.send(specs);
+});
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
