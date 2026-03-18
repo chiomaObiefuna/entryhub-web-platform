@@ -69,6 +69,17 @@
   padding: 10px 25px;
 }
 
+/* Make Cinema always look like CTA */
+.filter-btn.cinema-cta{
+  background-color: #FF8C00;
+  border: none;
+  color: #fff;
+}
+
+.filter-btn.cinema-cta:hover{
+  background-color: #e67e00;
+}
+
 /* Grid styling */
 .event-grid{
   display: grid;

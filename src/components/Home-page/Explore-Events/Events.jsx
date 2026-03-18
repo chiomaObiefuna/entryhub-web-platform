@@ -1,4 +1,5 @@
 import React, { useRef } from 'react'
+import { useNavigate } from 'react-router-dom'
 import CalenderIcon from '../../../assets/icons/uil_calender.svg'
 import LocationIcon from '../../../assets/icons/location.svg'
 import EventImg from '../../../assets/images/event_img.svg'
@@ -38,6 +39,7 @@ const EVENTS_DATA = [
   
 
 const Events = () => {
+  const navigate = useNavigate()
   const [activeFilter, setActiveFilter] = useState('All');
   const [isVisible, setIsVisble] = useState(false);
   const sectionRef = useRef(null);
@@ -81,8 +83,14 @@ const Events = () => {
               <div className='filter-group'>{categories.map((category) => (
                 <button
                   key={category}
-                  onClick={() => setActiveFilter(category)}
-                  className={`filter-btn ${activeFilter === category ? 'active' : ''}`} 
+                  onClick={() => {
+                    if (category === 'Cinema') {
+                      navigate('/cinema')
+                      return
+                    }
+                    setActiveFilter(category)
+                  }}
+                  className={`filter-btn ${category === 'Cinema' ? 'cinema-cta' : ''} ${activeFilter === category ? 'active' : ''}`} 
                 >
                   {category}
                 </button>

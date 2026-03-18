@@ -1,14 +1,37 @@
-import React from 'react';
+import React, { useEffect, useState, useRef } from 'react';
+import facebook from '../../../assets/icons/facebook.svg'
+import twitter from '../../../assets/icons/twitter.svg'
+import instagram from '../../../assets/icons/instagram.svg'
+import visa from '../../../assets/icons/visa.svg'
 import './footer.css';
 
-// Import your local icons here
-// import VisaLogo from './assets/visa.png';
-// import MasterCardLogo from './assets/mastercard.png';
-// import FacebookIcon from './assets/facebook.png';
+
 
 const Footer = () => {
+
+  const [isVisible, setIsVisible] = useState (false);
+  const footerRef = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.unobserve(entry.target);
+        }
+      },
+       { threshold: 0.1 }
+    );
+    if (footerRef.current) {
+      observer.observe(footerRef.current);
+    }
+    return () => {
+      if (footerRef.current)
+        observer.disconnect();
+    }
+  }, [])
   return (
-    <footer className="footer-section">
+    <footer ref={footerRef} className={`footer-section ${isVisible ? 'fade-in-up' : 'hidden-state'}`}>
       <div className="footer-container">
         
         {/* Column 1: Product */}
@@ -44,9 +67,9 @@ const Footer = () => {
             <li>Customer Supports</li>
             <li>Contact Us</li>
             <li>About Us</li>
-            <li className="social-link"><span className="icon-sm">f</span> Facebook</li>
-            <li className="social-link"><span className="icon-sm">𝕏</span> Twitter</li>
-            <li className="social-link"><span className="icon-sm">📸</span> Instagram</li>
+            <li className="social-link"><span className="icon-sm"><img src={facebook} alt='facebook-icon' className='footer-icon'/></span> Facebook</li>
+            <li className="social-link"><span className="icon-sm"><img src={twitter} alt='Hero Image' className='footer-icon'/></span> Twitter</li>
+            <li className="social-link"><span className="icon-sm"><img src={instagram} alt='Hero Image' className='footer-icon'/></span> Instagram</li>
           </ul>
         </div>
 
@@ -55,12 +78,16 @@ const Footer = () => {
           <h4>Payment Method</h4>
           <div className="payment-grid">
             {/* Using placeholders for logos - replace with your local images */}
-            <div className="payment-icon visa">VISA</div>
+            <div>
+              <img src= {visa} alt='visa Img' className='visa-img' />
+            </div>
             <div className="payment-icon mastercard">
                <div className="mc-circles"></div>
                MasterCard
             </div>
-            <div className="payment-icon visa-alt">VISA</div>
+            <div>
+            <img src= {visa} alt='visa Img' className='visa-img' />
+            </div>
             <div className="payment-icon mastercard-alt">
                <div className="mc-circles"></div>
                MasterCard
