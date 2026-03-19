@@ -1,4 +1,4 @@
-/* --- My Ticket Section Variables (Optional if already in :root) --- */
+/* --- My Ticket Section Variables --- */
 :root {
     --primary-dark: #0a2517;
     --accent-orange: #ff9100;
@@ -104,7 +104,7 @@
 .qr-placeholder {
     width: 200px;
     height: 200px;
-    background-image: url('src/assets/images/download-1.svg') center/cover no-repeat;
+    background: url('../../../assets/images/download-1.svg') center/cover no-repeat;
     margin-bottom: 30px;
 }
 
