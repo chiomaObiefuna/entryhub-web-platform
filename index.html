@@ -3,13 +3,53 @@
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <link rel="stylesheet" href="/src/assets/css/my-ticket.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
 <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
     <title>group-8-project</title>
   </head>
+
+
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
+
+    <section id="ticket" class="my-ticket-section">
+    <div class="container">
+        <h2>My Ticket</h2>
+        
+        <div class="ticket-tabs">
+            <div class="ticket-tab active">Description</div>
+            <div class="ticket-tab">Events</div>
+            <div class="ticket-tab">Venue</div>
+        </div>
+
+        <div class="ticket-box">
+            <div class="ticket-info">
+                <p>Get ready for an unforgettable night as Burna Boy, the Grammy-winning Afrofusion superstar, takes the stage for an electrifying live performance...</p>
+                
+                <ul class="ticket-list">
+                    <li><strong>Door opens at</strong> 8:00 PM</li>
+                    <li><strong>Burna Boy Performs at</strong> 9:00 PM</li>
+                    <li><strong>Special guest appearances</strong></li>
+                    <li><strong>Event ends at</strong> 1:00 AM</li>
+                </ul>
+                <hr class="ticket-divider">
+                <p>Show this QR code at entry</p>
+            </div>
+            
+            <div class="ticket-qr-area">
+                <div class="qr-placeholder"></div>
+                <div class="ticket-actions">
+                    <button class="ticket-btn btn-download">Download Ticket</button>
+                    <button class="ticket-btn btn-view">View Ticket</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script src="/src/components/Home-page/My-Ticket/my-ticket.js"></script>
+
   </body>
 </html>

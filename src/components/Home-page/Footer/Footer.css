@@ -126,4 +126,5 @@
 
   .payment-grid {
     grid-template-columns: repeat(2, 1fr); /* Keep logos horizontal on mobile */
-}
+      }
+    }
