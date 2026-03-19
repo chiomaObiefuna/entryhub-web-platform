@@ -4,7 +4,19 @@
   padding: 60px 5% 20px 5%;
   font-family: 'Inter', sans-serif;
 }
+.footer-section.hidden-state {
+  opacity: 0;
+  transform: translateY(30px);
+   transition: all 0.8s ease-out, transform 0.8s ease-out;
+  
+}
 
+.footer-section.fade-in-up{
+  opacity: 1;
+  transform: translateY(0) ;
+
+
+}
 .footer-container {
   max-width: 1200px;
   margin: 0 auto;
@@ -49,6 +61,15 @@
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 10px;
+  cursor: pointer;
+}
+
+.footer-icon{
+  height: 20px;
+}
+
+.visa-img{
+  height: 60px;
 }
 
 .payment-icon {
@@ -61,7 +82,7 @@
   font-size: 0.7rem;
   font-weight: bold;
   letter-spacing: 1px;
-}
+} 
 
 .mc-circles {
   width: 15px;
@@ -104,6 +125,5 @@
   }
 
   .payment-grid {
-    grid-template-columns: repeat(4, 1fr); /* Keep logos horizontal on mobile */
-  }
+    grid-template-columns: repeat(2, 1fr); /* Keep logos horizontal on mobile */
 }

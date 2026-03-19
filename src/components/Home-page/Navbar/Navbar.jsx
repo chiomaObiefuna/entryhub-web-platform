@@ -1,138 +1,97 @@
-// import React, { useState, useEffect } from 'react';
-// import './Navbar.css';
-// // Importing the logo from your assets folder
-// import logo from '../../../assets/logo/logo.svg';
-
-// const Navbar = ({ onNavigate, currentPage }) => {
-//   const [scrolled, setScrolled] = useState(false);
-//   const [menuOpen, setMenuOpen] = useState(false);
-//   const [eventsDropdown, setEventsDropdown] = useState(false);
-
-//   useEffect(() => {
-//     const handleScroll = () => setScrolled(window.scrollY > 20);
-//     window.addEventListener('scroll', handleScroll);
-//     return () => window.removeEventListener('scroll', handleScroll);
-//   }, []);
-
-//   const navLinks = [
-//     { label: 'Home', page: 'home' },
-//     { label: 'Events', page: 'events', hasDropdown: true },
-//     { label: 'In-Event', page: 'in-event' },
-//     { label: 'My Tickets', page: 'tickets' },
-//     { label: 'About us', page: 'about' },
-//   ];
-
-//   return (
-//     <nav className={`navbar ${scrolled ? 'navbar--scrolled' : ''}`}>
-//       <div className="navbar__container container">
-//         <div className="navbar__logo" onClick={() => onNavigate('home')}>
-//           {/* Replaced manual text logo with your SVG asset */}
-//           <img src={logo} alt="EntryHub Logo" className="navbar__logo-img" />
-//         </div>
-
-//         <ul className="navbar__links">
-//           {navLinks.map((link) => (
-//             <li key={link.page} className="navbar__link-item">
-//               <button
-//                 className={`navbar__link ${currentPage === link.page ? 'active' : ''}`}
-//                 onClick={() => { onNavigate(link.page); setEventsDropdown(false); }}
-//                 onMouseEnter={() => link.hasDropdown && setEventsDropdown(true)}
-//                 onMouseLeave={() => link.hasDropdown && setEventsDropdown(false)}
-//               >
-//                 {link.label}
-//                 {/* Removed ChevronDown icon */}
-//               </button>
-//               {link.hasDropdown && eventsDropdown && (
-//                 <div
-//                   className={`dropdown ${eventsDropdown ? 'open' : ''}`}
-//                   onMouseEnter={() => setEventsDropdown(true)}
-//                   onMouseLeave={() => setEventsDropdown(false)}
-//                 >
-//                   {['Concerts', 'Cinema', 'Football', 'Comedy', 'Festivals'].map(cat => (
-//                     <button key={cat} className="dropdown__item" onClick={() => onNavigate('events', cat)}>
-//                       {cat}
-//                     </button>
-//                   ))}
-//                 </div>
-//               )}
-//             </li>
-//           ))}
-//         </ul>
-
-//         <div className="navbar__actions">
-//           <button className="btn btn--outline" onClick={() => onNavigate('login')}>Login</button>
-//           <button className="btn btn--orange" onClick={() => onNavigate('signup')}>Sign Up</button>
-//         </div>
-
-//         {/* Replaced Lucide Menu/X icons with standard text or custom spans */}
-//         <button className="navbar__hamburger" onClick={() => setMenuOpen(!menuOpen)}>
-//           <span className="hamburger-text">{menuOpen ? 'Close' : 'Menu'}</span>
-//         </button>
-//       </div>
-
-//       {/* Mobile Menu */}
-//       <div className={`mobile-menu ${menuOpen ? 'open' : ''}`}>
-//         {navLinks.map((link) => (
-//           <button
-//             key={link.page}
-//             className="mobile-menu__link"
-//             onClick={() => { onNavigate(link.page); setMenuOpen(false); }}
-//           >
-//             {link.label}
-//           </button>
-//         ))}
-//         <div className="mobile-menu__actions">
-//           <button className="btn btn--outline" onClick={() => { onNavigate('login'); setMenuOpen(false); }}>Login</button>
-//           <button className="btn btn--orange" onClick={() => { onNavigate('signup'); setMenuOpen(false); }}>Sign Up</button>
-//         </div>
-//       </div>
-//     </nav>
-//   );
-// };
-
-// export default Navbar;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-import React from 'react'
-import './Navbar.css'
+import { useState } from 'react'
+import { Link, NavLink } from 'react-router-dom'
 import logo from '../../../assets/logo/logo.svg'
+import menuIcon from '../../../assets/icons/menu_icon.svg'     // adjust filename to match yours
+import closeIcon from '../../../assets/icons/close_icon.svg'   // adjust filename to match yours
+import './Navbar.css'
 
 const Navbar = () => {
+  const [sidebarOpen, setSidebarOpen] = useState(false)
+
+  const openSidebar = () => setSidebarOpen(true)
+  const closeSidebar = () => setSidebarOpen(false)
+
   return (
     <nav className='navbar'>
-        <div className='logo'>
-            <img src={logo} alt='EntryHub Logo' className='logo-icon'/>
+      <div className='logo'>
+        <img src={logo} alt='EntryHub Logo' className='logo-icon'/>
+      </div>
+
+      {/* Hamburger button - only visible on mobile */}
+      <button className='hamburger' onClick={openSidebar}>
+        <img src={menuIcon} alt='open menu' className='menu-icon'/>
+      </button>
+
+      {/* Overlay — clicking outside closes the sidebar */}
+      {sidebarOpen && (
+        <div className='overlay' onClick={closeSidebar}>
+          
         </div>
-        <ul className='nav-links'>
-            <li>Home</li>
-            <li>Events</li>
-            <li>In-Events</li>
-            <li>My Ticket</li>
-            <li>About us</li>
-            <li><button className='btn'>Sign Up</button></li>
-        </ul>
+      )}
+
+      <div className={`nav-link ${!sidebarOpen ? 'sidebar-closed' : 'sidebar-open'}`}>
+
+        {/* Close button inside sidebar */}
+        <button className='close-btn' onClick={closeSidebar}>
+          <img src={closeIcon} alt='close menu' className='close-icon'/>
+        </button>
+
+        <NavLink to='/' onClick={closeSidebar}>Home</NavLink>
+        <a href='#events' onClick={closeSidebar}>Events</a>
+        <a href='in-event' onClick={closeSidebar}>In-Events</a>
+        <a href='my ticket' onClick={closeSidebar}>My Ticket</a>
+        <NavLink to='/about-us' onClick={closeSidebar}>About us</NavLink>
+
+        <div>
+          <Link to='/sign-up' onClick={closeSidebar}>
+            <button className='btn'>Sign Up</button>
+          </Link>
+        </div>
+       
+      </div>
+    
     </nav>
-  )
-}
+  );
+};
 
 export default Navbar
+
+
+
+
+// import React, { useState } from 'react'
+// import './Navbar.css'
+// import logo from '../../../assets/logo/logo.svg'
+
+// const Navbar = () => {
+//   const [sidebarOpen, setSidebarOpen] = useState(false)
+//   return (
+//     <nav className='navbar'>
+//         <div className='logo'>
+//             <img src={logo} alt='EntryHub Logo' className='logo-icon'/>
+//         </div>
+
+//         <button className='humburger' onClick={() => setSidebarOpen (!sidebarOpen)}>
+//           <span></span>
+//           <span></span>
+//           <span></span>
+//         </button>
+        
+//            <div className={`nav-link sidebar ${!sidebarOpen ? 'sidebar-closed' : 'sidebar-open'}`}>
+//             <a href='#'>Home</a>
+//             <a href='#events'>Events</a>
+//             <a href='in-event'>In-Events</a>
+//             <a href='my ticket'>My Ticket</a>
+//             <a href='about us'>About us</a>
+            
+//             </div>
+
+//             <div>
+//               <a href='sign up'><button className='btn'>Sign Up</button></a>
+//             </div>
+        
+//     </nav>
+//   )
+// }
+
+// export default Navbar
