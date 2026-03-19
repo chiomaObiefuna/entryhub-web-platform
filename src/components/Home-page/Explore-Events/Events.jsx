@@ -70,9 +70,6 @@ const Events = () => {
       setEvents(filterEvents);
     }
     },[activeFilter]);
-
-
-
   return (
     <section ref={sectionRef} className={`event-section ${isVisible ? 'fade-in-up' : 'hidden'}`}>
        <div className='event-container'>

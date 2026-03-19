@@ -4,7 +4,6 @@ import EventImg from '../../../assets/images/event_img.svg';
 
 const formatNGN = (value) =>
   new Intl.NumberFormat('en-NG', { maximumFractionDigits: 0 }).format(value);
-
 const EventDetails = () => {
   const [isVisible, setIsVisible] = useState(false);
   const sectionRef = useRef(null);
@@ -24,7 +23,6 @@ const EventDetails = () => {
     if (sectionRef.current) observer.observe(sectionRef.current);
     return () => observer.disconnect();
   }, []);
-
   const tickets = useMemo(
     () => [
       { id: 'regular', label: 'Regular', price: 10000, status: 'Available' },
