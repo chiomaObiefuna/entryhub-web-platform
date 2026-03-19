@@ -1,56 +1,129 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <link rel="stylesheet" href="./src/components/Home-page/My-Ticket/my-ticket.css">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EntryHub - Book Event</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
-<script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
-    <title>group-8-project</title>
-  </head>
+    <link rel="stylesheet" href="/entryhub-web-platform/src/components/Event-Details/Event-Details.css">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+</head>
 
 
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-
-    <section id="ticket" class="my-ticket-section">
-    <div class="container">
-        <h2>My Ticket</h2>
+<body>
+    
+    <aside class="sidebar" id="sidebar">
+        <button class="close-menu-btn" id="closeMenu">
+            <i class="ph ph-x"></i>
+        </button>
         
-        <div class="ticket-tabs">
-            <div class="ticket-tab active">Description</div>
-            <div class="ticket-tab">Events</div>
-            <div class="ticket-tab">Venue</div>
+        <div class="logo">
+            entry<br>hub
         </div>
 
-        <div class="ticket-box">
-            <div class="ticket-info">
-                <p>Get ready for an unforgettable night as Burna Boy, the Grammy-winning Afrofusion superstar, takes the stage for an electrifying live performance...</p>
-                
-                <ul class="ticket-list">
-                    <li><strong>Door opens at</strong> 8:00 PM</li>
-                    <li><strong>Burna Boy Performs at</strong> 9:00 PM</li>
-                    <li><strong>Special guest appearances</strong></li>
-                    <li><strong>Event ends at</strong> 1:00 AM</li>
-                </ul>
-                <hr class="ticket-divider">
-                <p>Show this QR code at entry</p>
+        <div class="menu-section">
+            <div class="menu-heading">MAIN MENU</div>
+            <a class="nav-item"><i class="ph ph-squares-four nav-icon"></i> Dashboard <span class="nav-arrow"><i class="ph ph-caret-right"></i></span></a>
+            <a class="nav-item"><i class="ph ph-house nav-icon"></i> Home <span class="nav-arrow"><i class="ph ph-caret-right"></i></span></a>
+            <a class="nav-item"><i class="ph ph-calendar-blank nav-icon"></i> Events <span class="nav-arrow"><i class="ph ph-caret-right"></i></span></a>
+            <a class="nav-item"><i class="ph ph-check-square-offset nav-icon"></i> In-Events <span class="nav-arrow"><i class="ph ph-caret-right"></i></span></a>
+            <a class="nav-item"><i class="ph ph-ticket nav-icon"></i> My Tickets <span class="nav-arrow"><i class="ph ph-caret-right"></i></span></a>
+            <a class="nav-item"><i class="ph ph-hand-coins nav-icon"></i> Payment <span class="nav-arrow"><i class="ph ph-caret-right"></i></span></a>
+            <a class="nav-item"><i class="ph ph-tote nav-icon"></i> Merchandise <span class="nav-arrow"><i class="ph ph-caret-right"></i></span></a>
+        </div>
+
+        <div class="menu-section">
+            <div class="menu-heading">OTHER</div>
+            <a class="nav-item"><i class="ph ph-gear nav-icon"></i> Settings <span class="nav-arrow"><i class="ph ph-caret-right"></i></span></a>
+            <a class="nav-item"><i class="ph ph-question nav-icon"></i> Help & Support <span class="nav-arrow"><i class="ph ph-caret-right"></i></span></a>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <button class="open-menu-btn" id="openMenu">
+            <i class="ph ph-list"></i>
+        </button>
+
+        <h1 class="page-title">Book Event</h1>
+        
+        <a class="back-btn">
+            <i class="ph ph-arrow-left"></i> Back
+        </a>
+
+        <div class="event-card">
+            <img src="https://images.unsplash.com/photo-1536440136628-849c177e76a1?auto=format&fit=crop&w=200&q=80" alt="Movie Poster" class="event-poster">
+            <div class="event-details">
+                <h3>Shelter in Cinema Now</h3>
+                <div class="event-meta">Cinema<br>30th March, 2026 / 5:00 Pm</div>
+                <div class="event-location"><i class="ph-fill ph-map-pin"></i> Abuja</div>
             </div>
-            
-            <div class="ticket-qr-area">
-                <div class="qr-placeholder"></div>
-                <div class="ticket-actions">
-                    <button class="ticket-btn btn-download">Download Ticket</button>
-                    <button class="ticket-btn btn-view">View Ticket</button>
+            <div class="event-actions">
+                <i class="ph ph-share-network"></i>
+                <i class="ph-fill ph-heart"></i>
+                <i class="ph-fill ph-bookmark-simple"></i>
+            </div>
+        </div>
+
+        <div class="booking-form">
+            <div class="form-group">
+                <label>Number of Tickets</label>
+                <div class="input-wrapper">
+                    <input type="number" class="form-control" value="1" >
+                    <i class="ph ph-caret-up-down input-icon"></i>
                 </div>
             </div>
-        </div>
-    </div>
-</section>
-<script src="/src/components/Home-page/My-Ticket/my-ticket.js"></script>
 
-  </body>
+            <div class="form-group">
+                <label>Sector</label>
+                <div class="input-wrapper">
+                    <input type="number" class="form-control" value="107">
+                    <i class="ph ph-caret-up-down input-icon"></i>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Row</label>
+                <div class="input-wrapper">
+                    <input type="number" class="form-control" value="2">
+                    <i class="ph ph-caret-up-down input-icon"></i>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Ticket Type</label>
+                <div class="input-wrapper">
+                    <input type="text" class="form-control" value="Cinema" readonly>
+                    <i class="ph ph-caret-up-down input-icon"></i>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Seat Selection</label>
+                <div class="input-wrapper">
+                    <input type="number" class="form-control" value="1">
+                    <i class="ph ph-caret-up-down input-icon"></i>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Ticket Price</label>
+                <div class="input-wrapper">
+                    <input type="text" class="form-control" value="₦15,000" readonly>
+                    <i class="ph ph-caret-up-down input-icon"></i>
+                </div>
+            </div>
+
+            <div class="action-buttons">
+                <button class="btn btn-home">
+                    <i class="ph ph-house"></i> Home
+                </button>
+                <button class="btn btn-book">
+                    Book Event
+                </button>
+            </div>
+        </div>
+    </main>
+<script src="/entryhub-web-platform/src/components/Event-Details/Event-Details.js"></script>
+    <!-- JavaScript for interactivity -->
+</body>
 </html>
