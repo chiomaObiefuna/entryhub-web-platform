@@ -104,7 +104,7 @@
 .qr-placeholder {
     width: 200px;
     height: 200px;
-    background: url('https://upload.wikimedia.org/wikipedia/commons/d/d0/QR_code_for_mobile_English_Wikipedia.svg') center/cover no-repeat;
+    background-image: url('src/assets/images/download-1.svg') center/cover no-repeat;
     margin-bottom: 30px;
 }
 
