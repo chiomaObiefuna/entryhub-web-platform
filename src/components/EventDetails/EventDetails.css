@@ -201,7 +201,7 @@ a { text-decoration: none; }
     background: #ffffff;
     padding: 15px 20px;
     border-radius: 12px;
-    min-width: 130px;
+    min-width: 0;
     text-align: center;
     box-shadow: 0 2px 8px rgba(0,0,0,0.02);
 }
