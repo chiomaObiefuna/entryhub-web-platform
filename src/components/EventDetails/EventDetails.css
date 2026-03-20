@@ -28,16 +28,14 @@ body {
 .icon-btn { background: none; border: none; cursor: pointer; color: inherit; font-size: inherit; }
 a { text-decoration: none; }
 
-/* --- Sidebar Navigation --- */
+/* --- Desktop Sidebar (Normal View) --- */
 .sidebar {
     width: 260px;
-    padding: 40px 20px;
-    border-right: 1px solid var(--border-color);
-    background-color: #ffffff;
-    display: flex;
+    padding: 30px 20px;
+    display: flex; /* Flex is good for desktop */
     flex-direction: column;
-    transition: transform 0.3s ease;
-    z-index: 100;
+    background: #fff;
+    border-right: 1px solid var(--border-color);
 }
 
 .logo {
@@ -97,6 +95,14 @@ a { text-decoration: none; }
     justify-content: center;
     font-size: 10px;
 }
+
+/* .event-details-layout {
+    display: flex;
+    width: 100%;
+    max-width: 100vw;
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative; */
 
 /* --- Main Content Area --- */
 .main-content {
@@ -334,7 +340,8 @@ a { text-decoration: none; }
         margin-bottom: 20px;
         cursor: pointer;
         position: relative;
-        z-index: 50;
+        z-index: 99999;
+        pointer-events: auto;
     }
 
     /* --- The Dark Overlay --- */
@@ -364,6 +371,7 @@ a { text-decoration: none; }
         transform: translateX(-105%); 
         transition: transform 0.3s ease-in-out;
         box-shadow: 5px 0 25px rgba(0,0,0,0.15);
+        padding: 40px 20px;
     }
 
     /* --- The Active States (Triggered by React) --- */
