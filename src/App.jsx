@@ -3,7 +3,7 @@ import { Navigate, Route, Routes } from 'react-router-dom'
 import Navbar from './components/Home-page/Navbar/Navbar'
 import Hero from './components/Home-page/Hero/Hero'
 import Events from './components/Home-page/Explore-Events/Events'
-import EventDetails from './components/Home-page/Event-Details/EventDetails'
+import EventDetails from './components/EventDetails/EventDetails'
 import Footer from './components/Home-page/Footer/Footer'
 import AboutUs from './pages/AboutUs'
 import Cinema from './pages/Cinema'
@@ -16,7 +16,6 @@ function Home() {
     <>
       <Hero />
       <Events />
-      <EventDetails />
     </>
   )
 }
@@ -33,6 +32,7 @@ function App() {
         <Route path="/sign-up" element={<SignUp />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
+      <EventDetails />
       <Footer />
     </>
   )
