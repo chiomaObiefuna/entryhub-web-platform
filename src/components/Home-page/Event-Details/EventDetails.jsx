@@ -43,8 +43,15 @@ const EventDetails = () => {
   };
 
   const handleGetExactLocation = () => {
-    window.open('https://www.google.com/maps/search/?api=1&query=Eko+Hotel+Lagos', '_blank');
-  };
+  window.open(
+    "https://www.google.com/maps/search/?api=1&query=Filmhouse+Cinemas+Surulere+Lagos",
+    "_blank"
+  );
+};
+
+  // const handleGetExactLocation = () => {
+  //   window.open('https://www.google.com/maps/search/?api=1&query=Eko+Hotel+Lagos', '_blank');
+  // };
 
   const handleDownload = () => alert('Download started (demo).');
   const handleView = () => alert('Opening ticket (demo).');
@@ -135,7 +142,7 @@ const EventDetails = () => {
               <div className="map-pin pin-3" />
             </div>
             <div className="map-footer">
-              <div className="map-location">Eko Hotel, Lagos</div>
+              <div className="map-location">Filmhouse Cinemas, Surulere</div>
               <button type="button" className="btn btn-outline" onClick={handleGetExactLocation}>
                 Get exact location
               </button>

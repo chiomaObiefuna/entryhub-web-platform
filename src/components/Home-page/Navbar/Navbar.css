@@ -17,12 +17,12 @@
 .nav-link{
   color: #374151;
   font-size: 0.875rem;
+  line-height: 1.25rem;
   display: flex;
   align-items: flex-start;
   gap: 1.25rem;
   transition: all 0.15s ease;
 }
-
 
  .logo-icon{
   width: 200px;
@@ -46,7 +46,8 @@
   display: block;
   width: 25px;
   height: 2px;
-  background-color: #5C7269;
+  background-color: #303d38;
+  cursor: pointer;
  }
 
 .menu-icon{
@@ -60,7 +61,8 @@
   background: none;
   border: none;
   cursor: pointer;
-  align-items: flex-end;
+  align-items: flex-start;
+ 
 }
 
 .close-icon{
@@ -69,6 +71,14 @@
   display: block;
   object-fit: contain;
 } 
+
+/* .close-icon{
+  width: 1.25rem;
+  position: absolute;
+  right: 1rem;
+  top: 1rem;
+  cursor: pointer;
+} */
 
 .overlay{
   position: fixed;
@@ -84,7 +94,8 @@
 
 @media (min-width: 640px) {
   .navbar {
-    padding: 1rem 3rem ;}
+    padding: 1rem 3rem;
+  }
 
     a:hover{
       border-bottom: 1px solid #000;
@@ -94,6 +105,10 @@
       font-size: 0.875rem;
       align-items: center;
     }
+
+    /* .close-icon{
+      display: none;
+    } */
 }
 
 @media (max-width: 639px) {
@@ -115,6 +130,8 @@
   .nav-link.sidebar-open{
     width: 15rem;
     padding-left: 2.5rem;
+    border-bottom: 1px solid #000;
+    cursor: pointer;
   }
   
 }
@@ -143,4 +160,4 @@
 
 @media(min-width: 1280px) {
   .navbar{ padding: 1rem 10rem;}
-  
+} 
