@@ -113,8 +113,8 @@ function BookingPage() {
           <div>
             <h3>Shelter in Cinema Now</h3>
             <p>Cinema</p>
-            <p>30th March, 2025 | 6:00 PM</p>
-            <p>📍 Abuja</p>
+            <p>30th March, 2026 | 6:00 PM</p>
+            <p>📍 Lagos</p>
           </div>
         </div>
 
