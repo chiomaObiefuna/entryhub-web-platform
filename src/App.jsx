@@ -8,9 +8,11 @@ import Footer from './components/Home-page/Footer/Footer'
 import AboutUs from './pages/AboutUs'
 import Cinema from './pages/Cinema'
 import SignUp from './pages/SignUp'
+import EventPage from './EventPage' 
 
 import './App.css'
 
+// We group Hero, Events, and Details for the main landing page
 function Home() {
   return (
     <>
@@ -22,18 +24,23 @@ function Home() {
 }
 
 function App() {
-  
   return (
     <>
-      <Navbar />
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/about-us" element={<AboutUs />} />
-        <Route path="/cinema" element={<Cinema />} />
-        <Route path="/sign-up" element={<SignUp />} />
+        {/* 1. PAGES WITH NAVBAR AND FOOTER */}
+        <Route path="/" element={<><Navbar /><Home /><Footer /></>} />
+        <Route path="/home" element={<><Navbar /><Home /><Footer /></>} />
+        <Route path="/about-us" element={<><Navbar /><AboutUs /><Footer /></>} />
+        <Route path="/cinema" element={<><Navbar /><Cinema /><Footer /></>} /> 
+        <Route path="/sign-up" element={<><Navbar /><SignUp /><Footer /></>} />
+
+        {/* 2. YOUR DASHBOARD (NO NAVBAR/FOOTER) */}
+        {/* This allows your Sidebar to take up the whole left side */}
+        <Route path="/event" element={<EventPage />} />
+
+        {/* CATCH-ALL */}
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
-      <Footer />
     </>
   )
 }
