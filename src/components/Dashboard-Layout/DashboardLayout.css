@@ -1,0 +1,417 @@
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap");
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+.dashboard-layout {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  grid-template-rows: 1fr 1fr;
+  justify-content: center;
+  gap: 1.5rem;
+  height: 100vh;
+  /* margin-top: 3rem; */
+  font-family: "DM Sans", sans-serif;
+  color: #5c7269;
+  overflow: hidden;
+  font-weight: 400;
+}
+
+.menu-section {
+  grid-row: 1 / -1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-left: 2rem;
+  padding-right: 0.6rem;
+  scroll-behavior: smooth;
+}
+
+.main-content {
+  grid-row: 1 /-1;
+  /* padding-bottom: 3rem; */
+}
+
+.pp {
+  margin-bottom: 5rem;
+}
+
+.entryhub-logo {
+  height: 5.4rem;
+  margin-bottom: 3rem;
+  margin-top: 1rem;
+}
+
+.menu-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  justify-content: center;
+  list-style: none;
+  color: #5c7269;
+}
+
+.MM {
+  margin-bottom: 1rem;
+  font-size: 1.3rem;
+  font-weight: 800;
+}
+
+.others {
+  margin-top: 1rem;
+  margin-bottom: 0.8rem;
+  font-size: 1.3rem;
+  font-weight: 800;
+}
+
+.help {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  list-style: none;
+}
+
+.svg {
+  height: 1.5rem;
+}
+
+.menu-btns {
+  border-radius: 50%;
+  padding: 0.09rem;
+  cursor: pointer;
+  background-color: #ff9f2b;
+  border: none;
+}
+
+.right-arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 1.2rem;
+}
+
+.left {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+
+  gap: 1.2rem;
+}
+
+.dash {
+  margin-left: 0.5rem;
+}
+
+.main-content {
+  margin-inline: 1.2rem;
+  border-radius: 1rem;
+  /* border: 3px solid #ff9f2b; */
+  margin-block: 2rem;
+  height: 100vh;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  padding-inline: 1.5rem;
+  padding-bottom: 5rem;
+  scroll-behavior: smooth;
+  background-color: #fff;
+}
+
+.word {
+  color: #5c7269;
+  font-size: 1rem;
+}
+
+.page-title {
+  font-size: 2.6rem;
+  /* margin-bottom: 2rem; */
+  top: 0;
+  background-color: #fff;
+  padding-top: 1rem;
+  z-index: 100;
+  padding-top: 1.3rem;
+  /* border-bottom: 1px solid #ccc; */
+  color: #5c7269;
+
+  /* display: flex;
+  align-items: start; */
+}
+
+.head-text {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  /* justify-content: center; */
+  margin-bottom: 2rem;
+  background-color: #fff;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  padding-top: 1rem;
+  border-bottom: 1px solid #ccc;
+}
+
+.page-body {
+  min-height: 120vh;
+  /* border: 2px solid red; */
+  background-color: #fbf9f6;
+  padding: 1rem;
+  padding-block: 2rem;
+  padding-inline: 2rem;
+  border-radius: 1rem;
+  /* overflow-y: auto; */
+}
+
+.menu-item {
+  cursor: pointer;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
+  display: flex;
+  align-items: center;
+  /* flex-direction: column; */
+  gap: 1rem;
+  justify-content: space-between;
+}
+
+.menu-item.active {
+  border: 2px solid #5c7269;
+  background-color: #33333365;
+  /* color: white; */
+  border-radius: 16px;
+  padding: 0.2rem 1rem;
+  transform: scale(1.02);
+  display: flex;
+  align-items: center;
+  transition:
+    transform 0.2s ease,
+    background-color 0.3s ease,
+    color 0.3s ease;
+}
+
+.main-content::-webkit-scrollbar,
+.menu-section::-webkit-scrollbar {
+  width: 6px;
+}
+
+.main-content::-webkit-scrollbar-track,
+.menu-section::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.main-content::-webkit-scrollbar-thumb,
+.menu-section::-webkit-scrollbar-thumb {
+  background-color: rgba(92, 114, 105, 0.233);
+  border-radius: 10px;
+  border: 2px solid transparent;
+  border-radius: 10px;
+}
+
+.main-content::-webkit-scrollbar-thumb:hover,
+.menu-section::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(92, 114, 105, 0.607);
+}
+
+.menu-section::-webkit-scrollbar {
+  width: 0px;
+}
+
+.main-content:hover::-webkit-scrollbar,
+.menu-section:hover::-webkit-scrollbar {
+  width: 6px;
+}
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.3);
+  z-index: 900;
+}
+
+.menu-section {
+  overflow-y: auto;
+  z-index: 1000;
+}
+
+@media (max-width: 1049px) {
+  .dashboard-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .menu-section {
+    position: fixed;
+    top: 0;
+    left: -100%;
+    max-width: 260px;
+
+    height: 100vh;
+    background: white;
+    transition: left 0.3s ease;
+    z-index: 1000;
+  }
+
+  .page-body {
+    margin: 0 auto;
+  }
+
+  .menu-section.open {
+    left: 0;
+  }
+
+  .main-content {
+    width: 100%;
+    margin: 0 auto;
+  }
+
+  .page-title {
+    margin-top: 2.5rem;
+    font-size: 2.8rem;
+    border: none;
+  }
+
+  .head-text {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    /* justify-content: center; */
+    margin-bottom: 2rem;
+    background-color: #fff;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    padding-top: 1rem;
+    border-bottom: 1px solid #ccc;
+    border-bottom-left-radius: 0.5rem;
+    border-bottom-right-radius: 0.5rem;
+  }
+
+  .hamburger {
+    display: none;
+    font-size: 40px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding-top: 3rem;
+  }
+
+  .hamburger {
+    display: block;
+    /* margin: 10px; */
+  }
+}
+
+@media (max-width: 794px) {
+  .page-title {
+    font-size: 2.3rem;
+  }
+}
+
+@media (max-width: 596px) {
+  .page-title {
+    font-size: 2rem;
+  }
+
+  .entryhub-logo {
+    height: 4.3rem;
+  }
+
+  .hamburger {
+    font-size: 1.8rem;
+  }
+
+  .word {
+    font-size: 0.8rem;
+  }
+
+  .svg {
+    height: 1rem;
+  }
+
+  .menu-btns {
+    border-radius: 50%;
+    padding: 0.09rem;
+    padding-inline: 0.03rem;
+  }
+
+  .MM {
+    font-size: 1.1rem;
+  }
+
+  .others {
+    font-size: 1.1rem;
+  }
+
+  .menu-section {
+    padding-left: 1rem;
+  }
+}
+
+@media (max-width: 499px) {
+  .page-title {
+    font-size: 1.65rem;
+    letter-spacing: 0.3px;
+  }
+
+  .entryhub-logo {
+    height: 4.5rem;
+  }
+
+  .hamburger {
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: 499px) {
+  .page-title {
+    font-size: 1.3rem;
+  }
+
+  .entryhub-logo {
+    height: 4.3rem;
+  }
+
+  .hamburger {
+    font-size: 1.8rem;
+  }
+
+  .word {
+    font-size: 0.8rem;
+  }
+
+  .svg {
+    height: 1rem;
+  }
+
+  .menu-btns {
+    border-radius: 50%;
+    padding: 0.09rem;
+    padding-inline: 0.03rem;
+  }
+
+  .MM {
+    font-size: 1.1rem;
+  }
+
+  .others {
+    font-size: 1.1rem;
+  }
+
+  .menu-section {
+    padding-left: 1rem;
+  }
+}
+
+@media (max-width: 349px) {
+  .page-title {
+    font-size: 1.1rem;
+  }
+
+  .entryhub-logo {
+    height: 4.5rem;
+  }
+
+  .hamburger {
+    font-size: 1.6rem;
+  }
+}
