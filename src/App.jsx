@@ -8,7 +8,7 @@ import AboutUs from './pages/AboutUs'
 import Cinema from './pages/Cinema'
 import EventDetails from './pages/EventDetails/EventDetails'
 import SignUp from './pages/SignUp'
-
+import DashboardLayout from './components/Dashboard-Layout/DashboardLayout'
 import './App.css'
 
 function Home() {
