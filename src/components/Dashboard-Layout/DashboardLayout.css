@@ -41,7 +41,7 @@
 .entryhub-logo {
   height: 5.4rem;
   margin-bottom: 3rem;
-  margin-top: 1rem;
+  margin-top: 2rem;
 }
 
 .menu-list {
@@ -232,6 +232,35 @@
 .menu-section {
   overflow-y: auto;
   z-index: 1000;
+}
+
+.back-button {
+  background-color: transparent;
+  border: none;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-bottom: 1rem;
+  font-weight: 500;
+  color: #5c7269;
+
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  justify-content: flex-start;
+}
+
+.back-btn-text:hover {
+  color: #5c7269d5;
+  /* border: 1px solid blue; */
+}
+
+.back-btn-text {
+  margin-top: -0.3rem;
+  color: #5c7269;
+}
+
+.back-arrows:hover {
+  color: #5c7269d5;
 }
 
 @media (max-width: 1049px) {
