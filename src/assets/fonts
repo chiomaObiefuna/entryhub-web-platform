@@ -1,0 +1,27 @@
+h1 {
+  font-family: Plus Jakarta Sans;
+  font-weight: 500;
+  font-style: Medium;
+  font-size: 61px;
+  
+}
+h3{
+font-family: Plus Jakarta Sans;
+font-weight: 600;
+font-style: SemiBold;
+font-size: 39px;
+line-height: 100%;
+letter-spacing: 0%;
+
+}
+
+
+h5{
+font-family: Plus Jakarta Sans;
+font-weight: 500;
+font-style: Medium;
+font-size: 25px;
+
+
+}
+

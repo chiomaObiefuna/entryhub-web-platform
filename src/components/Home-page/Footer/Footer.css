@@ -1,0 +1,129 @@
+.footer-section {
+  background-color: #052e16; /* Deepest green from your image */
+  color: #ffffff;
+  padding: 60px 5% 20px 5%;
+  font-family: 'Inter', sans-serif;
+}
+.footer-section.hidden-state {
+  opacity: 0;
+  transform: translateY(30px);
+   transition: all 0.8s ease-out, transform 0.8s ease-out;
+  
+}
+
+.footer-section.fade-in-up{
+  opacity: 1;
+  transform: translateY(0) ;
+
+
+}
+.footer-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 40px;
+}
+
+.footer-col h4 {
+  color: #ffffff;
+  font-size: 1.1rem;
+  margin-bottom: 20px;
+  font-weight: 600;
+}
+
+.footer-col ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-col ul li {
+  color: #94a3b8; /* Muted slate color */
+  font-size: 0.9rem;
+  margin-bottom: 12px;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.footer-col ul li:hover {
+  color: #ff8a00; /* Orange highlight on hover */
+}
+
+.social-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Payment Icons Grid */
+.payment-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  cursor: pointer;
+}
+
+.footer-icon{
+  height: 20px;
+}
+
+.visa-img{
+  height: 60px;
+}
+
+.payment-icon {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  font-weight: bold;
+  letter-spacing: 1px;
+} 
+
+.mc-circles {
+  width: 15px;
+  height: 10px;
+  background: linear-gradient(90deg, #eb001b 50%, #f79e1b 50%);
+  border-radius: 10px;
+  margin-right: 5px;
+}
+
+.footer-bottom {
+  margin-top: 60px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  text-align: center;
+  font-size: 0.8rem;
+  color: #64748b;
+}
+
+/* --- Responsiveness --- */
+
+/* Tablets */
+@media (max-width: 1024px) {
+  .footer-container {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 30px;
+  }
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+  .footer-container {
+    grid-template-columns: 1fr; /* Single column stack */
+    text-align: left;
+  }
+  
+  .footer-col h4 {
+    margin-bottom: 15px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 10px;
+  }
+
+  .payment-grid {
+    grid-template-columns: repeat(2, 1fr); /* Keep logos horizontal on mobile */
+}
