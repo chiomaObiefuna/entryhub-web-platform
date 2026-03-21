@@ -32,7 +32,7 @@ export default function EventDetails() {
         >
             {/* Visual debug indicator */}
             <div style={{fontSize: '10px', color: 'red', padding: '5px'}}>
-                State: {isSidebarOpen ? 'OPEN' : 'CLOSED'}
+                {/* State: {isSidebarOpen ? 'OPEN' : 'CLOSED'} */}
             </div>
 
             <button 
@@ -43,9 +43,9 @@ export default function EventDetails() {
                 <i className="ph ph-x"></i>
             </button>
 
-            <div className="logo" style={{marginTop: '40px'}}>entry<br/>hub</div>
+            <div className="logo" style={{marginTop: '40px'}}> <img src="/src/assets/logo/logo.png" alt="EntryHub Logo" /> </div>
             
-            {/* ... Keep your nav items ... */}
+            {/* ... nav items ... */}
             <nav className="sidebar-nav">
                 <a className="nav-item"><i className="ph ph-squares-four nav-icon"></i> Dashboard</a>
                 <a className="nav-item active"><i className="ph ph-house nav-icon"></i> Home</a>
@@ -92,7 +92,7 @@ export default function EventDetails() {
                     <div className="ticket-box"><span>Number of tickets</span><strong>1</strong></div>
                     <div className="ticket-box"><span>Sector</span><strong>107</strong></div>
                     <div className="ticket-box"><span>Row</span><strong>2</strong></div>
-                    <div className="ticket-box"><span>Ticket type</span><strong>cinema</strong></div>
+                    <div className="ticket-box"><span>Ticket type</span><strong>Cinema</strong></div>
                     <div className="ticket-box"><span>Seat</span><strong>5</strong></div>
                     <div className="ticket-box"><span>Price</span><strong>₦15,000</strong></div>
                 </div>
