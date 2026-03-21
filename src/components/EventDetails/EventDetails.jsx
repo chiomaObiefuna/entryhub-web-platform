@@ -21,31 +21,14 @@ export default function EventDetails() {
 
         {/* --- Overlay Backdrop --- */}
         <div 
-            className="sidebar-overlay"
+            className={`sidebar-overlay ${isSidebarOpen ? 'active' : ''}`}
             onClick={toggleSidebar}
-            style={{
-                opacity: isSidebarOpen ? 1 : 0,
-                pointerEvents: isSidebarOpen ? 'all' : 'none',
-                transition: 'opacity 0.3s ease'
-            }}
         ></div>
 
         {/* --- Sidebar --- */}
         <aside 
-            className="sidebar"
-            style={{
-                position: 'fixed',
-                top: 0,
-                left: isSidebarOpen ? '0px' : '-300px', 
-                height: '100vh',
-                width: '280px',
-                backgroundColor: '#ffffff',
-                boxShadow: isSidebarOpen ? '5px 0 15px rgba(0,0,0,0.2)' : 'none',
-                zIndex: 999999,
-                transition: 'left 0.3s ease-in-out',
-                display: 'block',
-                border: '2px solid red' 
-            }}
+            className={
+                `sidebar ${isSidebarOpen ? 'active' : ''}`}
         >
             {/* Visual debug indicator */}
             <div style={{fontSize: '10px', color: 'red', padding: '5px'}}>
