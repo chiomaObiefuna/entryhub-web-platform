@@ -8,12 +8,62 @@ export default function EventDetails() {
     // 2. State for the selected payment method
     const [selectedPayment, setSelectedPayment] = useState(null);
 
+    // State to track what they type in the inputs
+    const [fullName, setFullName] = useState( );
+    const [email, setEmail] = useState( );
+
+    // ... toggle sidebar and payment select functions ...
     const toggleSidebar = () => {
         setIsSidebarOpen(!isSidebarOpen);
     };
 
     const handlePaymentSelect = (method) => {
         setSelectedPayment(method);
+    };
+
+    // The function that runs when they click "Proceed to Payment"
+    const handleCheckout = async () => {
+        // 1. Check if they picked a payment method
+        if (!selectedPayment) {
+            alert("Please select a payment method first!");
+            return;
+        }
+
+        // 2. Bundle the data into a neat package (JSON)
+        const orderData = {
+            eventName: "Shelter in Cinema Now",
+            customerName: fullName,
+            customerEmail: email,
+            paymentMethod: selectedPayment,
+            totalPrice: 15000
+        };
+
+        try {
+            // 3. Send the data to your Back-End URL
+            // (Replace this URL with your actual back-end address later)
+            const response = await fetch('http://eventhub-backend-pxoz.onrender.com/api/checkout', {
+                method: 'POST', // POST means we are SENDING data
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(orderData) // Turn our bundle into a text string
+            });
+
+            // 4. Wait for the kitchen (back-end) to reply
+            const result = await response.json();
+
+            if (response.ok) {
+                alert("Success! Order sent to backend.");
+                console.log("Backend replied:", result);
+                // Here is where you might use React Router to navigate to a "Success" page!
+            } else {
+                alert("Something went wrong with the booking.");
+            }
+
+        } catch (error) {
+            console.error("Failed to connect to backend:", error);
+            alert("Could not connect to the server.");
+        }
     };
 
     return (
@@ -113,6 +163,16 @@ export default function EventDetails() {
                     <label htmlFor="email">Email</label>
                     <input type="email" id="email" defaultValue="" />
                 </div>
+                <input 
+                    type="text" 
+                    value={fullName} 
+                    onChange={(e) => setFullName(e.target.value)} 
+                />
+                <input 
+                    type="email" 
+                    value={email} 
+                    onChange={(e) => setEmail(e.target.value)} 
+                />
             </section>
 
             <section className="payment-selection">
@@ -154,7 +214,10 @@ export default function EventDetails() {
 
             <footer className="action-buttons">
                 <button className="btn btn-home"><i className="ph ph-house"></i> Home</button>
-                <button className="btn btn-proceed">Proceed To Payment</button>
+                <button 
+                className="btn btn-proceed" onClick={handleCheckout}>
+                    Proceed To Payment
+                </button>
             </footer>
         </main>
     </div>
