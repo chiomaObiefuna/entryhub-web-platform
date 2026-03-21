@@ -11,6 +11,18 @@ const Navbar = () => {
 
   const openSidebar = () => setSidebarOpen(true)
   const closeSidebar = () => setSidebarOpen(false)
+  useEffect(() => {
+    if (sidebarOpen) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = ''
+    } 
+    return () => {
+      document.body.style.overflow = ''
+    }
+
+  },[sidebarOpen])
+
 
   return (
     <nav className='navbar'>
@@ -43,16 +55,18 @@ const Navbar = () => {
         <a href='my ticket' onClick={closeSidebar}>My Ticket</a>
         <NavLink to='/about-us' onClick={closeSidebar}>About us</NavLink>
 
-         
-          
-
-        <div>
+        <div className='nav-signup'>
 
           <Link to='/sign-up' onClick={closeSidebar}>
             <button className='btn'>Sign Up</button>
           </Link>
         </div>
-       
+      </div>
+
+      <div className='desktop-signup'>
+        <Link to='/sign-up'>
+        <button className='btn'>Sign Up</button>
+        </Link>
       </div>
     
     </nav>

@@ -117,13 +117,12 @@ input:focus{
 
  .profile-img{
   width: min(450px, 90vw);
-
   aspect-ratio: 1 / 1;
   border-radius: 50%;
   border:10px solid rgba(255, 225, 225, 0.1); 
   overflow: hidden;
   position: relative;
-  margin: 20px auto;
+  margin: 50px auto;
   display: flex;
   justify-content: center;
   align-items: center;
