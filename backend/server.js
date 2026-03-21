@@ -3,6 +3,7 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const connectDB = require('./config/db');
+const paymentRoutes = require("./routes/paymentRoutes");
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -13,6 +14,8 @@ connectDB();
 const screenRoutes = require("./routes/screenRoutes");
 const eventRoutes = require("./routes/eventRoutes");
 const authRoutes = require("./routes/authRoutes");
+const ticketRoutes = require("./routes/ticketRoutes");
+
 
 // Middleware
 app.use(cors());
@@ -22,6 +25,7 @@ app.use(express.json());
 app.use("/api", screenRoutes);
 app.use("/api", eventRoutes);
 app.use("/api/auth", authRoutes);
+app.use("/api", ticketRoutes);
 
 // Swagger setup
 const swaggerUi = require('swagger-ui-express');
@@ -54,3 +58,4 @@ app.get("/api-docs.json", (req, res) => {
 });
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.use("/api", paymentRoutes);
