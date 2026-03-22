@@ -1,28 +1,14 @@
-import { useEffect, useState } from 'react'
-import { Link, NavLink } from 'react-router-dom'
+import { useState } from 'react'
 import logo from '../../../assets/logo/logo.svg'
-import menuIcon from '../../../assets/icons/menu_icon.svg'     // adjust filename to match yours
-import closeIcon from '../../../assets/icons/close_icon.svg'   // adjust filename to match yours
-import './Navbar.css'
+import menuIcon from '../../../assets/icons/menu_icon.svg'
+import closeIcon from '../../../assets/icons/close_icon.svg';
+import "./Navbar.css"
 
 const Navbar = () => {
-
   const [sidebarOpen, setSidebarOpen] = useState(false)
 
   const openSidebar = () => setSidebarOpen(true)
   const closeSidebar = () => setSidebarOpen(false)
-  useEffect(() => {
-    if (sidebarOpen) {
-      document.body.style.overflow = 'hidden'
-    } else {
-      document.body.style.overflow = ''
-    } 
-    return () => {
-      document.body.style.overflow = ''
-    }
-
-  },[sidebarOpen])
-
 
   return (
     <nav className='navbar'>
@@ -37,42 +23,27 @@ const Navbar = () => {
 
       {/* Overlay — clicking outside closes the sidebar */}
       {sidebarOpen && (
-        <div className='overlay' onClick={closeSidebar}>
-          
-        </div>
+        <div className='overlay' onClick={closeSidebar}></div>
       )}
 
       <div className={`nav-link ${!sidebarOpen ? 'sidebar-closed' : 'sidebar-open'}`}>
 
         {/* Close button inside sidebar */}
         <button className='close-btn' onClick={closeSidebar}>
-          <img src={closeIcon} alt='close menu' className='close-Icon'/>
+          <img src={closeIcon} alt='close menu' className='close-icon'/>
         </button>
 
-        <NavLink to='/' onClick={closeSidebar}>Home</NavLink>
+        <a href='#' onClick={closeSidebar}>Home</a>
         <a href='#events' onClick={closeSidebar}>Events</a>
         <a href='in-event' onClick={closeSidebar}>In-Events</a>
         <a href='my ticket' onClick={closeSidebar}>My Ticket</a>
-        <NavLink to='/about-us' onClick={closeSidebar}>About us</NavLink>
-
-        <div className='nav-signup'>
-
-          <Link to='/sign-up' onClick={closeSidebar}>
-            <button className='btn'>Sign Up</button>
-          </Link>
-        </div>
+        <a href='about us' onClick={closeSidebar}>About us</a>
+        <a href='sign up'>
+          <button className='btn'>Sign Up</button>
+        </a>
       </div>
-
-      <div className='desktop-signup'>
-        <Link to='/sign-up'>
-        <button className='btn'>Sign Up</button>
-        </Link>
-      </div>
-    
     </nav>
-  );
-};
+  )
+}
 
 export default Navbar
-
-

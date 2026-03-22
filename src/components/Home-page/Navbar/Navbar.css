@@ -1,145 +1,169 @@
-.navbar{
+.navbar {
   width: 100%;
-  background: #fff;  
+  background: #fff;
   padding: 1rem 1rem;
-  position:fixed;
+  position: fixed;
   top: 0;
   left: 0;
   font-weight: 500;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  z-index: 20; 
-  backdrop-filter: blur (24px);
+  z-index: 20;
+  backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
 }
 
-.nav-link{
+.nav-link {
   color: #374151;
   font-size: 0.875rem;
   line-height: 1.25rem;
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   gap: 1.25rem;
   transition: all 0.15s ease;
 }
 
- .logo-icon{
+.logo-icon {
   width: 200px;
-  /* display: block; */
- }
+}
 
- logo{
+.logo {
   display: block;
- }
+}
 
- .hamburger{
+.hamburger {
   display: none;
   flex-direction: column;
   gap: 5px;
   background: none;
   border: none;
   cursor: pointer;
- }
+}
 
- .hamburger span {
+.hamburger span {
   display: block;
   width: 25px;
   height: 2px;
   background-color: #303d38;
   cursor: pointer;
- }
+}
 
-.menu-icon{
+.menu-icon {
   display: block;
   width: 25px;
   height: 25px;
   object-fit: contain;
 }
 
-/* --- Close button------ */
-
-.close-btn{
+/* ---- Close button ---- */
+.close-btn {
   background: none;
   border: none;
   cursor: pointer;
-
-  /* ---- Hidden on desktop--- */
-  align-items: flex-end;
-  margin-bottom: 1rem;
-  display: none;
- 
+  display: none;          /* Hidden on desktop */
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  padding: 0;
+  z-index: 40;
 }
 
-.close-icon{
-  width: 30px;
-  height: 30px;
+/* ---- Close icon - CSS X, no image needed ---- */
+.close-icon {
   display: block;
-  object-fit: contain;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #fff;
+  line-height: 1;
   cursor: pointer;
-} 
+}
 
-.overlay{
+.overlay {
   position: fixed;
   inset: 0;
   background: rgba(0, 0, 0, 0.4);
   z-index: 25;
 }
 
-
-.desktop-signup{
+/* Desktop signup button */
+.desktop-signup {
   display: flex;
   align-items: center;
 }
 
-.nav-signup{
+/* Signup button inside sidebar - hidden on desktop */
+.nav-signup {
   display: none;
   margin-top: 1.5rem;
-
-
 }
 
+.btn {
+  background-color: #5C7269;
+  color: #fff;
+  border: none;
+  padding: 0.5rem 1.25rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
 
+.btn:hover {
+  opacity: 0.9;
+}
+
+a:hover {
+  border-bottom: 1px solid #000;
+}
+
+/* ===================== TABLET 640px+ ===================== */
 @media (min-width: 640px) {
   .navbar {
     padding: 1rem 3rem;
   }
 
-    a:hover{
-      border-bottom: 1px solid #000;
-    }
-
-    .nav-link{
-      font-size: 12px;
-      align-items: center;
-    }
-
-    /* .close-icon{
-      display: none;
-    } */
+  .nav-link {
+    font-size: 12px;
+    align-items: center;
+  }
 }
 
+/* ===================== DESKTOP 1024px+ ===================== */
+@media (min-width: 1024px) {
+  .navbar {
+    padding: 1rem 6rem;
+  }
+}
+
+@media (min-width: 1280px) {
+  .navbar {
+    padding: 1rem 10rem;
+  }
+}
+
+/* ===================== MOBILE max-width 639px ===================== */
 @media (max-width: 639px) {
-  .hamburger{
+
+  /* Show hamburger on mobile */
+  .hamburger {
     display: flex;
     z-index: 30;
   }
-  .desktop-signup{
+
+  /* Hide desktop signup on mobile */
+  .desktop-signup {
     display: none;
   }
-}
 
-/* Sidebar Closed -below small screen */
-@media (max-width: 639px) {
-  .nav-link.sidebar-closed{
+  /* Sidebar CLOSED */
+  .nav-link.sidebar-closed {
     width: 0;
     overflow: hidden;
   }
-}
 
-/* Sidebar OPEN - below smaller screen */
-@media (max-width: 639px) {
-  .nav-link.sidebar-open{
+  /* Sidebar OPEN */
+  .nav-link.sidebar-open {
     position: fixed;
     top: 0;
     bottom: 0;
@@ -150,57 +174,37 @@
     flex-direction: column;
     align-items: flex-start;
     padding-left: 1.5rem;
-    padding-top: 1.5rem;
-    background-color: #303d38;
+    padding-top: 4rem;     /* space for close button at top */
+    background-color: #5C7269;
     color: #fff;
     border-bottom: 1px solid #000;
     cursor: pointer;
     transition: all 0.3s ease;
-    z-index: 30
-  }
-.nav-link.sidebar-open .close-btn{
-  display: flex;
-}
-
-.nav-link.sidebar-open .nav-signup{
-  display: block;
-}
-
-.nav-link.sidebar-open a,
-.nav-link.sidebar-open .active{
-  color: #fff;
-  font-size: 1rem;
-  padding: 0.5rem 0;
-  display: block;
-  width: 100%;
-  text-decoration: none;
-}
-
-.nav-link.nav-link.sidebar-open a:hover{
-  border-bottom: 1px solid rgba(255,255,255,0.5);
-}
-
-  
-}
-
-@media (max-width: 639px) {
-  .nav-link{
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    right: 0;
-    
+    z-index: 30;
   }
 
+  /* Show close button on mobile */
+  .nav-link.sidebar-open .close-btn {
+    display: block;
+  }
 
+  /* Show signup inside sidebar on mobile */
+  .nav-link.sidebar-open .nav-signup {
+    display: block;
+  }
+
+  /* Nav links styling inside open sidebar */
+  .nav-link.sidebar-open a,
+  .nav-link.sidebar-open .active {
+    color: #fff;
+    font-size: 1rem;
+    padding: 0.5rem 0;
+    display: block;
+    width: 100%;
+    text-decoration: none;
+  }
+
+  .nav-link.sidebar-open a:hover {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+  }
 }
-
-
-
-@media(min-width: 1024px) {
-  .navbar {padding: 1rem 6rem;}
-}
-
-@media(min-width: 1280px) {
-  .navbar{ padding: 1rem 10rem;}
-} 
