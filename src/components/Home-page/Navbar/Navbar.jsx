@@ -36,15 +36,15 @@ const Navbar = () => {
           <img src={closeIcon} alt='close menu' className='close-icon'/>
         </button>
 
-        <NavLink to='/' onClick={closeSidebar}>Home</NavLink>
-        <a href='#events' onClick={closeSidebar}>Events</a>
-        <a href='in-event' onClick={closeSidebar}>In-Events</a>
-        <a href='my ticket' onClick={closeSidebar}>My Ticket</a>
-        <NavLink to='/about-us' onClick={closeSidebar}>About us</NavLink>
+        <NavLink to='/' onClick={closeSidebar} className='link-nav'>Home</NavLink>
+        <a href='#events' onClick={closeSidebar} className='link-nav'>Events</a>
+        <a href='in-event' onClick={closeSidebar} className='link-nav'>In-Events</a>
+        <a href='my ticket' onClick={closeSidebar} className='link-nav'>My Ticket</a>
+        <NavLink to='/about-us' onClick={closeSidebar}className='link-nav'>About us</NavLink>
 
         <div>
           <Link to='/sign-up' onClick={closeSidebar}>
-            <button className='btn'>Sign Up</button>
+            <button className='btn sign-but'>Sign Up</button>
           </Link>
         </div>
        
