@@ -69,6 +69,10 @@ const Navbar = () => {
           Sign Up
         </Link>
 
+        <Link to='/sign-up' className='navbar__signup-btn'>
+          Log In
+        </Link>
+
         {/* Hamburger – mobile only */}
         <button
           className={`navbar__hamburger${isOpen ? " is-active" : ""}`}
@@ -80,7 +84,6 @@ const Navbar = () => {
           <span className='bar' />
           <span className='bar' />
         </button>
-
         <div>
           {/* ─── Backdrop ─── */}
           <div
@@ -157,6 +160,7 @@ const Navbar = () => {
           </aside>
         </div>
       </nav>
+     
     </>
   );
 };
