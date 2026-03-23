@@ -31,6 +31,9 @@ const TicketSchema = new mongoose.Schema({
     type: Boolean,
     default: false
   },
+  qr_image: {
+    type: String
+  },
   scanned_at: {
     type: Date
   }

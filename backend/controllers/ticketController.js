@@ -2,12 +2,15 @@ const Ticket = require("../models/Ticket");
 const { createVirtualAccount } = require("../services/flutterwave");
 const crypto = require("crypto");
 const QRCode = require("qrcode");
-// 1. Purchase Ticket Logic
+
+
+// =======================
+// 1. Purchase Ticket
+// =======================
 exports.purchaseTicket = async (req, res) => {
   try {
     const { event, seat, buyer_email } = req.body;
 
-    // Create pending ticket
     const ticket = await Ticket.create({
       event,
       seat,
@@ -18,10 +21,9 @@ exports.purchaseTicket = async (req, res) => {
 
     const tx_ref = `ticket_${ticket._id}`;
 
-    // VA Creation
     const va = await createVirtualAccount({
       email: buyer_email,
-      amount: 15000, // ⚠️ Ideally, fetch this from the Event model
+      amount: 15000,
       tx_ref
     });
 
@@ -37,21 +39,24 @@ exports.purchaseTicket = async (req, res) => {
     });
 
   } catch (error) {
-  // ✅ Handle duplicate seat booking
-  if (error.code === 11000) {
-    return res.status(400).json({
-      message: "Seat already booked for this event"
+
+    if (error.code === 11000) {
+      return res.status(400).json({
+        message: "Seat already booked for this event"
+      });
+    }
+
+    res.status(500).json({
+      message: "Error creating ticket",
+      error: error.message
     });
   }
-
-  // fallback for other errors
-  res.status(500).json({
-    message: "Error creating ticket",
-    error: error.message
-  });
-}
 };
 
+
+// =======================
+// 2. Get Single Ticket
+// =======================
 exports.getTicket = async (req, res) => {
   try {
     const { id } = req.params;
@@ -60,12 +65,6 @@ exports.getTicket = async (req, res) => {
 
     if (!ticket) {
       return res.status(404).json({ success: false, message: "Ticket not found" });
-    }
-
-    // Generate QR image if ticket has a token
-    let qrImage = null;
-    if (ticket.qr_token) {
-      qrImage = await QRCode.toDataURL(ticket.qr_token);
     }
 
     res.status(200).json({
@@ -77,97 +76,92 @@ exports.getTicket = async (req, res) => {
         buyer_email: ticket.buyer_email,
         payment_status: ticket.payment_status,
         qr_token: ticket.qr_token,
-        qr_image: qrImage,
+        qr_image: ticket.qr_image, // ✅ use stored QR
         is_used: ticket.is_used,
         scanned_at: ticket.scanned_at
       }
     });
+
   } catch (err) {
     console.error(err);
-    res.status(500).json({ success: false, message: "Error fetching ticket", error: err.message });
+    res.status(500).json({
+      success: false,
+      message: "Error fetching ticket",
+      error: err.message
+    });
   }
 };
 
+
+// =======================
+// 3. Get All Tickets
+// =======================
 exports.getAllTickets = async (req, res) => {
   try {
     const tickets = await Ticket.find().populate("event");
 
-    // Optionally generate QR images for all tickets
-    const ticketsWithQR = await Promise.all(
-      tickets.map(async (ticket) => {
-        let qrImage = null;
-        if (ticket.qr_token) {
-          qrImage = await QRCode.toDataURL(ticket.qr_token);
-        }
-        return {
-          id: ticket._id,
-          event: ticket.event.name,
-          seat: ticket.seat,
-          buyer_email: ticket.buyer_email,
-          payment_status: ticket.payment_status,
-          qr_token: ticket.qr_token,
-          qr_image: qrImage,
-          is_used: ticket.is_used,
-          scanned_at: ticket.scanned_at,
-        };
-      })
-    );
+    const formatted = tickets.map(ticket => ({
+      id: ticket._id,
+      event: ticket.event?.name,
+      seat: ticket.seat,
+      buyer_email: ticket.buyer_email,
+      payment_status: ticket.payment_status,
+      qr_token: ticket.qr_token,
+      qr_image: ticket.qr_image,
+      is_used: ticket.is_used,
+      scanned_at: ticket.scanned_at
+    }));
 
-    res.status(200).json({ success: true, tickets: ticketsWithQR });
+    res.status(200).json({
+      success: true,
+      count: formatted.length,
+      tickets: formatted
+    });
+
   } catch (err) {
     console.error(err);
-    res.status(500).json({ success: false, message: "Error fetching tickets", error: err.message });
+    res.status(500).json({
+      success: false,
+      message: "Error fetching tickets",
+      error: err.message
+    });
   }
 };
 
-// 2. Verification Logic (New)
+
+// =======================
+// 4. Verify Ticket (SCAN)
+// =======================
 exports.verifyTicket = async (req, res) => {
   try {
-    const { token } = req.params; // This matches /verify/:token in your routes
+    const { token } = req.params;
 
-    // Find the ticket by its ID (or a unique token/QR string if you generate one)
-    const ticket = await Ticket.findById(token).populate("event");
+    const ticket = await Ticket.findOne({ qr_token: token }).populate("event");
 
     if (!ticket) {
-      return res.status(404).json({ success: false, message: "Ticket not found" });
+      return res.send(`<h1 style="color:red;">❌ Invalid Ticket</h1>`);
     }
 
-    // Check if the ticket has actually been paid for
-    if (ticket.payment_status !== "confirmed") {
-      return res.status(400).json({ 
-        success: false, 
-        message: "Payment for this ticket is still pending or failed" 
-      });
+    if (ticket.payment_status !== "paid") {
+      return res.send(`<h1 style="color:orange;">⚠️ Payment Pending</h1>`);
     }
 
-    // Check if the ticket has already been used (to prevent double entry)
     if (ticket.is_used) {
-      return res.status(400).json({ 
-        success: false, 
-        message: "This ticket has already been used/scanned" 
-      });
+      return res.send(`<h1 style="color:red;">❌ Ticket Already Used</h1>`);
     }
 
-    // If all checks pass, mark the ticket as used
     ticket.is_used = true;
     ticket.scanned_at = Date.now();
     await ticket.save();
 
-    res.status(200).json({
-      success: true,
-      message: "Ticket verified! Grant entry.",
-      data: {
-        event: ticket.event.name,
-        seat: ticket.seat,
-        buyer: ticket.buyer_email
-      }
-    });
+    return res.send(`
+      <h1 style="color:green;">✅ Access Granted</h1>
+      <p><strong>Event:</strong> ${ticket.event.name}</p>
+      <p><strong>Seat:</strong> ${ticket.seat.row}${ticket.seat.number}</p>
+      <p><strong>Buyer:</strong> ${ticket.buyer_email}</p>
+    `);
 
   } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: "Verification error",
-      error: error.message
-    });
+    res.status(500).send(`<h1>❌ Verification Error</h1>`);
   }
 };
