@@ -13,7 +13,7 @@ import TicketResales from './components/Ticket/TicketResales'
 import DashboardLayout from './components/Dashboard-Layout/DashboardLayout';
 
 import './App.css';
-import BookEvents from './components/Book-Event/BookEvents.JSX';
+import BookEvents from './components/Book-Event/BookEvents';
 import DetailsEvents from './components/Details-Events/DetailsEvents';
 import PaymentComplete from './components/Payment-Complete/PaymentComplete';
 import Bankdetails from './components/Home-page/Payment-method/bank-details'
