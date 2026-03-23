@@ -3,7 +3,7 @@ import facebook from '../../../assets/icons/facebook.svg'
 import twitter from '../../../assets/icons/twitter.svg'
 import instagram from '../../../assets/icons/instagram.svg'
 import visa from '../../../assets/icons/visa.svg'
-import './footer.css';
+import './Footer.css';
 
 
 

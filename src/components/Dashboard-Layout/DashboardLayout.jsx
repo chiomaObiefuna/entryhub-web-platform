@@ -1,4 +1,4 @@
-import "./Dashboardlayout.css";
+import "./DashboardLayout.css";
 import { useState } from "react";
 import logo from "./entry-hub.png";
 import { useNavigate } from "react-router-dom";
