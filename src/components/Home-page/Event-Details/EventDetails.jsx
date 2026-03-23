@@ -1,10 +1,16 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import './EventDetails.css';
+import { useNavigate } from 'react-router-dom';
 import EventImg from '../../../assets/images/event_img.svg';
+
+
+ 
+
 
 const formatNGN = (value) =>
   new Intl.NumberFormat('en-NG', { maximumFractionDigits: 0 }).format(value);
 const EventDetails = () => {
+  const navigate = useNavigate()
   const [isVisible, setIsVisible] = useState(false);
   const sectionRef = useRef(null);
   const ticketEntryRef = useRef(null);
@@ -43,8 +49,15 @@ const EventDetails = () => {
   };
 
   const handleGetExactLocation = () => {
-    window.open('https://www.google.com/maps/search/?api=1&query=Eko+Hotel+Lagos', '_blank');
-  };
+  window.open(
+    "https://www.google.com/maps/search/?api=1&query=Filmhouse+Cinemas+Surulere+Lagos",
+    "_blank"
+  );
+};
+
+  // const handleGetExactLocation = () => {
+  //   window.open('https://www.google.com/maps/search/?api=1&query=Eko+Hotel+Lagos', '_blank');
+  // };
 
   const handleDownload = () => alert('Download started (demo).');
   const handleView = () => alert('Opening ticket (demo).');
@@ -64,7 +77,7 @@ const EventDetails = () => {
             <h2 className="featured-title">
               Burna Boy Live <br /> ( BLIC 5 )
             </h2>
-            <div className="featured-meta">
+            <div className="featured-m veta">
               <div className="meta-item">
                 <span className="meta-icon" aria-hidden="true">
                   📅
@@ -135,7 +148,7 @@ const EventDetails = () => {
               <div className="map-pin pin-3" />
             </div>
             <div className="map-footer">
-              <div className="map-location">Eko Hotel, Lagos</div>
+              <div className="map-location">Filmhouse Cinemas, Surulere</div>
               <button type="button" className="btn btn-outline" onClick={handleGetExactLocation}>
                 Get exact location
               </button>
@@ -147,6 +160,9 @@ const EventDetails = () => {
       {/* My Ticket */}
       <div className="my-ticket">
         <h2 className="section-title">My Ticket</h2>
+        <button type="button" className="btn btn-primary btn-resale" onClick={() => navigate("/resale")}>
+                Ticket Resale
+              </button>
 
         <div className="ticket-tabs" role="tablist" aria-label="Ticket details tabs">
           {['Description', 'Events', 'Venue'].map((tab) => (
@@ -181,9 +197,7 @@ const EventDetails = () => {
               {activeTab === 'Description' && (
                 <>
                   <p>
-                    Get ready for an unforgettable night as Burna Boy takes the stage for an
-                    electrifying performance—high energy, global hits, and an atmosphere you won’t
-                    forget.
+                    There’s nothing quite like the collective gasp of a crowded theater or the shared laughter of a packed house. Whether it's a first date or a family tradition, cinema brings us together. Grab your tickets, find your row,  locate your seat and get ready for a awesome moment you won't forget.
                   </p>
                   <ul>
                     <li>Door opens at: 8:00 PM</li>

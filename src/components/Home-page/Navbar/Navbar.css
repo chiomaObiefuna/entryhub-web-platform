@@ -1,146 +1,305 @@
-.navbar{
-  width: 100%;
-  background: #fff;  
-  padding: 1rem 1rem;
-  position:fixed;
+:root {
+  --brand-green : #2E6B60;
+  --brand-orange: #E87B2C;
+  --text-dark   : #1a2e29;
+  --text-mid    : #4b5e59;
+  --white       : #ffffff;
+  --nav-height  : 68px;
+  --sidebar-w   : 280px;
+  --radius      : 8px;
+  --shadow      : 0 2px 16px rgba(0,0,0,0.08);
+  --transition  : 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ================================================
+   TOP NAVBAR
+   ================================================ */
+.navbar {
+  position: fixed;
   top: 0;
   left: 0;
-  font-weight: 500;
+  width: 100%;
+  height: var(--nav-height);
+  background: var(--white);
+  box-shadow: var(--shadow);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  z-index: 20; 
-  backdrop-filter: blur (24px);
-  -webkit-backdrop-filter: blur(24px);
+  padding: 0 2rem;
+  z-index: 100;
 }
 
-.nav-link{
-  color: #374151;
-  font-size: 0.875rem;
-  display: flex;
-  align-items: flex-start;
-  gap: 1.25rem;
-  transition: all 0.15s ease;
-}
-
-
- .logo-icon{
-  width: 200px;
-  /* display: block; */
- }
-
- logo{
+/* Logo */
+.navbar__logo img {
+  height: 40px;
   display: block;
- }
+}
 
- .hamburger{
+/* Desktop links list */
+.navbar__desktop-links {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  list-style: none;
+}
+
+/* Individual link */
+.navbar__link {
+  display: block;
+  padding: 0.45rem 0.85rem;
+  border-radius: var(--radius);
+  color: var(--text-mid);
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  transition: color var(--transition), background var(--transition);
+}
+
+.navbar__link:hover {
+  color: var(--brand-green);
+  background: rgba(46,107,96,0.07);
+}
+
+.navbar__link--active {
+  color: var(--brand-green);
+  font-weight: 600;
+}
+
+/* Desktop Sign Up button */
+.navbar__signup-btn {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.5rem 1.35rem;
+  background: var(--brand-orange);
+  color: var(--white);
+  border-radius: 50px;
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: opacity var(--transition), transform var(--transition);
+}
+
+.navbar__signup-btn:hover {
+  opacity: 0.88;
+  transform: translateY(-1px);
+}
+
+/* Hamburger – hidden on desktop */
+.navbar__hamburger {
   display: none;
   flex-direction: column;
+  justify-content: center;
   gap: 5px;
+  width: 38px;
+  height: 38px;
   background: none;
   border: none;
   cursor: pointer;
- }
+  padding: 6px;
+  border-radius: var(--radius);
+  transition: background var(--transition);
+}
 
- .hamburger span {
+.navbar__hamburger:hover {
+  background: rgba(46,107,96,0.08);
+}
+
+.navbar__hamburger .bar {
   display: block;
-  width: 25px;
+  width: 100%;
   height: 2px;
-  background-color: #5C7269;
- }
-
-.menu-icon{
-  display: block;
-  width: 25px;
-  height: 25px;
-  object-fit: contain;
+  background: var(--text-dark);
+  border-radius: 2px;
+  transition: transform var(--transition), opacity var(--transition);
+  transform-origin: center;
 }
 
-.close-btn{
-  background: none;
-  border: none;
-  cursor: pointer;
-  align-items: flex-end;
+/* Hamburger → X animation when open */
+.navbar__hamburger.is-active .bar:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+.navbar__hamburger.is-active .bar:nth-child(2) {
+  opacity: 0;
+  transform: scaleX(0);
+}
+.navbar__hamburger.is-active .bar:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
 }
 
-.close-icon{
-  width: 30px;
-  height: 30px;
-  display: block;
-  object-fit: contain;
-} 
-
-.overlay{
+/* ================================================
+   BACKDROP
+   ================================================ */
+.sidebar-backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.4);
-  z-index: 25;
+  background: rgba(0, 0, 0, 0.45);
+  z-index: 110;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--transition);
 }
 
-
-
-
-
-
-@media (min-width: 640px) {
-  .navbar {
-    padding: 1rem 3rem ;}
-
-    a:hover{
-      border-bottom: 1px solid #000;
-    }
-
-    .nav-link{
-      font-size: 0.875rem;
-      align-items: center;
-    }
+.sidebar-backdrop.is-visible {
+  opacity: 1;
+  pointer-events: all;
 }
 
-@media (max-width: 639px) {
-  .hamburger{
+/* ================================================
+   SIDEBAR
+   ================================================ */
+.sidebar {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: var(--sidebar-w);
+  height: 100dvh;           /* dynamic viewport height */
+  background: var(--white);
+  box-shadow: -4px 0 24px rgba(0,0,0,0.12);
+  display: flex;
+  flex-direction: column;
+  z-index: 120;
+  transform: translateX(100%);
+  transition: transform var(--transition);
+  overflow-y: auto;
+}
+
+.sidebar.is-open {
+  transform: translateX(0);
+}
+
+/* ── Sidebar Header ── */
+.sidebar__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid rgba(0,0,0,0.07);
+  min-height: var(--nav-height);
+}
+
+.sidebar__logo img {
+  height: 36px;
+  display: block;
+}
+
+.sidebar__close-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  background: rgba(46,107,96,0.08);
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  color: var(--brand-green);
+  transition: background var(--transition);
+  flex-shrink: 0;
+}
+
+.sidebar__close-btn:hover {
+  background: rgba(46,107,96,0.16);
+}
+
+/* ── Sidebar Links ── */
+.sidebar__links {
+  list-style: none;
+  padding: 1rem 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  flex: 1;
+}
+
+.sidebar__link {
+  display: block;
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius);
+  color: var(--text-dark);
+  text-decoration: none;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: background var(--transition), color var(--transition);
+}
+
+.sidebar__link:hover {
+  background: rgba(46,107,96,0.08);
+  color: var(--brand-green);
+}
+
+.sidebar__link--active {
+  background: rgba(46,107,96,0.1);
+  color: var(--brand-green);
+  font-weight: 600;
+}
+
+/* ── Sidebar Footer ── */
+.sidebar__footer {
+  padding: 1.25rem;
+  border-top: 1px solid rgba(0,0,0,0.07);
+}
+
+.sidebar__signup-btn {
+  display: block;
+  width: 100%;
+  padding: 0.8rem;
+  background: var(--brand-orange);
+  color: var(--white);
+  text-align: center;
+  border-radius: 50px;
+  text-decoration: none;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: opacity var(--transition);
+}
+
+.sidebar__signup-btn:hover {
+  opacity: 0.88;
+}
+
+/* ================================================
+   RESPONSIVE BREAKPOINTS
+   ================================================ */
+
+/* ── Tablet (640px – 1023px) ── */
+@media (max-width: 1023px) {
+  .navbar__desktop-links,
+  .navbar__signup-btn {
+    display: none;
+  }
+
+  .navbar__hamburger {
     display: flex;
   }
 }
 
-/* Sidebar Closed -below small screen */
-@media (max-width: 639px) {
-  .nav-link.sidebar-closed{
-    width: 0;
-    overflow: hidden;
+/* ── Desktop (1024px+) ── */
+@media (min-width: 1024px) {
+  .navbar {
+    padding: 0 4rem;
+  }
+
+  .navbar__hamburger {
+    display: none;
+  }
+
+  /* Sidebar never needed on desktop */
+  .sidebar,
+  .sidebar-backdrop {
+    display: none !important;
   }
 }
 
-/* Sidebar OPEN - below smaller screen */
-@media (max-width: 639px) {
-  .nav-link.sidebar-open{
-    width: 15rem;
-    padding-left: 2.5rem;
-  }
-  
-}
-
-@media (max-width: 639px) {
-  .nav-link{
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    right: 0;
-    min-height: 100vh;
-    height: 100%;
-    flex-direction: column;
-    background-color: #5C7269;
-    color:#fff;
-    padding-top: 5rem;
-    transition:  all 0.3s ease;
+@media (min-width: 1280px) {
+  .navbar {
+    padding: 0 6rem;
   }
 }
 
-
-
-@media(min-width: 1024px) {
-  .navbar {padding: 1rem 6rem;}
+@media (min-width: 1536px) {
+  .navbar {
+    padding: 0 10rem;
+  }
 }
-
-@media(min-width: 1280px) {
-  .navbar{ padding: 1rem 10rem;}
-  
