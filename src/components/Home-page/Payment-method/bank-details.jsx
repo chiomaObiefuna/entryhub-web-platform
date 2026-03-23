@@ -8,9 +8,22 @@ import "./payment-method.css";
 
 function BankDetails() {
   const [paymentData, setPaymentData] = useState({
-    ticketQty: 2,
-    ticketPrice: 15000,
+    ticketQty: 0,
+    ticketPrice: 0,
   });
+
+  useEffect(() => {
+    const storedData = localStorage.getItem("ticketData");
+    if (storedData) {
+      const parsed = JSON.parse(storedData);
+      setPaymentData({
+        ticketQty: parsed.quantity || 0,
+        ticketPrice: parsed.price || 0,
+      });
+    }
+  }, []);
+
+  // Calculate total dynamically
   const totalAmount = paymentData.ticketQty * paymentData.ticketPrice;
 
   const [paymentStatus, setPaymentStatus] = useState("idle");
@@ -30,10 +43,12 @@ function BankDetails() {
   const statusRef = useRef(null);
 
   useEffect(() => {
-    if (statusRef.current) {
+    // run whenever paymentStatus changes
+    if (statusRef.current && paymentStatus !== "idle") {
       statusRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
     }
-  });
+  }, [paymentStatus]);
+
   return (
     <Dashboardlayout title="Bank Transfer Details">
       {paymentStatus === "idle" && (
@@ -48,16 +63,14 @@ function BankDetails() {
               <p className="d-info">0123456789</p>
             </div>
             <div className="sub-details">
-              <p className="d-name">Account Number</p>
-              <p className="d-info">Flutterwave</p>
-            </div>
-            <div className="sub-details">
               <p className="d-name">Account Name</p>
               <p className="d-info">Entry Hub</p>
             </div>
             <div className="sub-details">
               <p className="d-name">Amount</p>
-              <p className="d-info">₦15,000</p>
+              <p className="d-info">
+                {paymentData.ticketPrice.toLocaleString()}
+              </p>
             </div>
           </div>
 
@@ -68,11 +81,11 @@ function BankDetails() {
             </div>
             <div className="ticket-details">
               <p className="ticket-info">Ticket Price</p>
-              <p>₦{paymentData.ticketPrice}</p>
+              <p>₦{paymentData.ticketPrice.toLocaleString()}</p>
             </div>
             <div className="ticket-details">
               <p className="ticket-info">Total Amount</p>
-              <p>₦{totalAmount}</p>
+              <p>₦{totalAmount.toLocaleString()}</p>
             </div>
           </div>
 
