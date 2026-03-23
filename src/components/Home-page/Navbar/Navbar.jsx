@@ -74,7 +74,17 @@ const Navbar = () => {
           <span className='bar' />
           <span className='bar' />
         </button>
-      </nav>
+
+        <NavLink to='/' onClick={closeSidebar} className='link-nav'>Home</NavLink>
+        <a href='#events' onClick={closeSidebar} className='link-nav'>Events</a>
+        <a href='in-event' onClick={closeSidebar} className='link-nav'>In-Events</a>
+        <a href='my ticket' onClick={closeSidebar} className='link-nav'>My Ticket</a>
+        <NavLink to='/about-us' onClick={closeSidebar}className='link-nav'>About us</NavLink>
+
+        <div>
+          <Link to='/sign-up' onClick={closeSidebar}>
+            <button className='btn sign-but'>Sign Up</button>
+      </Link>
 
       {/* ─── Backdrop ─── */}
       <div
@@ -136,8 +146,12 @@ const Navbar = () => {
           </Link>
         </div>
       </aside>
+      </div>
+      </nav>
     </>
-  )
-}
+    
+  );
+};
 
-export default Navbar
+
+export default Navbar;

@@ -298,6 +298,11 @@
   }
 }
 
+@media(min-width: 1280px) {
+  .navbar{ padding: 1rem 10rem;}
+}
+  
+
 @media (min-width: 1536px) {
   .navbar {
     padding: 0 10rem;
