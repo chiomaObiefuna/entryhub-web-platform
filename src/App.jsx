@@ -12,6 +12,9 @@ import EventPage from './EventPage';
 import DashboardLayout from './components/Dashboard-Layout/DashboardLayout';
 
 import './App.css';
+import BookEvents from './components/Book-Event/BookEvents.JSX';
+import DetailsEvents from './components/Details-Events/DetailsEvents';
+import PaymentComplete from './components/Payment-Complete/PaymentComplete';
 
 // Landing Page Group
 function Home() {
@@ -40,8 +43,14 @@ function App() {
       <Route path="/cinema" element={<EventPage />} />
 
       
-      <Route path="*" element={<Navigate to="/" replace />} />
+      <Route path="/event/:id" element={<>< BookEvents/><Footer /></>} />
+      <Route path="/eventDetails" element={<>< DetailsEvents/><Footer /></>} />
+      <Route path="/completePayment" element={<>< PaymentComplete/><Footer /></>} />
+
+
+      
     </Routes>
+    
   );
 }
 
