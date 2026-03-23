@@ -1,34 +1,38 @@
-import { useEffect, useState } from 'react'
-import { Link, NavLink } from 'react-router-dom'
-import logo from '../../../assets/logo/logo.svg'
-import './Navbar.css'
+import { useEffect, useState } from "react";
+import { Link, NavLink } from "react-router-dom";
+import logo from "../../../assets/logo/logo.svg";
+import "./Navbar.css";
 
 const NAV_LINKS = [
-  { label: 'Home',      to: '/',          type: 'navlink' },
-  { label: 'Events',    to: '/#events',   type: 'anchor'  },
-  { label: 'In-Events', to: '/#in-events',type: 'anchor'  },
-  { label: 'My Ticket', to: '/my-ticket', type: 'navlink' },
-  { label: 'About Us',  to: '/about-us',  type: 'navlink' },
-]
+  { label: "Home", to: "/", type: "navlink" },
+  { label: "Events", to: "/#events", type: "anchor" },
+  { label: "In-Events", to: "/#in-events", type: "anchor" },
+  { label: "My Ticket", to: "/my-ticket", type: "navlink" },
+  { label: "About Us", to: "/about-us", type: "navlink" },
+];
 
 const Navbar = () => {
-  const [isOpen, setIsOpen] = useState(false)
+  const [isOpen, setIsOpen] = useState(false);
 
-  const openMenu  = () => setIsOpen(true)
-  const closeMenu = () => setIsOpen(false)
+  const openMenu = () => setIsOpen(true);
+  const closeMenu = () => setIsOpen(false);
 
   // Lock body scroll when sidebar is open
   useEffect(() => {
-    document.body.style.overflow = isOpen ? 'hidden' : ''
-    return () => { document.body.style.overflow = '' }
-  }, [isOpen])
+    document.body.style.overflow = isOpen ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isOpen]);
 
   // Close on ESC key
   useEffect(() => {
-    const handleKey = (e) => { if (e.key === 'Escape') closeMenu() }
-    window.addEventListener('keydown', handleKey)
-    return () => window.removeEventListener('keydown', handleKey)
-  }, [])
+    const handleKey = (e) => {
+      if (e.key === "Escape") closeMenu();
+    };
+    window.addEventListener("keydown", handleKey);
+    return () => window.removeEventListener("keydown", handleKey);
+  }, []);
 
   return (
     <>
@@ -42,17 +46,19 @@ const Navbar = () => {
         <ul className='navbar__desktop-links'>
           {NAV_LINKS.map(({ label, to, type }) => (
             <li key={label}>
-              {type === 'navlink' ? (
+              {type === "navlink" ? (
                 <NavLink
                   to={to}
                   className={({ isActive }) =>
-                    `navbar__link${isActive ? ' navbar__link--active' : ''}`
+                    `navbar__link${isActive ? " navbar__link--active" : ""}`
                   }
                 >
                   {label}
                 </NavLink>
               ) : (
-                <a href={to} className='navbar__link'>{label}</a>
+                <a href={to} className='navbar__link'>
+                  {label}
+                </a>
               )}
             </li>
           ))}
@@ -69,7 +75,7 @@ const Navbar = () => {
 
         {/* Hamburger – mobile only */}
         <button
-          className={`navbar__hamburger${isOpen ? ' is-active' : ''}`}
+          className={`navbar__hamburger${isOpen ? " is-active" : ""}`}
           onClick={openMenu}
           aria-label='Open navigation menu'
           aria-expanded={isOpen}
@@ -78,86 +84,85 @@ const Navbar = () => {
           <span className='bar' />
           <span className='bar' />
         </button>
-
-        
-
-        
-    
-
-      {/* ─── Backdrop ─── */}
-      <div
-        className={`sidebar-backdrop${isOpen ? ' is-visible' : ''}`}
-        onClick={closeMenu}
-        aria-hidden='true'
-      />
-
-      {/* ─── Mobile Sidebar ─── */}
-      <aside className={`sidebar${isOpen ? ' is-open' : ''}`} aria-hidden={!isOpen}>
-
-        {/* Sidebar Header */}
-        <div className='sidebar__header'>
-          <Link to='/' className='sidebar__logo' onClick={closeMenu}>
-            <img src={logo} alt='EntryHub logo' />
-          </Link>
-
-          <button
-            className='sidebar__close-btn'
+        <div>
+          {/* ─── Backdrop ─── */}
+          <div
+            className={`sidebar-backdrop${isOpen ? " is-visible" : ""}`}
             onClick={closeMenu}
-            aria-label='Close navigation menu'
+            aria-hidden='true'
+          />
+
+          {/* ─── Mobile Sidebar ─── */}
+          <aside
+            className={`sidebar${isOpen ? " is-open" : ""}`}
+            aria-hidden={!isOpen}
           >
-            {/* Inline SVG X – never missing, no file dependency */}
-            <svg width='22' height='22' viewBox='0 0 24 24' fill='none'
-              stroke='currentColor' strokeWidth='2.5' strokeLinecap='round'>
-              <line x1='18' y1='6'  x2='6'  y2='18' />
-              <line x1='6'  y1='6'  x2='18' y2='18' />
-            </svg>
-          </button>
-        </div>
+            {/* Sidebar Header */}
+            <div className='sidebar__header'>
+              <Link to='/' className='sidebar__logo' onClick={closeMenu}>
+                <img src={logo} alt='EntryHub logo' />
+              </Link>
 
-        {/* Sidebar Links */}
-        <ul className='sidebar__links'>
-          {NAV_LINKS.map(({ label, to, type }) => (
-            <li key={label}>
-              {type === 'navlink' ? (
-                <NavLink
-                  to={to}
-                  className={({ isActive }) =>
-                    `sidebar__link${isActive ? ' sidebar__link--active' : ''}`
-                  }
-                  onClick={closeMenu}
+              <button
+                className='sidebar__close-btn'
+                onClick={closeMenu}
+                aria-label='Close navigation menu'
+              >
+                {/* Inline SVG X – never missing, no file dependency */}
+                <svg
+                  width='22'
+                  height='22'
+                  viewBox='0 0 24 24'
+                  fill='none'
+                  stroke='currentColor'
+                  strokeWidth='2.5'
+                  strokeLinecap='round'
                 >
-                  {label}
-                </NavLink>
-              ) : (
-                <a href={to} className='sidebar__link' onClick={closeMenu}>
-                  {label}
-                </a>
-              )}
-            </li>
-          ))}
-        </ul>
+                  <line x1='18' y1='6' x2='6' y2='18' />
+                  <line x1='6' y1='6' x2='18' y2='18' />
+                </svg>
+              </button>
+            </div>
 
-        {/* Sidebar Sign Up */}
-        <div className='sidebar__footer'>
-          <Link to='/sign-up' className='sidebar__signup-btn' onClick={closeMenu}>
-            Sign Up
-          </Link>
-        </div>
+            {/* Sidebar Links */}
+            <ul className='sidebar__links'>
+              {NAV_LINKS.map(({ label, to, type }) => (
+                <li key={label}>
+                  {type === "navlink" ? (
+                    <NavLink
+                      to={to}
+                      className={({ isActive }) =>
+                        `sidebar__link${isActive ? " sidebar__link--active" : ""}`
+                      }
+                      onClick={closeMenu}
+                    >
+                      {label}
+                    </NavLink>
+                  ) : (
+                    <a href={to} className='sidebar__link' onClick={closeMenu}>
+                      {label}
+                    </a>
+                  )}
+                </li>
+              ))}
+            </ul>
 
-        <div className='sidebar__footer'>
-          <Link to='/sign-up' className='sidebar__signup-btn' onClick={closeMenu}>
-            Log In
-          </Link>
+            {/* Sidebar Sign Up */}
+            <div className='sidebar__footer'>
+              <Link
+                to='/sign-up'
+                className='sidebar__signup-btn'
+                onClick={closeMenu}
+              >
+                Sign Up
+              </Link>
+            </div>
+          </aside>
         </div>
-      </aside>
       </nav>
-      
-      
-      
+     
     </>
-    
   );
 };
-
 
 export default Navbar;
