@@ -45,6 +45,7 @@ function FloatInput({ label, value, onChange, type = "text", maxLength }) {
 // MAIN COMPONENT — PaymentComplete
 // ─────────────────────────────────────────────────────────────
 export default function PaymentComplete() {
+  const navigate = useNavigate()
 
   /* ── Form state ── */
   const [fullName,   setFullName]   = useState("");
@@ -163,7 +164,8 @@ export default function PaymentComplete() {
           <div className="alt-methods">
 
             {/* Bank Transfer */}
-            <button className="method-row" onClick={() => alert("Bank Transfer selected")}>
+            <button className="method-row" onClick={() =>{ navigate("/bankdetails");
+               alert("Bank Transfer selected")}}>
               <span className="method-lhs">
                 {/* Pillared bank building icon */}
                 <svg className="method-ico" viewBox="0 0 24 24" fill="none"
@@ -185,6 +187,7 @@ export default function PaymentComplete() {
               </svg>
             </button>
 
+            
             {/* Bitcoin Wallet */}
             <button className="method-row" onClick={() => alert("Bitcoin Wallet selected")}>
               <span className="method-lhs">

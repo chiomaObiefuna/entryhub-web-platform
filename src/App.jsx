@@ -8,6 +8,7 @@ import Footer from './components/Home-page/Footer/Footer';
 import AboutUs from './pages/AboutUs';
 import SignUp from './pages/SignUp';
 import EventPage from './EventPage'; 
+import TicketResales from './components/Ticket/TicketResales'
 // Ensure this matches the exact casing of your folder/file
 import DashboardLayout from './components/Dashboard-Layout/DashboardLayout';
 
@@ -15,6 +16,7 @@ import './App.css';
 import BookEvents from './components/Book-Event/BookEvents.JSX';
 import DetailsEvents from './components/Details-Events/DetailsEvents';
 import PaymentComplete from './components/Payment-Complete/PaymentComplete';
+import Bankdetails from './components/Home-page/Payment-method/bank-details'
 
 // Landing Page Group
 function Home() {
@@ -25,6 +27,7 @@ function Home() {
       {/* <PaymentComplete /> */}
       <Events />
       <EventDetails />
+      
     
     </>
   );
@@ -46,6 +49,8 @@ function App() {
       <Route path="/event/:id" element={<>< BookEvents/><Footer /></>} />
       <Route path="/eventDetails" element={<>< DetailsEvents/><Footer /></>} />
       <Route path="/completePayment" element={<>< PaymentComplete/><Footer /></>} />
+      <Route path="/resale" element={<>< TicketResales/><Footer /></>} />
+      <Route path="/bankdetails" element={<>< Bankdetails /><Footer /></>} />
 
 
       
