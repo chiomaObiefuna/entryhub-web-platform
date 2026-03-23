@@ -14,6 +14,7 @@ const EventDetails = () => {
   const [isVisible, setIsVisible] = useState(false);
   const sectionRef = useRef(null);
   const ticketEntryRef = useRef(null);
+  const [ticketFromDb, setTicketFromDb] = useState(null);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -29,6 +30,20 @@ const EventDetails = () => {
     if (sectionRef.current) observer.observe(sectionRef.current);
     return () => observer.disconnect();
   }, []);
+
+  useEffect(() => {
+    const BASE_URL = "https://eventhub-backend-pxoz.onrender.com";
+    fetch(`${BASE_URL}/api/tickets`)
+    .then((res) => res.json())
+    .then((data) => {
+      if (data.success && data.ticket.lenght > 0) {
+        setTicketFromDb(data.tickets[0]);
+      }
+    })
+    .catch((err) =>
+    console.log("Error fetching ticket:",err));
+
+  },[])
   const tickets = useMemo(
     () => [
       { id: 'regular', label: 'Regular', price: 10000, status: 'Available' },
@@ -254,12 +269,33 @@ const EventDetails = () => {
 
           <div className="ticket-card-right">
             <div className="qr-wrap" aria-label="QR code">
-              <img
+              {/* <img
                 className="qr-img"
                 src="https://api.qrserver.com/v1/create-qr-code/?size=170x170&data=EntryHub-Ticket-123"
                 alt="Ticket QR code"
                 loading="lazy"
-              />
+              /> */}
+
+              {ticketFromDb ? (
+  <img 
+    className="qr-img"
+    src={`https://api.qrserver.com/v1/create-qr-code/?size=170x170&data=${encodeURIComponent(
+      JSON.stringify({
+        id: ticketFromDb?.id,
+        event: ticketFromDb?.event,
+        buyer: ticketFromDb?.buyer_email,
+        token: ticketFromDb?.qr_token
+      })
+    )}`} 
+    alt="Ticket QR" 
+  />
+) : (
+  <div className="qr-placeholder">
+    <p>Loading Ticket Data...</p>
+  </div>
+)}
+
+             
             </div>
             <p className="qr-hint">Show this QR code at entry</p>
 
