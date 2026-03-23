@@ -20,6 +20,7 @@ function Home() {
       <Hero />
       <Events />
       <EventDetails />
+    
     </>
   );
 }
