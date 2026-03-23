@@ -12,21 +12,21 @@ import SignUp from './pages/SignUp'
 import TicketResales from './components/Ticket/TicketResales/'
 import BookEvents from './components/Book-Event/BookEvents.JSX'
 import PaymentComplete from './components/Payment-Complete/PaymentComplete'
+import DetailsEvents from './components/Details-Events/DetailsEvents'
 
 
 import './App.css'
-// import BookEvents from './components/Book-Event/BookEvents.JSX'
 
 function Home() {
   return (
     <>
       <Navbar />
       <Hero />
-      <PaymentComplete />
+      {/* <PaymentComplete /> */}
       <Events />
       <EventDetails />
-      <BookEvents />
-    
+      {/* <BookEvents />
+     */}
        
       
     </>
@@ -44,10 +44,12 @@ function App() {
         <Route path="/cinema" element={<Cinema />} />
         <Route path="/sign-up" element={<SignUp />} />
         <Route path="/resale" element={<TicketResales />} />
-        <Route path="*" element={<Navigate to="/" replace />} />
+        <Route path="/eventDetails" element={<DetailsEvents />} />
+        <Route path="/completePayment" element={<PaymentComplete />} />
 
       </Routes>
       <Footer />
+      {/* <DetailsEvents /> */}
      
   
     </>

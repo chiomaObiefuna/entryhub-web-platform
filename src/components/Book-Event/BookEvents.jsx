@@ -1,6 +1,17 @@
 import { useState, useRef, useEffect } from "react";
 import "./BookEvents.css";
+import { useNavigate } from 'react-router-dom';
 import Dashboardlayout from "../Dashboard-Layout/DashboardLayout";
+
+// ─────────────────────────────────────────────────────────────
+// LOCAL STORAGE  —  Chioma's single JSON object approach
+// All pages read from "ticketData" key using JSON.parse
+// ─────────────────────────────────────────────────────────────
+
+// Parse ₦30,000 → 30000
+function parsePrice(priceStr) {
+  return Number(priceStr.replace(/[₦,]/g, "")) || 0;
+}
 
 // ─────────────────────────────────────────────────────────────
 // SHELTER POSTER  (SVG recreation of the real movie poster)
@@ -159,53 +170,73 @@ function Dropdown({ label, value, options, onChange }) {
 // MAIN COMPONENT  —  BookEvents
 // ─────────────────────────────────────────────────────────────
 export default function BookEvents() {
-  const [liked,      setLiked]      = useState(true);
-  const [saved,      setSaved]      = useState(true);
-  const [toast,      setToast]      = useState(false);
-  const [tickets,    setTickets]    = useState("1");
+   const navigate = useNavigate()
+
+  const [liked,      setLiked]  = useState(true);
+  const [saved,      setSaved]  = useState(true);
+  const [toast,      setToast]  = useState(false);
+
+  // ── State  (matches Chioma's pattern exactly) ─────────────────────────────
+  const [ticketQuantity, setTicketQuantity] = useState(1);
+
+  // This can be dynamic depending on event
+  const [ticketPrice, setTicketPrice] = useState (15000); // example
+
+  // ── Derived ───────────────────────────────────────────────────────────────
+  const totalAmount = ticketQuantity * ticketPrice;
+
+  // ── Other booking fields ──────────────────────────────────────────────────
   const [sector,     setSector]     = useState("107");
   const [row,        setRow]        = useState("4");
   const [ticketType, setTicketType] = useState("Cinema");
   const [seat,       setSeat]       = useState("7");
-  const [price,      setPrice]      = useState("₦30,000");
 
+  // ── handleProceedToPayment ─────────────────────
+  const handleProceedToPayment = () => {
+    // Save everything needed for payment page
+    localStorage.setItem("ticketData", JSON.stringify({
+      quantity:  ticketQuantity,
+      price:     ticketPrice,
+    }));
+
+    // Then navigate to your BankDetails / Payment page
+    // (use navigate("/payment") or <Link> if you have a router)
+    alert(
+      `✅ Proceeding to Payment!\n\n` +
+      `Tickets: ${ticketQuantity}\n` +
+      `Price:   ₦${ticketPrice.toLocaleString()}\n` +
+      `Total:   ₦${totalAmount.toLocaleString()}`
+    );
+  };
+
+  // ── Dropdown price options map: display → numeric ─────────────────────────
+  const priceOptions = {
+    "₦10,000": 10000,
+    "₦15,000": 15000,
+    "₦20,000": 20000,
+    "₦25,000": 25000,
+    "₦30,000": 30000,
+    "₦50,000": 50000,
+  };
+
+  // Format ticketPrice back to display string for the dropdown
   const handleShare = () => {
     navigator.clipboard?.writeText(window.location.href).catch(() => {});
     setToast(true);
     setTimeout(() => setToast(false), 2400);
   };
 
-  const handleBook = () => {
-    alert(
-      `✅ Booking Confirmed!\n\n` +
-      `Event:   Shelter in Cinema Now\n` +
-      `Tickets: ${tickets}\n` +
-      `Sector:  ${sector}  |  Row: ${row}  |  Seat: ${seat}\n` +
-     `Type:    ${ticketType}\n` +
-      `Price:   ${price}`
-    );
-  };
-
   return (
-    <Dashboardlayout title ="BookEvents"> 
+    <Dashboardlayout title="BookEvents">
+
+    
     <div className="page-bg">
       <div className="page-inner">
 
-        {/* Page title
-        <h1 className="page-title">Book Event</h1> */}
 
         {/* Card */}
         <div className="card">
 
-          {/* Back
-          <button className="back-btn" onClick={() => window.history.back()} aria-label="Go back">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
-              stroke="currentColor" strokeWidth="2.7"
-              strokeLinecap="round" strokeLinejoin="round">
-              <polyline points="15 18 9 12 15 6"/>
-            </svg>
-            Back
-          </button> */}
 
           {/* Event info row */}
           <div className="event-row">
@@ -265,18 +296,49 @@ export default function BookEvents() {
 
           {/* Form */}
           <div className="form-section">
-            <Dropdown label="Number of Tickets" value={tickets}
-              options={["1","2","3","4","5","6","7","8"]} onChange={setTickets} />
+
+            {/* Number of Tickets — updates ticketQuantity */}
+            <Dropdown
+              label="Number of Tickets"
+              value={String(ticketQuantity)}
+              options={["1","2","3","4","5","6","7","8"]}
+              onChange={(val) => setTicketQuantity(Number(val))}
+            />
+
             <Dropdown label="Sector" value={sector}
-              options={["101","102","103","104","105","106","107","108"]} onChange={setSector} />
+              options={["101","102","103","104","105","106","107","108"]}
+              onChange={setSector}
+            />
+
             <Dropdown label="Row" value={row}
-              options={["1","2","3","4","5","6","7","8","9","10"]} onChange={setRow} />
+              options={["1","2","3","4","5","6","7","8","9","10"]}
+              onChange={setRow}
+            />
+
             <Dropdown label="Ticket Type" value={ticketType}
-              options={["Cinema","VIP","VVIP","Regular","Premium"]} onChange={setTicketType} />
+              options={["Cinema","VIP","VVIP","Regular","Premium"]}
+              onChange={setTicketType}
+            />
+
             <Dropdown label="Seat Selection" value={seat}
-              options={["1","2","3","4","5","6","7","8","9","10","11","12"]} onChange={setSeat} />
-            <Dropdown label="Ticket Price" value={price}
-              options={["₦10,000","₦15,000","₦20,000","₦25,000","₦30,000","₦50,000"]} onChange={setPrice} />
+              options={["1","2","3","4","5","6","7","8","9","10","11","12"]}
+              onChange={setSeat}
+            />
+
+            {/* Ticket Price — dynamic depending on event (set above as const) */}
+            <Dropdown
+              label="Ticket Price"
+              value={`₦${ticketPrice.toLocaleString()}`}
+              options={["₦10,000","₦15,000","₦20,000","₦25,000","₦30,000","₦50,000"]}
+              onChange={(val) => setTicketPrice(Number(val.replace(/[₦,]/g,"")))}
+            />
+
+          </div>
+
+          {/* Live total preview */}
+          <div className="total-preview">
+            <span className="total-label">Total</span>
+            <span className="total-value">₦{totalAmount.toLocaleString()}</span>
           </div>
 
           {/* Footer buttons */}
@@ -291,9 +353,15 @@ export default function BookEvents() {
               Home
             </button>
 
-            <button className="btn btn-book" onClick={handleBook}>
+            {/* Book Event → saves to localStorage then navigates */}
+            <button className="btn btn-book" onClick={()=> {handleProceedToPayment();
+             navigate("/eventDetails")
+
+            }}>
               Book Event
             </button>
+
+          
           </div>
 
         </div>
@@ -304,6 +372,11 @@ export default function BookEvents() {
         Link copied to clipboard!
       </div>
     </div>
+
     </Dashboardlayout>
   );
 }
+
+
+
+

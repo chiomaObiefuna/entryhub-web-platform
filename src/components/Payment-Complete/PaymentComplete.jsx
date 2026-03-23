@@ -1,6 +1,20 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./PaymentComplete.css";
+import { useNavigate } from 'react-router-dom';
 import Dashboardlayout from "../Dashboard-Layout/DashboardLayout";
+
+
+// READ BOOKING DATA FROM localStorage
+// BookEvents.jsx saves: { quantity, price }  using JSON.stringify
+
+
+function getBooking() {
+  const data = JSON.parse(localStorage.getItem("ticketData") || "{}");
+  return {
+    quantity: data.quantity || 1,
+    price:    data.price    || 15000,
+  };
+}
 
 // ─────────────────────────────────────────────────────────────
 // FLOATING LABEL INPUT
@@ -27,21 +41,34 @@ function FloatInput({ label, value, onChange, type = "text", maxLength }) {
   );
 }
 
+// ─────────────────────────────────────────────────────────────
 // MAIN COMPONENT — PaymentComplete
-
+// ─────────────────────────────────────────────────────────────
 export default function PaymentComplete() {
 
   /* ── Form state ── */
-  const [fullName,   setFullName]   = useState("Korede Bello");
-  const [cardNumber, setCardNumber] = useState("12343 9067 0888 6773");
-  const [expiry,     setExpiry]     = useState("03/28");
-  const [cvv,        setCvv]        = useState("211");
+  const [fullName,   setFullName]   = useState("");
+  const [email,      setEmail]      = useState("");
+  const [cardNumber, setCardNumber] = useState("");
+  const [expiry,     setExpiry]     = useState("");
+  const [cvv,        setCvv]        = useState("");
 
-  /* ── Summary constants ── */
-  const tickets     = 1;
-  const ticketPrice = 30000;
+  /* ── Summary — read DIRECTLY from localStorage on every render ──────────
+     No useState/useEffect for ticket data — read raw on each render so
+     it ALWAYS reflects what BookEvents / EventDetails last saved.
+     This is the most reliable way across all routing strategies.       */
+  const _raw        = JSON.parse(localStorage.getItem("ticketData") || "{}");
+  const tickets     = Number(_raw.quantity) || 1;
+  const ticketPrice = Number(_raw.price)    || 15000;
   const total       = tickets * ticketPrice;
-  const payAmount   = total / 2;            // ₦15,000 shown on button
+  const payAmount   = total;
+
+  // Pre-fill name & email from EventDetails if available (run once on mount)
+  useEffect(() => {
+    const data = JSON.parse(localStorage.getItem("ticketData") || "{}");
+    if (data.fullName && !fullName) setFullName(data.fullName);
+    if (data.email    && !email)    setEmail(data.email);
+  }, []);
 
   /* ── Input formatters ── */
   const handleCard = (e) => {
@@ -62,29 +89,24 @@ export default function PaymentComplete() {
     if (cardNumber.replace(/\s/g,"").length < 16)  { alert("Enter a valid 16-digit card number.");   return; }
     if (expiry.length < 5)                         { alert("Enter a valid expiry date (MM/YY).");     return; }
     if (cvv.length < 3)                            { alert("Enter a valid CVV.");                     return; }
-    alert(`✅ Payment of ₦${payAmount.toLocaleString()} confirmed!\n\nThank you, ${fullName.trim()}.`);
+    alert(`✅ Payment of ₦${total.toLocaleString()} confirmed!\n\nThank you, ${fullName.trim()}.`);
   };
 
   const fmt = (n) => "₦" + n.toLocaleString();
 
   /* ── Render ── */
   return (
-    <Dashboardlayout title="PaymentComplete"> 
+    <Dashboardlayout title="PaymentComplete">
+
+   
     <div className="page-bg">
       <div className="page-inner">
 
+        {/* Page heading */}
+        
         {/* Main card */}
         <div className="card">
 
-          {/* Back
-          <button className="back-btn" onClick={() => window.history.back()} aria-label="Go back">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
-              stroke="currentColor" strokeWidth="2.7"
-              strokeLinecap="round" strokeLinejoin="round">
-              <polyline points="15 18 9 12 15 6"/>
-            </svg>
-            Back
-          </button> */}
 
           {/* "Card Details" subtitle */}
           <p className="card-details-label">Card Details</p>
@@ -228,6 +250,7 @@ export default function PaymentComplete() {
         </div>{/* /card */}
       </div>
     </div>
-    </Dashboardlayout>
+
+     </Dashboardlayout>
   );
 }
