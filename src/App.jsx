@@ -16,7 +16,7 @@ import './App.css';
 
 import DetailsEvents from './components/Details-Events/DetailsEvents';
 
-import BookEvents from './components/Book-Event/BookEvents.JSX';
+import BookEvents from './components/Book-Event/BookEvents';
 import PaymentComplete from './components/Payment-Complete/PaymentComplete';
 import Bankdetails from './components/Home-page/Payment-method/bank-details'
 
