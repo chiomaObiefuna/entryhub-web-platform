@@ -156,7 +156,7 @@ exports.verifyTicket = async (req, res) => {
 
     return res.send(`
       <h1 style="color:green;">✅ Access Granted</h1>
-      <p><strong>Event:</strong> ${ticket.event.name}</p>
+      <p><strong>Event:</strong> ${ticket.event.title}</p>
       <p><strong>Seat:</strong> ${ticket.seat.row}${ticket.seat.number}</p>
       <p><strong>Buyer:</strong> ${ticket.buyer_email}</p>
     `);
