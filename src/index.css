@@ -11,7 +11,7 @@ body{
   background-color: #FFFFFF;
   
 }
- a{
+ .link-nav{
   text-decoration: none;
   color: inherit;
   line-height: 1;
@@ -26,24 +26,25 @@ body{
   width: 100%; 
   box-sizing: border-box;
 }  */
- .btn{
+ .sign-but{
   
   background-color:#FF8C00;
   color: #FFFFFF;
-  padding: 8px 15px;
+  padding: 14px 25px;
   font-size: 16px;
    cursor: pointer;
   border: none;
   border-radius: 8px;
   outline: 0;
   transition: background-color 0.3s ease, color 0.3s ease;
+  
  }
-  .btn:hover{
+  .sign-but:hover{
     background-color: #FFf;
     color: #888;
     border: 1px solid #FF8C00;
   }
 
-  span{
+  .and-span{
     color: #FF8C00;
   }

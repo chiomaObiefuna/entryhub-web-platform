@@ -3,7 +3,7 @@ const Screen = require("../models/Screen");
 
 exports.createEvent = async (req, res) => {
   try {
-    const { title, description, location, date, category, screen } = req.body;
+    const { title, description, price, location, date, category, screen } = req.body;
 
     // ✅ Validate screen exists
     const existingScreen = await Screen.findById(screen);
@@ -16,6 +16,7 @@ exports.createEvent = async (req, res) => {
     // ✅ Create event with screen reference
     const event = new Event({
       title,
+      price,
       description,
       location,
       date,

@@ -1,0 +1,128 @@
+/* --- CONTENT CONTAINER --- */
+.event-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+/* --- THE MOVIE CARDS (Figma Style) --- */
+.event-list-card {
+  display: flex;
+  background: #ffffff;
+  border-radius: 1.2rem;
+  padding: 1.2rem;
+  gap: 1.5rem;
+  align-items: center;
+  border: 1px solid #eef2f1;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+  transition: transform 0.2s ease;
+}
+
+.event-list-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.04);
+}
+
+.event-card-img {
+  width: 110px;
+  height: 110px;
+  border-radius: 1rem;
+  object-fit: cover;
+}
+
+/* --- TEXT CONTENT --- */
+.event-card-info {
+  flex: 1;
+  text-align: left;
+}
+
+.event-card-info h3 {
+  font-size: 1.25rem;
+  color: #4d6460; /* Dark Teal from your Suposed to look image */
+  margin-bottom: 0.3rem;
+  font-weight: 700;
+}
+
+.card-category {
+  color: #ff9f2b; /* Matching your Dashboard button color */
+  font-size: 0.85rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 0.4rem;
+}
+
+.card-meta {
+  color: #ffa726; /* Lighter orange for date */
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 0.2rem;
+}
+
+.card-meta-loc {
+  color: #5c7269; /* Gray-teal for location */
+  font-size: 0.9rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+/* --- ACTION ICONS (Far Right) --- */
+.event-card-actions {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100px;
+  align-items: flex-end;
+}
+
+.bottom-actions-row {
+  display: flex;
+  gap: 0.8rem;
+}
+
+.event-card-actions svg {
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.event-card-actions svg:hover {
+  opacity: 0.7;
+}
+
+/* --- LOADING & EMPTY STATES --- */
+.loading-text, .no-events {
+  text-align: center;
+  font-size: 1.1rem;
+  color: #5c7269;
+  margin-top: 3rem;
+  font-weight: 600;
+}
+
+/* --- RESPONSIVE FIX FOR CARDS --- */
+@media (max-width: 596px) {
+  .event-list-card {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .event-card-img {
+    width: 100%;
+    height: 180px;
+  }
+
+  .event-card-actions {
+    flex-direction: row;
+    width: 100%;
+    height: auto;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid #eee;
+    padding-top: 10px;
+  }
+}
