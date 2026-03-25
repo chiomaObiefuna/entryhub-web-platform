@@ -35,7 +35,7 @@ const EventPage = () => {
   }, []);
 
   return (
-    <DashboardLayout title="Cinema">
+    <DashboardLayout title="EventPage">
       <div className="event-list">
         {loading ? (
           <div className="status-message">

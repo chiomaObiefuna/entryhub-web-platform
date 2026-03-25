@@ -69,9 +69,9 @@ const Navbar = () => {
           Sign Up
         </Link>
 
-        <Link to='/sign-up' className='navbar__signup-btn'>
+        {/* <Link to='/sign-up' className='navbar__signup-btn'>
           Log In
-        </Link>
+        </Link> */}
 
         {/* Hamburger – mobile only */}
         <button

@@ -32,7 +32,7 @@
   align-items: center;
   min-width: 300px;
 }
-h1{
+.hero-header{
   font-weight: 700;
   font-size: clamp(2.5rem, 5vw, 4rem);
   margin-bottom: 20px;
@@ -127,15 +127,13 @@ input:focus{
   justify-content: center;
   align-items: center;
   
-  /* height: 80% ;
-  padding: 40px;
-  display: block; */
+  
 } 
 
-.hero-img{
+.hero-image{
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: cover; 
   object-position: center;
   display: block;
 }
