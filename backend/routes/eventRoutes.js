@@ -36,6 +36,8 @@ const {
  *                 example: Black Panther
  *               description:
  *                 type: string
+ *               price:
+ *                 type: number
  *               location:
  *                 type: string
  *               date:
@@ -145,7 +147,7 @@ router.get("/events/category/:category", getEventsByCategory);
  *                       isBooked:
  *                         type: boolean
  */
-router.get("/events/:id/seats", getEventSeats); // 👈 NEW CORE ENDPOINT
+router.get("/events/:id/seats", getEventSeats);
 
 /**
  * @swagger
@@ -171,6 +173,8 @@ router.get("/events/:id/seats", getEventSeats); // 👈 NEW CORE ENDPOINT
  *                 type: string
  *               description:
  *                 type: string
+ *               price:
+ *                 type: number
  *               location:
  *                 type: string
  *               date:

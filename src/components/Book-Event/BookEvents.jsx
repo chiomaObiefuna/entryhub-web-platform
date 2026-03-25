@@ -1,10 +1,9 @@
 import { useState, useRef, useEffect } from "react";
 import "./BookEvents.css";
 import { useNavigate } from 'react-router-dom';
-import Dashboardlayout from "../Dashboard-Layout/DashboardLayout";
+import DashboardLayout from "../Dashboard-Layout/DashboardLayout";
 
-// ─────────────────────────────────────────────────────────────
-// LOCAL STORAGE  —  Chioma's single JSON object approach
+
 // All pages read from "ticketData" key using JSON.parse
 // ─────────────────────────────────────────────────────────────
 
@@ -13,9 +12,7 @@ function parsePrice(priceStr) {
   return Number(priceStr.replace(/[₦,]/g, "")) || 0;
 }
 
-// ─────────────────────────────────────────────────────────────
-// SHELTER POSTER  (SVG recreation of the real movie poster)
-// ─────────────────────────────────────────────────────────────
+// ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
 function ShelterPoster() {
   return (
     <div className="poster-wrap">
@@ -227,7 +224,7 @@ export default function BookEvents() {
   };
 
   return (
-    <Dashboardlayout title="BookEvents">
+    <DashboardLayout title="BookEvents">
 
     
     <div className="page-bg">
@@ -373,7 +370,7 @@ export default function BookEvents() {
       </div>
     </div>
 
-    </Dashboardlayout>
+    </DashboardLayout>
   );
 }
 

@@ -1,5 +1,8 @@
 import React, { useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
+import Concert from '../../../../public/concert.svg'
+import Football_field from '../../../../public/football_field.svg'
+import Cinema from '../../../../public/cinema.svg'
 import CalenderIcon from '../../../assets/icons/uil_calender.svg'
 import LocationIcon from '../../../assets/icons/location.svg'
 import EventImg from '../../../assets/images/event_img.svg'
@@ -10,30 +13,30 @@ import { useState, useEffect } from 'react'
 const EVENTS_DATA = [
   { id: 1,
     name: 'Cinema',
-    title: 'Burna Boy Live (BLIC 5)',
+    title:'Burna Boy Live (BLIC 5)',
     date: 'Mar 24',
-    Location: 'Eko Convention Center, Lagos',
+    Location:'Eko Convention Center, Lagos',
     price: '15,000',
-    image: './public/concert.svg'
+    image: '../../../../public/concert.svg'
   },
 
   {
     id: 2,
     name: 'Cinema',
-    title: 'Man United vs Chealsea FC',
+    title:'Man United vs Chealsea FC',
     date: 'Mar 28',
-    Location: 'Old Trafford, London',
+    Location:'Old Trafford,London',
     price: '25,000',
-    image: '/public/football_field.svg'
+    image: '../../../../public/football_field.svg'
   },
   {
     id: 3,
     name: 'Cinema',
-    title: 'The Good Guy',
+    title:'The Good Guy',
     date: 'Mar 30',
-    Location: 'Eko Hotel, Lagos',
+    Location:'Eko Hotel, Lagos',
     price: '5,000',
-    image: '/public/cinema.svg'
+    image: '../../../../public/cinema.svg'
   }, 
 ];
   
@@ -99,14 +102,9 @@ const Events = () => {
                 ))) : (
                   <p>No events found for the selected category.</p>
                 )}
-                
               </div>
-
-
         </div>
-
-       
-    </section>
+ </section>
    
   )
 }
@@ -121,8 +119,8 @@ const Events = () => {
             <div className='card-body'>
           <h3 className='card-title'>{event.title}</h3>
           <div className='card-meta'>
-            <p><span className='icon-wrapper'><img src={CalenderIcon} alt="Calendar" /></span>{event.date}</p>
-          <p><span className='icon-wrapper-loa'><img src={LocationIcon} alt="Location" /></span>{event.Location}</p>
+            <p className='icon-text'><span className='icon-wrapper-loa'><img src={CalenderIcon} alt="Calendar" /></span>{event.date}</p>
+          <p className='icon-text'><span className='icon-wrapper-loa'><img src={LocationIcon} alt="Location" /></span>{event.Location}</p>
           <p className='card-price'>From: NGN{event.price}</p>
 
           </div>

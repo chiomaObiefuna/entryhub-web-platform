@@ -398,6 +398,7 @@ function Dashboardlayout({ title, children }) {
             <button className="hamburger-btn" onClick={() => setMenuOpen(true)}>
               ☰
             </button>
+            
             <h1 className="page-title">{title}</h1>
           </div>
           <div className="page-body">

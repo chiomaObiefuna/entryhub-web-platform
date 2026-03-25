@@ -4,7 +4,7 @@ import DashboardLayout from './components/Dashboard-Layout/DashboardLayout';
 import './EventPage.css';
 
 // 🖼️ UNIVERSAL PLACEHOLDER (Teammates can copy this URL)
-const CINEMA_PLACEHOLDER = "https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&q=80&w=500";
+const CINEMA_PLACEHOLDER = "http://www.w3.org/2000/svg" 
 
 const EventPage = () => {
   const [events, setEvents] = useState([]);
@@ -35,7 +35,7 @@ const EventPage = () => {
   }, []);
 
   return (
-    <DashboardLayout title="Cinema">
+    <DashboardLayout title="EventPage">
       <div className="event-list">
         {loading ? (
           <div className="status-message">
@@ -43,7 +43,9 @@ const EventPage = () => {
           </div>
         ) : events.length > 0 ? (
           events.map((event) => (
-            <div key={event.id || event._id} className="event-list-card">
+            <div key={event.id || event._id} className="event-list-card" 
+            onClick={() => navigate (`/event/${event.id || event._id}`)}
+            style={{ cursor: 'pointer' }}>
               
               {/* --- IMAGE WITH API MAPPING & PLACEHOLDER --- */}
               <img 
