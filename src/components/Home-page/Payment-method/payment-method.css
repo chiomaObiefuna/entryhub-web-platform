@@ -87,6 +87,7 @@
 
 .check-img {
   height: 15rem;
+  width: 13rem;
   margin-bottom: 2rem;
   margin-top: 2rem;
   animation: popIn 0.6s ease-out forwards;
@@ -112,6 +113,7 @@
 
 .failed-img {
   height: 13rem;
+  width: 11rem;
 }
 
 .payment-succes {
@@ -207,6 +209,7 @@
 
   .check-img {
     height: 10rem;
+    width: 8.8rem;
   }
 
   .payment-succes {
