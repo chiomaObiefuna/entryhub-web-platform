@@ -1,6 +1,4 @@
 import { useState, useRef, useEffect } from "react";
-import { useNavigate, useParams } from 'react-router-dom';
-import Dashboardlayout from "../Dashboard-Layout/DashboardLayout"; 
 import "./BookEvents.css";
 import { useNavigate, useLocation } from 'react-router-dom';
 import DashboardLayout from "../Dashboard-Layout/DashboardLayout";
