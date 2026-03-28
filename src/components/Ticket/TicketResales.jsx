@@ -1,267 +1,130 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import Dashboardlayout from "../Dashboard-Layout/DashboardLayout";
 import "./TicketResales.css";
-import { useNavigate } from 'react-router-dom';
 
-const POSTER_URL =
-  "https://image.tmdb.org/t/p/w780/mYLOqiStMxDK3fYZFirgrMt8z5d.jpg";
+const POSTER_URL = "https://image.tmdb.org/t/p/w780/mYLOqiStMxDK3fYZFirgrMt8z5d.jpg";
 
-// ─── Movie Poster ─────────────────────────────────────────────────────────────
-function MoviePoster() {
-  const [imgError, setImgError] = useState(false);
-  return (
-    <div className="movie-poster">
-      {!imgError ? (
-        <img src={POSTER_URL} alt="Shelter" onError={() => setImgError(true)} />
-      ) : (
-        <div className="poster-fallback">
-          <p className="poster-tagline">HER SAFETY.<br />HIS MISSION.</p>
-          <p className="poster-studio">STATHAM</p>
-          <p className="poster-title">SHELTER</p>
-          <p className="poster-release">ONLY IN THEATERS JANUARY 30</p>
-          <p className="poster-prod">3LACK BEAR</p>
-        </div>
-      )}
-    </div>
-  );
-}
+const TicketResales = () => {
+  const [currentStep, setCurrentStep] = useState(1);
+  const navigate = useNavigate();
 
-// ─── Ticket Card ──────────────────────────────────────────────────────────────
-function TicketCard({ ticket, onBuyClick, onResellClick }) {
-  return (
-    <div className="ticket-card">
-      <div className="ticket-header">
-        <div className="ticket-title-row">
-          <span className="ticket-type">{ticket.ticketType}</span>
-          <span className="resale-badge">{ticket.badge}</span>
-        </div>
-        <span className="ticket-price">{ticket.price}</span>
-      </div>
-      <div className="ticket-original">
-        Original : <span>{ticket.originalPrice}</span>
-      </div>
-      <div className="ticket-footer">
-        <div className="verified-row">
-          <div className="verified-icon">✓</div>
-          <span>Verified by <strong>{ticket.verifiedBy}</strong></span>
-        </div>
-        <div className="ticket-actions">
-          <button className="resell-btn" onClick={onResellClick}>Resell</button>
-          <button className="buy-btn" onClick={onBuyClick}>Buy Ticket</button>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-// ─── Purchase Modal ───────────────────────────────────────────────────────────
-function PurchaseModal({ ticket, onConfirm, onCancel }) {
-  const [form, setForm] = useState({ name: "", email: "", phone: "" });
-
-  const isValid =
-    form.name.trim() &&
-    form.email.includes("@") &&
-    form.phone.trim().length >= 7;
-
-  const handleChange = (field) => (e) =>
-    setForm((prev) => ({ ...prev, [field]: e.target.value }));
-
-  return (
-    <div className="modal-overlay" onClick={onCancel}>
-      <div className="modal" onClick={(e) => e.stopPropagation()}>
-        <h2>Complete Purchase</h2>
-        <p>Enter your details to buy the {ticket.ticketType} for {ticket.price}</p>
-        <input type="text" placeholder="Full Name" value={form.name} onChange={handleChange("name")} />
-        <input type="email" placeholder="Email Address" value={form.email} onChange={handleChange("email")} />
-        <input type="tel" placeholder="Phone Number" value={form.phone} onChange={handleChange("phone")} />
-        <div className="modal-actions">
-          <button className="modal-cancel" onClick={onCancel}>Cancel</button>
-          <button className="modal-confirm" onClick={() => onConfirm(form)} disabled={!isValid}>
-            Confirm {ticket.price}
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-// ─── Resell Modal ─────────────────────────────────────────────────────────────
-function ResellModal({ ticket, onSubmit, onCancel }) {
-  const [form, setForm] = useState({
-    name: "",
+  const [formData, setFormData] = useState({
+    fullName: "",
     email: "",
     phone: "",
-    resalePrice: "",
+    accountNumber: "",
+    bankName: ""
   });
 
-  const isValid =
-    form.name.trim() &&
-    form.email.includes("@") &&
-    form.phone.trim().length >= 7 &&
-    Number(form.resalePrice) > 0;
+  // ✅ 1. VALIDATION LOGIC (Placed inside component, before return)
+  const isFormValid = 
+    formData.fullName.trim() !== "" && 
+    formData.email.trim() !== "" && 
+    formData.phone.trim() !== "" &&
+    formData.accountNumber.trim().length >= 10 && 
+    formData.bankName !== "";
 
-  const handleChange = (field) => (e) =>
-    setForm((prev) => ({ ...prev, [field]: e.target.value }));
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const banks = ["Access Bank", "First Bank", "GTBank", "Kuda Bank", "MoniePoint", "Opay", "Zenith Bank"];
 
   return (
-    <div className="modal-overlay" onClick={onCancel}>
-      <div className="modal" onClick={(e) => e.stopPropagation()}>
-        <h2>List Ticket for Resale</h2>
-        <p>Set your price and details to resell your {ticket.ticketType}</p>
-
-        <label className="input-label">Your Name</label>
-        <input type="text" placeholder="Full Name" value={form.name} onChange={handleChange("name")} />
-
-        <label className="input-label">Email Address</label>
-        <input type="email" placeholder="Email Address" value={form.email} onChange={handleChange("email")} />
-
-        <label className="input-label">Phone Number</label>
-        <input type="tel" placeholder="Phone Number" value={form.phone} onChange={handleChange("phone")} />
-
-        <label className="input-label">Your Resale Price (₦)</label>
-        <input
-          type="number"
-          placeholder={`Original: ${ticket.originalPrice}`}
-          value={form.resalePrice}
-          onChange={handleChange("resalePrice")}
-          min="0"
-        />
-
-        <div className="resale-note">
-          <span>⚠️</span> Your ticket will be verified by EntryHUB before listing.
-        </div>
-
-        <div className="modal-actions">
-          <button className="modal-cancel" onClick={onCancel}>Cancel</button>
-          <button className="modal-confirm" onClick={() => onSubmit(form)} disabled={!isValid}>
-            List for ₦{Number(form.resalePrice).toLocaleString() || "0"}
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-// ─── Success Modal ────────────────────────────────────────────────────────────
-function SuccessModal({ type, ticket, resalePrice, onDone }) {
-  const isPurchase = type === "purchase";
-  return (
-    <div className="modal-overlay" onClick={onDone}>
-      <div className="modal success-modal" onClick={(e) => e.stopPropagation()}>
-        <div className="success-icon">{isPurchase ? "✓" : "🎟️"}</div>
-        <h2>{isPurchase ? "Ticket Purchased!" : "Ticket Listed!"}</h2>
-        <p>
-          {isPurchase
-            ? <>Your {ticket.ticketType} for <strong>Shelter</strong> has been booked. Check your email for details.</>
-            : <>Your {ticket.ticketType} has been listed for resale at <strong>₦{Number(resalePrice).toLocaleString()}</strong>. EntryHUB will verify and publish it shortly.</>
-          }
-        </p>
-        <button className="done-btn" onClick={onDone}>Done</button>
-      </div>
-    </div>
-  );
-}
-
-// ─── Resale Listings ──────────────────────────────────────────────────────────
-function ResaleListings({ listings }) {
-  if (listings.length === 0) return null;
-  return (
-    <div className="listings-section">
-      <h3 className="listings-title">🎟️ Available Resale Tickets</h3>
-      {listings.map((l, i) => (
-        <div className="listing-item" key={i}>
-          <div className="listing-info">
-            <span className="listing-seller">{l.name}</span>
-            <span className="listing-type">{l.ticketType} · Resale</span>
+    <Dashboardlayout title={currentStep === 2 ? "Check out" : "Ticket Resale"}>
+      <div className="resale-page-wrapper">
+        
+        {/* STEP 1: LANDING */}
+        {currentStep === 1 && (
+          <div className="step-container animate-in">
+            <div className="hero-poster-container">
+              <img src={POSTER_URL} alt="Movie Poster" className="poster-fit" />
+            </div>
+            <div className="details-white-card">
+              <div className="details-text-side">
+                <h2 className="t-type">VIP Ticket <span className="resale-pill">Resale</span></h2>
+                <p className="price-main">₦28,000</p>
+                <p className="price-orig">Original : <span>₦30,000</span></p>
+              </div>
+              <button className="orange-btn" onClick={() => setCurrentStep(2)}>Sale Ticket</button>
+            </div>
           </div>
-          <span className="listing-price">₦{Number(l.resalePrice).toLocaleString()}</span>
-        </div>
-      ))}
-    </div>
-  );
-}
+        )}
 
-// ─── Main Page ────────────────────────────────────────────────────────────────
-const DEFAULT_TICKET = {
-  ticketType: "VIP Ticket",
-  badge: "Resale",
-  price: "₦30,700",
-  originalPrice: "₦30,000",
-  verifiedBy: "EntryHUB",
+        {/* STEP 2: CHECKOUT */}
+        {currentStep === 2 && (
+          <div className="step-container animate-in">
+            <div className="gray-group-box">
+              <p className="summary-title">Summary</p>
+              <div className="s-line"><span>Price</span> <span>₦28,000</span></div>
+              <div className="s-total"><span>Total</span> <span>₦27,600</span></div>
+            </div>
+
+            <div className="gray-group-box">
+              <div className="input-row">
+                <label>Full Name</label>
+                <input name="fullName" type="text" placeholder="Your Name" value={formData.fullName} onChange={handleInputChange} />
+              </div>
+              <div className="input-row">
+                <label>Email Address</label>
+                <input name="email" type="email" placeholder="email@example.com" value={formData.email} onChange={handleInputChange} />
+              </div>
+              <div className="input-row">
+                <label>Phone Number</label>
+                <input name="phone" type="tel" placeholder="+234..." value={formData.phone} onChange={handleInputChange} />
+              </div>
+            </div>
+
+            <div className="gray-group-box">
+              <div className="input-row">
+                <label>Account Number</label>
+                <input name="accountNumber" type="text" placeholder="Account Number" value={formData.accountNumber} onChange={handleInputChange} />
+              </div>
+              <div className="input-row">
+                <label>Bank Name</label>
+                <select name="bankName" value={formData.bankName} onChange={handleInputChange} className="bank-select">
+                  <option value="">Select Bank</option>
+                  {banks.map(bank => <option key={bank} value={bank}>{bank}</option>)}
+                </select>
+              </div>
+            </div>
+
+            {/* ✅ 2. THE LOCKED BUTTON (Inside Step 2) */}
+            <button 
+              className="orange-btn-full" 
+              onClick={() => setCurrentStep(3)}
+              disabled={!isFormValid}
+              style={{ 
+                opacity: isFormValid ? 1 : 0.5, 
+                cursor: isFormValid ? "pointer" : "not-allowed",
+                marginTop: "20px"
+              }}
+            >
+              Proceed to Payment
+            </button>
+
+            {!isFormValid && (
+              <p style={{ color: "#d9534f", fontSize: "12px", marginTop: "10px", textAlign: "center", fontWeight: "600" }}>
+                * Fill all details (10-digit Account No.) to proceed.
+              </p>
+            )}
+          </div>
+        )}
+        
+        {/* STEP 3: SUCCESS */}
+        {currentStep === 3 && (
+          <div className="success-screen animate-in">
+            <div className="success-icon-green">✓</div>
+            <h2>Successfully Listed!</h2>
+            <button className="orange-btn-full" onClick={() => navigate("/")}>Go Home</button>
+          </div>
+        )}
+
+      </div>
+    </Dashboardlayout>
+  );
 };
 
-export default function TicketResales() {
-  const [modal, setModal] = useState(null); // null | "buy" | "resell" | "success-buy" | "success-resell"
-  const [resalePrice, setResalePrice] = useState("");
-  const [listings, setListings] = useState([]);
-  const navigate = useNavigate()
-
-  const handleBuyConfirm = (form) => {
-    setModal("success-buy");
-  };
-
-  const handleResellSubmit = (form) => {
-     
-    setListings((prev) => [
-      ...prev,
-      { ...form, ticketType: DEFAULT_TICKET.ticketType },
-    ]);
-    setResalePrice(form.resalePrice);
-    setModal("success-resell");
-  };
-
-  return (
-    <div className="wrapper">
-      <div className="top-bar" />
-
-      <header className="page-header">
-        <h1>Ticket Resales</h1>
-        <p>Verified tickets from other users</p>
-      </header>
-
-      <main className="card-container">
-
-        <button className="back-btn"onClick={() => navigate("/")}>
-                <span>←</span> Back
-              </button>
-
-
-        <MoviePoster />
-
-        <TicketCard
-          ticket={DEFAULT_TICKET}
-          onBuyClick={() => setModal("buy")}
-          onResellClick={() => setModal("resell")}
-        />
-
-        <ResaleListings listings={listings} />
-      </main>
-
-      <div className="bottom-bar" />
-
-      {modal === "buy" && (
-        <PurchaseModal
-          ticket={DEFAULT_TICKET}
-          onConfirm={handleBuyConfirm}
-          onCancel={() => setModal(null)}
-        />
-      )}
-
-      {modal === "resell" && (
-        <ResellModal
-          ticket={DEFAULT_TICKET}
-          onSubmit={handleResellSubmit}
-          onCancel={() => setModal(null)}
-        />
-      )}
-
-      {(modal === "success-buy" || modal === "success-resell") && (
-        <SuccessModal
-          type={modal === "success-buy" ? "purchase" : "resell"}
-          ticket={DEFAULT_TICKET}
-          resalePrice={resalePrice}
-          onDone={() => setModal(null)}
-        />
-      )}
-    </div>
-  );
-}
+export default TicketResales;

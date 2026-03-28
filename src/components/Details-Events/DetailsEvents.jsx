@@ -28,6 +28,7 @@ function PayMethod({ icon, label, selected, onClick }) {
 // ─────────────────────────────────────────────────────────────
 // MAIN COMPONENT — DetailsEvents
 // ─────────────────────────────────────────────────────────────
+
 export default function DetailsEvents() {
   const navigate = useNavigate();
   const location = useLocation();
@@ -56,6 +57,7 @@ export default function DetailsEvents() {
   const seat = stored.seat || "7";
 
   // Toast helper
+
   const showToast = (msg) => {
     setToast({ show: true, msg });
     setTimeout(() => setToast({ show: false, msg: "" }), 2600);
@@ -73,6 +75,7 @@ export default function DetailsEvents() {
     if (!payMethod) return showToast("Please choose a payment method.");
 
     // Update localStorage with personal details
+
     localStorage.setItem("ticketData", JSON.stringify({
       ...stored,
       fullName: fullName.trim(),
@@ -181,6 +184,9 @@ export default function DetailsEvents() {
       </div>
 
       <div className={`ed-toast${toast.show ? " show" : ""}`} role="status">{toast.msg}</div>
+
+
     </Dashboardlayout>
   );
-}
+};
+

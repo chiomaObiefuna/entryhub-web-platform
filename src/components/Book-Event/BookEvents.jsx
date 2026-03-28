@@ -1,4 +1,6 @@
 import { useState, useRef, useEffect } from "react";
+import { useNavigate, useParams } from 'react-router-dom';
+import Dashboardlayout from "../Dashboard-Layout/DashboardLayout"; 
 import "./BookEvents.css";
 import { useNavigate, useLocation } from 'react-router-dom';
 import DashboardLayout from "../Dashboard-Layout/DashboardLayout";
@@ -15,13 +17,24 @@ function Dropdown({ label, value, options, onChange }) {
   const [open, setOpen] = useState(false);
   const ref = useRef(null);
 
+
   useEffect(() => {
-    const close = (e) => {
-      if (ref.current && !ref.current.contains(e.target)) setOpen(false);
+    const fetchEvent = async () => {
+      try {
+        const res = await fetch(`https://eventhub-backend-pxoz.onrender.com/api/events/${id}`);
+        const data = await res.json();
+        if (data) {
+          setEventData(data);
+          if (data.price) setTicketPrice(data.price);
+        }
+        setLoading(false);
+      } catch (err) {
+        console.error("Fetch error:", err);
+        setLoading(false);
+      }
     };
-    document.addEventListener("mousedown", close);
-    return () => document.removeEventListener("mousedown", close);
-  }, []);
+    if (id) fetchEvent();
+  }, [id]);
 
   return (
     <div className="field-group" ref={ref}>
