@@ -84,7 +84,10 @@ function Dashboardlayout({ title, children }) {
                       </svg>
                     </span>
 
-                    <span className="word">Home</span>
+                    <span className="word"onClick={()=> {handleProceedToPayment();
+             navigate("/")
+
+            }}>Home</span>
                   </div>
 
                   <button className="menu-btns">
