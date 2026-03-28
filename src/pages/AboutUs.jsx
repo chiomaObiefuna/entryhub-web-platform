@@ -1,6 +1,11 @@
 import React from "react";
 import "./Pages.css";
 
+// IMPORT YOUR IMAGES (Ensure these are in src/assets/)
+import AboutImg from "../assets/about.svg";
+import MeetingImg from "../assets/meeting.svg";
+import LightbulbImg from "../assets/lightbulb.svg";
+
 export default function AboutUs() {
   return (
     <div className='page'>
@@ -16,12 +21,14 @@ export default function AboutUs() {
               between purchasing a ticket and entering the venue.
             </p>
           </div>
-          <img src='/about.svg' alt='phone-image' />
+          {/* USE THE IMPORTED VARIABLE HERE */}
+          <img src={AboutImg} alt='phone-image' />
         </div>
       </section>
+
       <section className='section mission'>
         <div className='row'>
-          <img src='/meeting.svg' alt='meeting-image' />
+          <img src={MeetingImg} alt='meeting-image' />
           <div className='text'>
             <h2>
               Our <span>Mission</span>
@@ -34,6 +41,7 @@ export default function AboutUs() {
           </div>
         </div>
       </section>
+
       <section className='section story'>
         <div className='row'>
           <div className='text'>
@@ -48,9 +56,10 @@ export default function AboutUs() {
               ticket is verifiable and every entry is controlled.
             </p>
           </div>
-          <img src='/lightbulb.svg' alt='light-bulb image' />
+          <img src={LightbulbImg} alt='light-bulb image' />
         </div>
       </section>
+
       <section className='section vision'>
         <div className='vision-inner'>
           <h2>
@@ -61,12 +70,12 @@ export default function AboutUs() {
             powering live events )across Africa. By combining secure digital
             ticketing with real-time QR verification, <span>EntryHUB</span>{" "}
             ensures every ticket is authentic and every entry is validated
-            instantly Fans can discover events, purchase tickets confidently,
+            instantly. Fans can discover events, purchase tickets confidently,
             and enter venues without stress, while organizers gain better
             control over ticket sales and protection against fraud.
           </p>
           <p>
-            We're not just building a ticketing platform we're building the
+            We're not just building a ticketing platform; we're building the
             digital infrastructure for the future of live events.
           </p>
         </div>
