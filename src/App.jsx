@@ -7,7 +7,7 @@ import EventDetails from './components/Home-page/Event-Details/EventDetails';
 import Footer from './components/Home-page/Footer/Footer';
 import AboutUs from './pages/AboutUs';
 import SignUp from './pages/SignUp';
-import EventPage from './EventPage'; 
+import EventPage from './components/Event-Page/EventPage'; 
 import TicketResales from './components/Ticket/TicketResales'
 // Ensure this matches the exact casing of your folder/file
 import DashboardLayout from './components/Dashboard-Layout/DashboardLayout';
@@ -49,7 +49,7 @@ function App() {
 
       
       <Route path="/event/:id" element={<>< BookEvents/><Footer /></>} />
-      <Route path="/eventDetails" element={<>< DetailsEvents/><Footer /></>} />
+      <Route path="/eventDetails/:id" element={<>< DetailsEvents/><Footer /></>} />
       <Route path="/completePayment" element={<>< PaymentComplete/><Footer /></>} />
       <Route path="/resale" element={<>< TicketResales/><Footer /></>} />
       <Route path="/bankdetails" element={<>< Bankdetails /><Footer /></>} />
