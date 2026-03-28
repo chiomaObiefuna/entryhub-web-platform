@@ -47,7 +47,7 @@ function App() {
       <Route path="/explore-events" element={<><Navbar /><Event /><Footer /></>} />
       <Route path="/cinema" element={<EventPage />} />
       <Route path="/event/:id" element={<>< BookEvents/><Footer /></>} />
-      <Route path="/eventDetails/:id" element={<>< DetailsEvents/><Footer /></>} />
+      <Route path="/eventDetails" element={<>< DetailsEvents/><Footer /></>} />
       <Route path="/completePayment" element={<>< PaymentComplete/><Footer /></>} />
       <Route path="/resale" element={<>< TicketResales/><Footer /></>} />
       <Route path="/bankdetails" element={<>< Bankdetails /><Footer /></>} />
