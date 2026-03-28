@@ -16,23 +16,7 @@ function Dropdown({ label, value, options, onChange }) {
   const ref = useRef(null);
 
 
-  useEffect(() => {
-    const fetchEvent = async () => {
-      try {
-        const res = await fetch(`https://eventhub-backend-pxoz.onrender.com/api/events/${id}`);
-        const data = await res.json();
-        if (data) {
-          setEventData(data);
-          if (data.price) setTicketPrice(data.price);
-        }
-        setLoading(false);
-      } catch (err) {
-        console.error("Fetch error:", err);
-        setLoading(false);
-      }
-    };
-    if (id) fetchEvent();
-  }, [id]);
+ 
 
   return (
     <div className="field-group" ref={ref}>
