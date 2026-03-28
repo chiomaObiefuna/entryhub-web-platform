@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import DashboardLayout from './components/Dashboard-Layout/DashboardLayout';
-import './EventPage.css';
+import Dashboardlayout from "../Dashboard-Layout/DashboardLayout";
+import "./EventPage.css";
 
 // 🖼️ UNIVERSAL PLACEHOLDER (Teammates can copy this URL)
 const CINEMA_PLACEHOLDER = "http://www.w3.org/2000/svg" 
@@ -35,7 +35,7 @@ const EventPage = () => {
   }, []);
 
   return (
-    <DashboardLayout title="EventPage">
+    <Dashboardlayout title="EventPage">
       <div className="event-list">
         {loading ? (
           <div className="status-message">
@@ -104,7 +104,7 @@ const EventPage = () => {
           </div>
         )}
       </div>
-    </DashboardLayout>
+    </Dashboardlayout>
   );
 };
 
