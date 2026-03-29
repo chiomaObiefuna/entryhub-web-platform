@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import "./PaymentComplete.css";
 import { useNavigate } from 'react-router-dom';
-import Dashboardlayout from "../Dashboard-Layout/DashboardLayout";
+import DashboardLayout from "../Dashboard-Layout/DashboardLayout";
 import toast, { Toaster } from "react-hot-toast"; // Added Toaster import
 
 // ─────────────────────────────────────────────────────────────
@@ -103,7 +103,7 @@ export default function PaymentComplete() {
   const fmt = (n) => "₦" + n.toLocaleString();
 
   return (
-    <Dashboardlayout title="PaymentComplete">
+    <DashboardLayout title="PaymentComplete">
       {/* 1. THE TOASTER MUST BE HERE TO SHOW MESSAGES */}
       <Toaster position="top-center" reverseOrder={false} />
 
@@ -205,6 +205,6 @@ export default function PaymentComplete() {
           </button>
         </div>
       </div>
-    </Dashboardlayout>
+    </DashboardLayout>
   );
 }
