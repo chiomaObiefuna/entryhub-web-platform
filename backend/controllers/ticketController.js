@@ -148,11 +148,9 @@ exports.verifyTicket = async (req, res) => {
       return res.send(`<h1 style="color:orange;">⚠️ Payment Pending</h1>`);
     }
 
-    if (ticket.checked_in) {
+    if (ticket.is_used){
       return res.send(`<h1 style="color:red;">❌ Ticket Already Used</h1>`);
     }
-
-    // ✅ mark as used
     ticket.is_used = true;
     ticket.scanned_at = Date.now();
     await ticket.save();
