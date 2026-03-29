@@ -30,6 +30,7 @@ function Home() {
       <Hero />
       <Events />
       <EventDetails />
+      <DashboardLayout />
       
     
     </>
