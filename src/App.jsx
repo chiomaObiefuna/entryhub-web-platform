@@ -9,7 +9,7 @@ import AboutUs from './pages/AboutUs';
 import SignUp from './pages/SignUp';
 import EventPage from './components/Event-Page/EventPage'; 
 import TicketResales from './components/Ticket/TicketResales'
-// Ensure this matches the exact casing of your folder/file
+
 import DashboardLayout from './components/Dashboard-Layout/DashboardLayout';
 import './App.css';
 import DetailsEvents from './components/Details-Events/DetailsEvents';
@@ -30,7 +30,7 @@ function Home() {
       <Hero />
       <Events />
       <EventDetails />
-      <DashboardLayout />
+      
       
     
     </>
