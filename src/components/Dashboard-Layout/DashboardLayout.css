@@ -433,15 +433,44 @@
 
 /* --- DESKTOP CONTENT FIX --- */
 @media (min-width: 1050px) {
+.dashboard-layout {
+  grid-template-columns: 280px 1fr;
+  grid-template-rows: 1fr;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.menu-section{
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;
+}
+
   .main-content {
-    padding: 2rem 3rem;
-    max-width: 1200px;
+    height: 100vh;
+    overflow-y: auto;
+    margin: 0;
+    margin-block: 2rem;
+    margin-right: 1rem;
+    padding-inline: 2rem;
+    width: 100%;
+    max-width: 100%;
+    border-radius: 1rem;
+  }
+
+  .page-body {
+    max-width: 860px;
     margin: 0 auto;
     width: 100%;
   }
 
-  .page-body {
-    max-width: 900px;
-    margin: 0 auto;
+  .page-title{
+    font-size: 2.6rem;
+    position: sticky;
+    top: 0;
+    background: #fff;
+    padding-top: 1.3rem;
+    z-index: 100;
   }
 }

@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import "./DetailsEvents.css";
 // 1. Ensure useLocation is imported to catch the data
 import { useNavigate, useLocation } from 'react-router-dom';
-import Dashboardlayout from "../Dashboard-Layout/DashboardLayout";
+import DashboardLayout from "../Dashboard-Layout/DashboardLayout";
 
 // ─────────────────────────────────────────────────────────────
 // PAYMENT METHOD ROW COMPONENT
@@ -112,7 +112,7 @@ export default function DetailsEvents() {
   );
 
   return (
-    <Dashboardlayout title="DetailsEvents">  
+    <DashboardLayout title="DetailsEvents">  
       <div className="ed-event-row">
         {/* 5. DYNAMIC IMAGE: No longer hardcoded Shelter SVG */}
         <div className="poster-wrap">
@@ -186,7 +186,7 @@ export default function DetailsEvents() {
       <div className={`ed-toast${toast.show ? " show" : ""}`} role="status">{toast.msg}</div>
 
 
-    </Dashboardlayout>
+    </DashboardLayout>
   );
 };
 
