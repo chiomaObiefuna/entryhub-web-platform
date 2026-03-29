@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Dashboardlayout from "../Dashboard-Layout/DashboardLayout";
+import DashboardLayout from "../Dashboard-Layout/DashboardLayout";
 import "./EventPage.css";
 
 // 🖼️ UNIVERSAL PLACEHOLDER (Teammates can copy this URL)
@@ -35,7 +35,7 @@ const EventPage = () => {
   }, []);
 
   return (
-    <Dashboardlayout title="EventPage">
+    <DashboardLayout title="EventPage">
       <div className="event-list">
         {loading ? (
           <div className="status-message">
@@ -104,7 +104,7 @@ const EventPage = () => {
           </div>
         )}
       </div>
-    </Dashboardlayout>
+    </DashboardLayout>
   );
 };
 
