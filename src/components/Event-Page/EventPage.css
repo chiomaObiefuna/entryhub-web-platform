@@ -129,7 +129,7 @@
 }
 
 /* --- DESKTOP FIX --- */
-@media (max-width: 768px) {
+@media (min-width: 768px) {
   .event-list {
     max-width: 800px;
     margin: 0 auto;
@@ -161,7 +161,7 @@
   }
 }
 
-@media (max-width: 1024px) {
+@media (min-width: 1024px) {
   .event-list {
     max-width: 900px;
   }
@@ -177,7 +177,7 @@
   }
 }
 
-@media (max-width: 1050px) {
+@media (min-width: 1050px) {
   .event-list {
     max-width: 750px;
     padding: 0 2rem;

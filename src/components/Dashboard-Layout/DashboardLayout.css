@@ -5,7 +5,7 @@
   margin: 0;
   box-sizing: border-box;
 } */
-/* @media (max-width: 3500px) { */
+
 .dashboard-layout {
   display: grid;
   grid-template-columns: 280px 1fr;
@@ -40,7 +40,6 @@
 
 .entryhub-logo {
   height: 5.4rem;
-  width: 9rem;
   margin-bottom: 3rem;
   margin-top: 2rem;
 }
@@ -140,7 +139,7 @@
 }
 
 .page-body {
-  /* min-height: 120vh; */
+  min-height: 120vh;
   /* border: 2px solid red; */
   background-color: #fbf9f6;
   padding: 1rem;
@@ -253,7 +252,6 @@
 .hamburger-btn {
   display: none;
 }
-/* } */
 
 @media (max-width: 1049px) {
   .dashboard-layout {
@@ -331,7 +329,6 @@
 
   .entryhub-logo {
     height: 4.3rem;
-    width: 8rem;
   }
 
   .hamburger-btn {
@@ -362,6 +359,21 @@
 
   .menu-section {
     padding-left: 1rem;
+  }
+}
+
+@media (max-width: 499px) {
+  .page-title {
+    font-size: 1.65rem;
+    letter-spacing: 0.3px;
+  }
+
+  .entryhub-logo {
+    height: 4.5rem;
+  }
+
+  .hamburger-btn {
+    font-size: 2rem;
   }
 }
 
@@ -418,5 +430,3 @@
     font-size: 1.6rem;
   }
 }
-
-/* --- DESKTOP CONTENT FIX --- */
