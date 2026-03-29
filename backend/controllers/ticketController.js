@@ -1,4 +1,5 @@
 const Ticket = require("../models/Ticket");
+const nodemailer = require("nodemailer");
 const { createVirtualAccount } = require("../services/flutterwave");
 const crypto = require("crypto");
 const QRCode = require("qrcode");
@@ -11,6 +12,11 @@ exports.purchaseTicket = async (req, res) => {
   try {
     const { event, seat, buyer_email } = req.body;
 
+    console.log("🎟️ Incoming purchase request:", { event, seat, buyer_email });
+
+    // ============================
+    // 1. Create Ticket (Pending)
+    // ============================
     const ticket = await Ticket.create({
       event,
       seat,
@@ -19,40 +25,70 @@ exports.purchaseTicket = async (req, res) => {
       qr_token: crypto.randomBytes(32).toString("hex")
     });
 
+    console.log("🆕 Ticket created:", ticket._id);
+
+    // ============================
+    // 2. Generate Payment Reference
+    // ============================
     const tx_ref = `ticket_${ticket._id}`;
 
+    // ============================
+    // 3. Create Virtual Account
+    // ============================
     const va = await createVirtualAccount({
       email: buyer_email,
-      amount: 15000,
+      amount: 15000, // 🔥 you can later make this dynamic from tier
       tx_ref
     });
 
+    console.log("🏦 Virtual account created:", va);
+
+    // ============================
+    // 4. Save Payment Reference
+    // ============================
     ticket.payment_reference = tx_ref;
     await ticket.save();
 
-    res.status(201).json({
-      message: "Complete payment using the account below",
-      account_number: va.account_number,
-      bank_name: va.bank_name,
-      amount: va.amount,
-      reference: tx_ref
+    // ============================
+    // 5. Respond to Client
+    // ============================
+    return res.status(201).json({
+      success: true,
+      message: "Complete payment using the account details below",
+
+      payment: {
+        account_number: va.account_number,
+        bank_name: va.bank_name,
+        amount: va.amount,
+        reference: tx_ref
+      },
+
+      ticket: {
+        id: ticket._id,
+        seat: ticket.seat,
+        email: ticket.buyer_email,
+        status: ticket.payment_status
+      }
     });
 
   } catch (error) {
+    console.error("❌ Ticket purchase error:", error);
 
+    // 🚨 Handle duplicate seat booking
     if (error.code === 11000) {
       return res.status(400).json({
+        success: false,
         message: "Seat already booked for this event"
       });
     }
 
-    res.status(500).json({
+    return res.status(500).json({
+      success: false,
       message: "Error creating ticket",
       error: error.message
     });
   }
 };
-
 
 // =======================
 // 2. Get Single Ticket
@@ -146,13 +182,50 @@ exports.verifyTicket = async (req, res) => {
       return res.send(`<h1 style="color:orange;">⚠️ Payment Pending</h1>`);
     }
 
-    if (ticket.is_used) {
+    if (ticket.is_used){
       return res.send(`<h1 style="color:red;">❌ Ticket Already Used</h1>`);
     }
-
     ticket.is_used = true;
     ticket.scanned_at = Date.now();
     await ticket.save();
+
+    // ============================
+    // 📧 SEND ALERT EMAIL
+    // ============================
+
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS
+      }
+    });
+
+    await transporter.sendMail({
+      from: `"Cinema Security 🎟️" <${process.env.EMAIL_USER}>`,
+      to: ticket.buyer_email,
+      subject: "Your Ticket Was Just Used 🎟️",
+      html: `
+        <h2>Ticket Access Notification</h2>
+
+        <p>Your ticket has just been used for entry.</p>
+
+        <p><strong>Event:</strong> ${ticket.event.title}</p>
+        <p><strong>Seat:</strong> ${ticket.seat.row}${ticket.seat.number}</p>
+        <p><strong>Time:</strong> ${new Date(ticket.scanned_at).toLocaleString()}</p>
+
+        <hr/>
+
+        <p>If this was NOT you, please call immediately:</p>
+        <h3 style="color:red;">📞 08131234567</h3>
+
+        <p>Thank you.</p>
+      `
+    });
+
+    console.log("📧 Scan alert email sent to:", ticket.buyer_email);
+
+    // ============================
 
     return res.send(`
       <h1 style="color:green;">✅ Access Granted</h1>
@@ -162,6 +235,7 @@ exports.verifyTicket = async (req, res) => {
     `);
 
   } catch (error) {
+    console.error(error);
     res.status(500).send(`<h1>❌ Verification Error</h1>`);
   }
 };

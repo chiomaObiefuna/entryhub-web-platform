@@ -33,15 +33,46 @@ exports.flutterwaveWebhook = async (req, res) => {
       await ticket.save();
 
       console.log("✅ Ticket marked paid and QR saved:", ticket._id);
+      // ================================
+      // 📧 SEND EMAIL HERE
+      // ================================
 
-      res.sendStatus(200);
+      const transporter = nodemailer.createTransport({
+        service: "gmail",
+        auth: {
+          user: process.env.EMAIL_USER,
+          pass: process.env.EMAIL_PASS
+        }
+      });
+
+      await transporter.sendMail({
+        from: `"Cinema Tickets 🎟️" <${process.env.EMAIL_USER}>`,
+        to: ticket.buyer_email,
+        subject: "Your Ticket is Ready 🎉",
+        html: `
+          <h2>Payment Confirmed ✅</h2>
+          <p>Your ticket has been successfully generated.</p>
+          
+          <p><strong>Seat:</strong> ${ticket.seat?.row || ""}${ticket.seat?.number || ""}</p>
+
+          <p>Please present this QR code at the entrance:</p>
+          
+          <img src="${qrImage}" alt="QR Code" />
+
+          <p>Enjoy your movie 🍿</p>
+        `
+      });
+
+      console.log("📧 Email sent to:", ticket.buyer_email);
+
+      return res.sendStatus(200);
     } else {
       console.log("⚠️ Webhook received but not a successful payment");
-      res.sendStatus(200);
+      return res.sendStatus(200);
     }
 
   } catch (error) {
     console.error(error);
-    res.sendStatus(500);
+    return res.sendStatus(500);
   }
 };
