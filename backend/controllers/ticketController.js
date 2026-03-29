@@ -132,6 +132,8 @@ exports.getAllTickets = async (req, res) => {
 // =======================
 // 4. Verify Ticket (SCAN)
 // =======================
+const nodemailer = require("nodemailer");
+
 exports.verifyTicket = async (req, res) => {
   try {
     const { token } = req.params;
@@ -146,13 +148,52 @@ exports.verifyTicket = async (req, res) => {
       return res.send(`<h1 style="color:orange;">⚠️ Payment Pending</h1>`);
     }
 
-    if (ticket.is_used) {
+    if (ticket.checked_in) {
       return res.send(`<h1 style="color:red;">❌ Ticket Already Used</h1>`);
     }
 
+    // ✅ mark as used
     ticket.is_used = true;
     ticket.scanned_at = Date.now();
     await ticket.save();
+
+    // ============================
+    // 📧 SEND ALERT EMAIL
+    // ============================
+
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS
+      }
+    });
+
+    await transporter.sendMail({
+      from: `"Cinema Security 🎟️" <${process.env.EMAIL_USER}>`,
+      to: ticket.buyer_email,
+      subject: "Your Ticket Was Just Used 🎟️",
+      html: `
+        <h2>Ticket Access Notification</h2>
+
+        <p>Your ticket has just been used for entry.</p>
+
+        <p><strong>Event:</strong> ${ticket.event.title}</p>
+        <p><strong>Seat:</strong> ${ticket.seat.row}${ticket.seat.number}</p>
+        <p><strong>Time:</strong> ${new Date(ticket.scanned_at).toLocaleString()}</p>
+
+        <hr/>
+
+        <p>If this was NOT you, please call immediately:</p>
+        <h3 style="color:red;">📞 08131234567</h3>
+
+        <p>Thank you.</p>
+      `
+    });
+
+    console.log("📧 Scan alert email sent to:", ticket.buyer_email);
+
+    // ============================
 
     return res.send(`
       <h1 style="color:green;">✅ Access Granted</h1>
@@ -162,6 +203,7 @@ exports.verifyTicket = async (req, res) => {
     `);
 
   } catch (error) {
+    console.error(error);
     res.status(500).send(`<h1>❌ Verification Error</h1>`);
   }
 };

@@ -16,12 +16,17 @@ const TicketSchema = new mongoose.Schema({
   },
   payment_status: {
     type: String,
-    enum: ["pending", "paid", "confirmed"],
+    enum: ["pending", "paid", "failed"],
     default: "pending"
   },
   payment_reference: {
-    type: String
+    type: String,
+    sparse: true
   },
+  scan_notified: {
+  type: Boolean,
+  default: false
+},
   qr_token: {
     type: String,
     unique: true,
