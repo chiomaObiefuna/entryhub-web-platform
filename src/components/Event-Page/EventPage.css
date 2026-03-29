@@ -95,7 +95,8 @@
 }
 
 /* --- LOADING & EMPTY STATES --- */
-.loading-text, .no-events {
+.loading-text,
+.no-events {
   text-align: center;
   font-size: 1.1rem;
   color: #5c7269;
@@ -128,7 +129,7 @@
 }
 
 /* --- DESKTOP FIX --- */
-@media (min-width: 768px) {
+@media (max-width: 768px) {
   .event-list {
     max-width: 800px;
     margin: 0 auto;
@@ -136,7 +137,7 @@
   }
 
   .event-list-card {
-    flex-direction: row;  /* image left, text right */
+    flex-direction: row; /* image left, text right */
     align-items: center;
     gap: 1.5rem;
     padding: 1.2rem;
@@ -145,7 +146,7 @@
   .event-card-img {
     width: 110px;
     height: 110px;
-    flex-shrink: 0;  /* prevents image from squishing */
+    flex-shrink: 0; /* prevents image from squishing */
   }
 
   .event-card-info {
@@ -160,7 +161,7 @@
   }
 }
 
-@media (min-width: 1024px) {
+@media (max-width: 1024px) {
   .event-list {
     max-width: 900px;
   }
@@ -176,7 +177,7 @@
   }
 }
 
-@media (min-width: 1050px) {
+@media (max-width: 1050px) {
   .event-list {
     max-width: 750px;
     padding: 0 2rem;
