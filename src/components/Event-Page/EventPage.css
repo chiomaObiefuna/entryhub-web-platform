@@ -126,3 +126,79 @@
     padding-top: 10px;
   }
 }
+
+/* --- DESKTOP FIX --- */
+@media (min-width: 768px) {
+  .event-list {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+
+  .event-list-card {
+    flex-direction: row;  /* image left, text right */
+    align-items: center;
+    gap: 1.5rem;
+    padding: 1.2rem;
+  }
+
+  .event-card-img {
+    width: 110px;
+    height: 110px;
+    flex-shrink: 0;  /* prevents image from squishing */
+  }
+
+  .event-card-info {
+    flex: 1;
+  }
+
+  .event-card-actions {
+    flex-direction: column;
+    height: 100px;
+    align-items: flex-end;
+    width: auto;
+  }
+}
+
+@media (min-width: 1024px) {
+  .event-list {
+    max-width: 900px;
+  }
+
+  .event-list-card {
+    padding: 1.5rem;
+    gap: 2rem;
+  }
+
+  .event-card-img {
+    width: 130px;
+    height: 130px;
+  }
+}
+
+@media (min-width: 1050px) {
+  .event-list {
+    max-width: 750px;
+    padding: 0 2rem;
+  }
+
+  .event-list-card {
+    flex-direction: row;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 1.2rem;
+  }
+
+  .event-card-img {
+    width: 110px;
+    height: 110px;
+    flex-shrink: 0;
+  }
+
+  .event-card-actions {
+    flex-direction: column;
+    width: auto;
+    height: 100px;
+    align-items: flex-end;
+  }
+}

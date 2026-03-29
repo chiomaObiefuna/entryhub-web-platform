@@ -90,10 +90,12 @@
 .navbar__hamburger {
   display: none;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-end;
+  align-items: center;
   gap: 5px;
   width: 38px;
   height: 38px;
+  margin-left: auto;
   background: none;
   border: none;
   cursor: pointer;
@@ -264,8 +266,8 @@
    RESPONSIVE BREAKPOINTS
    ================================================ */
 
-/* ── Tablet (640px – 1023px) ── */
-@media (max-width: 1023px) {
+/* ── Mobile (0px – 767px) ── */
+@media (max-width: 767px) {
   .navbar__desktop-links,
   .navbar__signup-btn {
     display: none;
@@ -273,6 +275,8 @@
 
   .navbar__hamburger {
     display: flex;
+    justify-content: flex-end;
+    align-items: center;
   }
 }
 
@@ -284,6 +288,7 @@
 
   .navbar__hamburger {
     display: none;
+    
   }
 
   /* Sidebar never needed on desktop */

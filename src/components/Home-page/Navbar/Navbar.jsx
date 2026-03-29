@@ -5,9 +5,9 @@ import "./Navbar.css";
 
 const NAV_LINKS = [
   { label: "Home", to: "/", type: "navlink" },
-  { label: "Events", to: "/#events", type: "anchor" },
+  { label: "Events", to: "/#Explore-Events", type: "anchor" },
   { label: "In-Events", to: "/#in-events", type: "anchor" },
-  { label: "My Ticket", to: "/my-ticket", type: "navlink" },
+  { label: "My Ticket", to: "/#my ticket", type: "anchor" },
   { label: "About Us", to: "/about-us", type: "navlink" },
 ];
 
@@ -69,9 +69,9 @@ const Navbar = () => {
           Sign Up
         </Link>
 
-        <Link to='/sign-up' className='navbar__signup-btn'>
+        {/* <Link to='/sign-up' className='navbar__signup-btn'>
           Log In
-        </Link>
+        </Link> */}
 
         {/* Hamburger – mobile only */}
         <button

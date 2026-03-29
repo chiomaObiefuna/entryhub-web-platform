@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import DashboardLayout from './components/Dashboard-Layout/DashboardLayout';
-import './EventPage.css';
+import Dashboardlayout from "../Dashboard-Layout/DashboardLayout";
+import "./EventPage.css";
 
 // 🖼️ UNIVERSAL PLACEHOLDER (Teammates can copy this URL)
-const CINEMA_PLACEHOLDER = "http://www.w3.org/2000/svg" 
+const CINEMA_PLACEHOLDER = "https://placehold.jp/24/667d78/ffffff/300x200.png?text=Cinema";
 
 const EventPage = () => {
   const [events, setEvents] = useState([]);
@@ -35,7 +35,7 @@ const EventPage = () => {
   }, []);
 
   return (
-    <DashboardLayout title="Cinema">
+    <Dashboardlayout title="EventPage">
       <div className="event-list">
         {loading ? (
           <div className="status-message">
@@ -44,7 +44,7 @@ const EventPage = () => {
         ) : events.length > 0 ? (
           events.map((event) => (
             <div key={event.id || event._id} className="event-list-card" 
-            onClick={() => navigate (`/event/${event.id || event._id}`)}
+            onClick={() => navigate(`/event/${event.id || event._id}`, { state: { movie: event } })}
             style={{ cursor: 'pointer' }}>
               
               {/* --- IMAGE WITH API MAPPING & PLACEHOLDER --- */}
@@ -53,11 +53,11 @@ const EventPage = () => {
                 alt={event.title} 
                 className="event-card-img" 
                 onError={(e) => {
-                  e.target.src = CINEMA_PLACEHOLDER;
-                  e.target.onerror = null; // Prevents infinite loop if placeholder fails
+                  e.target.src = "https://placehold.jp/300x200.png"; // Fallback URL
+                  e.target.onerror = null; 
                 }}
               />
-              
+                            
               <div className="event-card-info">
                 {/* --- API DATA BINDING --- */}
                 <h3>{event.title || "Upcoming Movie"}</h3>
@@ -104,7 +104,7 @@ const EventPage = () => {
           </div>
         )}
       </div>
-    </DashboardLayout>
+    </Dashboardlayout>
   );
 };
 

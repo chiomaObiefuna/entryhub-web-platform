@@ -84,7 +84,10 @@ function Dashboardlayout({ title, children }) {
                       </svg>
                     </span>
 
-                    <span className="word">Home</span>
+                    <span className="word"onClick={()=> {handleProceedToPayment();
+             navigate("/")
+
+            }}>Home</span>
                   </div>
 
                   <button className="menu-btns">
@@ -395,6 +398,9 @@ function Dashboardlayout({ title, children }) {
 
         <div className="main-content">
           <div className="head-text">
+            <button className="hamburger-btn" onClick={() => setMenuOpen(true)}>
+              ☰
+            </button>
             
             <h1 className="page-title">{title}</h1>
           </div>
