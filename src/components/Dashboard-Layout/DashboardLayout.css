@@ -433,19 +433,19 @@
 
 /* --- DESKTOP CONTENT FIX --- */
 @media (min-width: 1050px) {
-.dashboard-layout {
-  grid-template-columns: 280px 1fr;
-  grid-template-rows: 1fr;
-  height: 100vh;
-  overflow: hidden;
-}
+  .dashboard-layout {
+    grid-template-columns: 280px 1fr;
+    grid-template-rows: 1fr;
+    height: 100vh;
+    overflow: hidden;
+  }
 
-.menu-section{
-  position: sticky;
-  top: 0;
-  height: 100vh;
-  overflow: hidden;
-}
+  .menu-section {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow: hidden;
+  }
 
   .main-content {
     height: 100vh;
@@ -465,7 +465,7 @@
     width: 100%;
   }
 
-  .page-title{
+  .page-title {
     font-size: 2.6rem;
     position: sticky;
     top: 0;
