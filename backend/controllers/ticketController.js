@@ -1,4 +1,5 @@
 const Ticket = require("../models/Ticket");
+const nodemailer = require("nodemailer");
 const { createVirtualAccount } = require("../services/flutterwave");
 const crypto = require("crypto");
 const QRCode = require("qrcode");
@@ -132,8 +133,6 @@ exports.getAllTickets = async (req, res) => {
 // =======================
 // 4. Verify Ticket (SCAN)
 // =======================
-const nodemailer = require("nodemailer");
-
 exports.verifyTicket = async (req, res) => {
   try {
     const { token } = req.params;
