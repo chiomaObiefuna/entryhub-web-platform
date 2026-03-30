@@ -1,12 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import "./BookEvents.css";
-import { useNavigate, useLocation } from 'react-router-dom';
-import DashboardLayout from "../Dashboard-Layout/DashboardLayout";
-
-// Helper to parse price if needed
-function parsePrice(priceStr) {
-  return Number(priceStr.replace(/[₦,]/g, "")) || 0;
-}
+import { useNavigate, useLocation, useParams } from 'react-router-dom';
 
 // ─────────────────────────────────────────────────────────────
 // DROPDOWN component
@@ -14,9 +8,6 @@ function parsePrice(priceStr) {
 function Dropdown({ label, value, options, onChange }) {
   const [open, setOpen] = useState(false);
   const ref = useRef(null);
-
-
- 
 
   return (
     <div className="field-group" ref={ref}>
@@ -50,6 +41,7 @@ function Dropdown({ label, value, options, onChange }) {
 export default function BookEvents() {
   const navigate = useNavigate();
   const location = useLocation();
+  const { id } = useParams(); // ✅ Get ID from URL
 
   // 1. Catch dynamic movie data
   const movie = location.state?.movie;
@@ -68,15 +60,13 @@ export default function BookEvents() {
   const ticketPrice = movie?.price || 15000; 
   const totalAmount = ticketQuantity * ticketPrice;
 
-  // 4. Guards
+  // 4. Guard: If no movie data, show simple message (App.jsx handles the layout)
   if (!movie) {
     return (
-      <DashboardLayout title="Loading...">
-        <div style={{ padding: "40px", textAlign: "center" }}>
-          <p>No movie selected. Redirecting to events...</p>
-          <button onClick={() => navigate("/events")}>Go to Events</button>
-        </div>
-      </DashboardLayout>
+      <div style={{ padding: "40px", textAlign: "center" }}>
+        <p>No movie details found. Please select a movie from the events page.</p>
+        <button className="btn btn-home" onClick={() => navigate("/cinema")}>Go to Cinema</button>
+      </div>
     );
   }
 
@@ -90,7 +80,8 @@ export default function BookEvents() {
       movieTitle: movie.title
     }));
 
-    navigate("/eventDetails", { state: { movie } });
+    // ✅ CRITICAL: Navigate with the ID so DetailsEvents works
+    navigate(`/eventDetails/${id || movie._id}`, { state: { movie } });
   };
 
   const handleShare = () => {
@@ -99,11 +90,10 @@ export default function BookEvents() {
     setTimeout(() => setToast(false), 2400);
   };
 
-  // 6. Final Return (The UI)
+  // 6. Return ONLY content (No DashboardLayout here!)
   return (
-    <DashboardLayout title="BookEvents">
+    <div className="book-events-container">
       <div className="event-row">
-        {/* Dynamic Image Container */}
         <div className="poster-wrap">
           <img 
             src={movie.image} 
@@ -115,8 +105,8 @@ export default function BookEvents() {
         <div className="event-meta">
           <p className="ev-title">{movie.title}</p>
           <p className="ev-cat">{movie.category || "Cinema"}</p>
-          <p className="ev-date">{movie.date || "30th March, 2026"} / 5:00 Pm</p>
-          <p className="ev-loc">📍 {movie.location || "Abuja"}</p>
+          <p className="ev-date">{movie.date ? new Date(movie.date).toDateString() : "30th March, 2026"} / 5:00 Pm</p>
+          <p className="ev-loc">📍 {movie.location || "Lagos, Nigeria"}</p>
         </div>
 
         <div className="ev-icons">
@@ -126,8 +116,17 @@ export default function BookEvents() {
             </svg>
           </button>
           <div className="icons-row">
-            <button className="icon-btn" onClick={handleShare}><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#999" strokeWidth="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg></button>
-            <button className="icon-btn" onClick={() => setSaved(!saved)}><svg width="16" height="21" viewBox="0 0 24 28" fill={saved ? "#f5a623" : "none"} stroke={saved ? "#f5a623" : "#bbb"} strokeWidth="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></button>
+            <button className="icon-btn" onClick={handleShare}>
+              <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#999" strokeWidth="2">
+                <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>
+                <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
+              </svg>
+            </button>
+            <button className="icon-btn" onClick={() => setSaved(!saved)}>
+              <svg width="16" height="21" viewBox="0 0 24 28" fill={saved ? "#f5a623" : "none"} stroke={saved ? "#f5a623" : "#bbb"} strokeWidth="2">
+                <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>
+              </svg>
+            </button>
           </div>
         </div>
       </div>
@@ -150,7 +149,7 @@ export default function BookEvents() {
         <button className="btn btn-book" onClick={handleProceedToPayment}>Book Event</button>
       </div>
 
-      <div className={`toast${toast ? " show" : ""}`}>Link copied to clipboard!</div>
-    </DashboardLayout>
+      {toast && <div className="toast show">Link copied to clipboard!</div>}
+    </div>
   );
 }

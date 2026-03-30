@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
 import "./PaymentComplete.css";
 import { useNavigate } from 'react-router-dom';
-import Dashboardlayout from "../Dashboard-Layout/DashboardLayout";
-import toast, { Toaster } from "react-hot-toast"; // Added Toaster import
+import toast from "react-hot-toast"; // ✅ Removed Toaster import (it's in App.jsx now)
 
 // ─────────────────────────────────────────────────────────────
 // FLOATING LABEL INPUT
@@ -52,7 +51,7 @@ export default function PaymentComplete() {
     const data = JSON.parse(localStorage.getItem("ticketData") || "{}");
     if (data.fullName && !fullName) setFullName(data.fullName);
     if (data.email && !email) setEmail(data.email);
-  }, []);
+  }, [fullName, email]);
 
   /* ── Input formatters ── */
   const handleCard = (e) => {
@@ -86,7 +85,6 @@ export default function PaymentComplete() {
       return;
     }
 
-    // Processing simulation
     const loadingToast = toast.loading("Processing payment...");
 
     setTimeout(() => {
@@ -95,19 +93,20 @@ export default function PaymentComplete() {
         duration: 5000,
       });
       
-      // Optional: Navigate to a success page after payment
-      // setTimeout(() => navigate('/success'), 2000);
+      // Clean up localStorage after successful payment
+      // localStorage.removeItem("ticketData");
+      
+      // Navigate to home after a delay
+      setTimeout(() => navigate('/'), 3000);
     }, 2000);
   };
 
   const fmt = (n) => "₦" + n.toLocaleString();
 
+  // ✅ REMOVED <Dashboardlayout> wrapper
   return (
-    <Dashboardlayout title="PaymentComplete">
-      {/* 1. THE TOASTER MUST BE HERE TO SHOW MESSAGES */}
-      <Toaster position="top-center" reverseOrder={false} />
-
-      <div className="card">
+    <div className="payment-complete-container">
+      <div className="payment-card">
         <p className="card-details-label">Card Details</p>
 
         <h2 className="section-heading">Personal Information</h2>
@@ -205,6 +204,6 @@ export default function PaymentComplete() {
           </button>
         </div>
       </div>
-    </Dashboardlayout>
+    </div>
   );
 }

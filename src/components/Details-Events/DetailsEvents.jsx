@@ -1,8 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import "./DetailsEvents.css";
-// 1. Ensure useLocation is imported to catch the data
 import { useNavigate, useLocation } from 'react-router-dom';
-import DashboardLayout from "../Dashboard-Layout/DashboardLayout";
 
 // ─────────────────────────────────────────────────────────────
 // PAYMENT METHOD ROW COMPONENT
@@ -28,25 +26,24 @@ function PayMethod({ icon, label, selected, onClick }) {
 // ─────────────────────────────────────────────────────────────
 // MAIN COMPONENT — DetailsEvents
 // ─────────────────────────────────────────────────────────────
-
-export default function DetailsEvents() {
+const DetailsEvents = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // 2. Catch the dynamic movie data from navigation state
+  // Catch the dynamic movie data from navigation state
   const movie = location.state?.movie;
 
-  // Personal info state
+  // Personal info state (Starting blank)
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
 
   // UI interaction state
-  const [liked, setLiked] = useState(true);
-  const [saved, setSaved] = useState(true);
+  const [liked, setLiked] = useState(false);
+  const [saved, setSaved] = useState(false);
   const [payMethod, setPayMethod] = useState("");
   const [toast, setToast] = useState({ show: false, msg: "" });
 
-  // 3. Read ticket details from localStorage saved in BookEvents.jsx
+  // Read ticket details from localStorage
   const stored = JSON.parse(localStorage.getItem("ticketData") || "{}");
   const quantity = stored.quantity || 1;
   const ticketPrice = stored.price || 15000;
@@ -55,8 +52,6 @@ export default function DetailsEvents() {
   const row = stored.row || "4";
   const ticketType = stored.ticketType || "Cinema";
   const seat = stored.seat || "7";
-
-  // Toast helper
 
   const showToast = (msg) => {
     setToast({ show: true, msg });
@@ -68,13 +63,10 @@ export default function DetailsEvents() {
     showToast("Link copied to clipboard!");
   };
 
-  // 4. Proceed handler — Passes movie data to the final page
   const handleProceed = () => {
     if (!fullName.trim()) return showToast("Please enter your full name.");
     if (!email.trim()) return showToast("Please enter your email address.");
     if (!payMethod) return showToast("Please choose a payment method.");
-
-    // Update localStorage with personal details
 
     localStorage.setItem("ticketData", JSON.stringify({
       ...stored,
@@ -84,23 +76,20 @@ export default function DetailsEvents() {
       total: totalAmount
     }));
 
-    // Navigate to final payment and keep the movie object in state
     navigate("/completePayment", { state: { movie } });
   };
 
-  // Guard: If no movie is selected, redirect back
+  // Guard: If no movie is selected, show a simple error state within the layout
   if (!movie) {
     return (
-      <Dashboardlayout title="DetailsEvents">
-        <div style={{ padding: "50px", textAlign: "center" }}>
-          <p>No event selected. Please start over.</p>
-          <button onClick={() => navigate("/")}>Go to Home</button>
-        </div>
-      </Dashboardlayout>
+      <div style={{ padding: "50px", textAlign: "center" }}>
+        <p>No event selected. Please start over.</p>
+        <button className="ed-btn ed-btn-home" onClick={() => navigate("/")}>Go to Home</button>
+      </div>
     );
   }
 
-  // SVG icons
+  // Icons
   const BankIcon = (
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><line x1="3" y1="22" x2="21" y2="22"/><line x1="6" y1="18" x2="6" y2="11"/><line x1="10" y1="18" x2="10" y2="11"/><line x1="14" y1="18" x2="14" y2="11"/><line x1="18" y1="18" x2="18" y2="11"/><polygon points="12 2 20 7 4 7"/></svg>
   );
@@ -112,9 +101,8 @@ export default function DetailsEvents() {
   );
 
   return (
-    <DashboardLayout title="DetailsEvents">  
+    <div className="details-events-content">  
       <div className="ed-event-row">
-        {/* 5. DYNAMIC IMAGE: No longer hardcoded Shelter SVG */}
         <div className="poster-wrap">
           <img 
             src={movie.image} 
@@ -124,15 +112,11 @@ export default function DetailsEvents() {
         </div>
 
         <div className="ed-event-info">
-          {/* 6. DYNAMIC TEXT: Title, Date, and Location */}
           <p className="ed-ev-title">{movie.title}</p>
           <p className="ed-ev-cat">{movie.category || "Cinema"}</p>
           <p className="ed-ev-date">{movie.date || "30th March, 2026"} / 5:00 Pm</p>
           <p className="ed-ev-loc">
-            <svg width="11" height="14" viewBox="0 0 24 28" fill="currentColor">
-              <path d="M12 0C7.58 0 4 3.58 4 8c0 6 8 16 8 16s8-10 8-16c0-4.42-3.58-8-8-8zm0 11a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"/>
-            </svg>
-            {movie.location || "Abuja"}
+            📍 {movie.location || "Abuja"}
           </p>
         </div>
 
@@ -151,13 +135,13 @@ export default function DetailsEvents() {
 
       <h2 className="ed-sec-title">Ticket Details</h2>
       <div className="ed-chips-row">
-        <div className="ed-chip"><span className="ed-chip-lbl">Number of tickets</span><span className="ed-chip-val">{quantity}</span></div>
+        <div className="ed-chip"><span className="ed-chip-lbl">Tickets</span><span className="ed-chip-val">{quantity}</span></div>
         <div className="ed-chip"><span className="ed-chip-lbl">Sector</span><span className="ed-chip-val">{sector}</span></div>
         <div className="ed-chip"><span className="ed-chip-lbl">Row</span><span className="ed-chip-val">{row}</span></div>
-        <div className="ed-chip"><span className="ed-chip-lbl">Ticket type</span><span className="ed-chip-val">{ticketType}</span></div>
+        <div className="ed-chip"><span className="ed-chip-lbl">Type</span><span className="ed-chip-val">{ticketType}</span></div>
         <div className="ed-chip"><span className="ed-chip-lbl">Seat</span><span className="ed-chip-val">{seat}</span></div>
         <div className="ed-chip"><span className="ed-chip-lbl">Price</span><span className="ed-chip-val">₦{ticketPrice.toLocaleString()}</span></div>
-        <button className="ed-chip-x" onClick={() => navigate(-1)}><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="2.2"><line x1="1" y1="1" x2="11" y2="11"/><line x1="11" y1="1" x2="1" y2="11"/></svg></button>
+        <button className="ed-chip-x" onClick={() => navigate(-1)}>×</button>
       </div>
 
       <div className="ed-total-row">
@@ -167,8 +151,8 @@ export default function DetailsEvents() {
 
       <h2 className="ed-sec-title">Personal Information</h2>
       <div className="ed-fields">
-        <div className="ed-field"><label className="ed-field-lbl">Full Name</label><input className="ed-field-input" type="text" value={fullName} onChange={e => setFullName(e.target.value)} placeholder="Enter your full name" /></div>
-        <div className="ed-field"><label className="ed-field-lbl">Email</label><input className="ed-field-input" type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="Enter your email" /></div>
+        <div className="ed-field"><label className="ed-field-lbl">Full Name</label><input className="ed-field-input" type="text" value={fullName} onChange={e => setFullName(e.target.value)} placeholder="Enter full name" /></div>
+        <div className="ed-field"><label className="ed-field-lbl">Email</label><input className="ed-field-input" type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="Enter email" /></div>
       </div>
 
       <h2 className="ed-sec-title">Choose Payment Method</h2>
@@ -180,13 +164,12 @@ export default function DetailsEvents() {
 
       <div className="ed-footer">
         <button className="ed-btn ed-btn-home" onClick={() => navigate("/")}>Home</button>
-        <button className="btn ed-btn-proceed" onClick={handleProceed}>Proceed To Payment</button>
+        <button className="ed-btn ed-btn-proceed" onClick={handleProceed}>Proceed To Payment</button>
       </div>
 
-      <div className={`ed-toast${toast.show ? " show" : ""}`} role="status">{toast.msg}</div>
-
-
-    </DashboardLayout>
+      {toast.show && <div className="ed-toast show" role="status">{toast.msg}</div>}
+    </div>
   );
 };
 
+export default DetailsEvents;
