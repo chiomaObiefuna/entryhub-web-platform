@@ -1,42 +1,37 @@
-import "./DashboardLayout.css"; 
+import "./DashboardLayout.css";
 import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 
-function DashboardLayout({ title, children }) { 
-  const [menuOpen, setMenuOpen] = useState(false);
+function DashboardLayout({ title, children }) {
   const navigate = useNavigate();
   const location = useLocation();
+  const [menuOpen, setMenuOpen] = useState(false);
 
- const getActiveTab = () => {
+  const getActiveTab = () => {
     const path = location.pathname;
-    
-    // Exact match for Home
     if (path === "/" || path === "/home") return "home";
-    
-    // Match anything related to booking or cinema
     if (path.includes("/cinema") || path.includes("/book") || path.includes("/event")) return "events";
-    
-    // Match tickets and resales
     if (path.includes("/resale") || path.includes("/ticket")) return "my ticket";
-    
-    // Match both card and bank payment pages
     if (path.includes("/payment") || path.includes("/bank")) return "payment";
-    
+    if (path.includes("/settings")) return "settings";
+    if (path.includes("/support")) return "help&support";
     return "dashboard";
   };
 
   const active = getActiveTab();
 
+  // Logic to show/hide "Back" based on current route (matching your screenshots)
+  const showBackBtn = location.pathname.includes("/book") || location.pathname.includes("/event/");
+
   return (
     <div className="dashboard-layout">
-      {menuOpen && (
-        <div className="overlay" onClick={() => setMenuOpen(false)} />
-      )}
+      {/* Mobile Overlay */}
+      {menuOpen && <div className="overlay" onClick={() => setMenuOpen(false)} />}
 
+      {/* --- SIDEBAR SECTION --- */}
       <div className={`menu-section ${menuOpen ? "open" : ""}`}>
         <div className="pp">
-          <div className="logo-container" onClick={() => navigate("/")} style={{cursor: 'pointer'}}>
-            {/* ✅ Using public folder path directly */}
+          <div className="logo-container" onClick={() => navigate("/")} style={{ cursor: 'pointer' }}>
             <img src="/entry-hub.png" alt="Entry-Hub logo" className="entryhub-logo" />
           </div>
 
@@ -44,23 +39,23 @@ function DashboardLayout({ title, children }) {
             <p className="MM">Main menu</p>
             <ul className="menu-list">
               <li className={`menu-item ${active === "dashboard" ? "active" : ""}`} onClick={() => { navigate("/dashboard"); setMenuOpen(false); }}>
-                <div className="left"><span className="word">Dashboard</span></div>
+                <span className="word">Dashboard</span>
               </li>
 
               <li className={`menu-item ${active === "home" ? "active" : ""}`} onClick={() => { navigate("/"); setMenuOpen(false); }}>
-                <div className="left"><span className="word">Home</span></div>
+                <span className="word">Home</span>
               </li>
 
               <li className={`menu-item ${active === "events" ? "active" : ""}`} onClick={() => { navigate("/cinema"); setMenuOpen(false); }}>
-                <div className="left"><span className="word">Events</span></div>
+                <span className="word">Events</span>
               </li>
 
               <li className={`menu-item ${active === "my ticket" ? "active" : ""}`} onClick={() => { navigate("/resale"); setMenuOpen(false); }}>
-                <div className="left"><span className="word">My tickets</span></div>
+                <span className="word">My tickets</span>
               </li>
-              
+
               <li className={`menu-item ${active === "payment" ? "active" : ""}`} onClick={() => { navigate("/bankdetails"); setMenuOpen(false); }}>
-                <div className="left"><span className="word">Payment</span></div>
+                <span className="word">Payment</span>
               </li>
             </ul>
           </div>
@@ -68,35 +63,35 @@ function DashboardLayout({ title, children }) {
           <div className="others-section">
             <p className="others">Others</p>
             <ul className="help">
-              <li className={`menu-item ${active === "settings" ? "active" : ""}`} onClick={() => navigate("/settings")}>
-                <div className="left"><span className="word">Settings</span></div>
+              <li className={`menu-item ${active === "settings" ? "active" : ""}`} onClick={() => { navigate("/settings"); setMenuOpen(false); }}>
+                <span className="word">Settings</span>
               </li>
-              <li className={`menu-item ${active === "support" ? "active" : ""}`} onClick={() => navigate("/support")}>
-                <div className="left"><span className="word">Help & Support</span></div>
+              <li className={`menu-item ${active === "help&support" ? "active" : ""}`} onClick={() => { navigate("/support"); setMenuOpen(false); }}>
+                <span className="word">Help & Support</span>
               </li>
             </ul>
           </div>
         </div>
       </div>
 
+      {/* --- MAIN CONTENT AREA --- */}
       <div className="main-content">
         <div className="head-text">
-          <button className="hamburger-btn" onClick={() => setMenuOpen(true)}>
-            ☰
-          </button>
+          {/* This button is hidden by DashboardLayout.css on desktop */}
+          <button className="hamburger-btn" onClick={() => setMenuOpen(true)}>☰</button>
           <h1 className="page-title">{title}</h1>
         </div>
 
         <div className="page-body">
-          <div className="back-btn-con">
-            <button className="back-button" onClick={() => navigate(-1)}>
-              <span className="back-btn-text">← Back</span>
-            </button>
-          </div>
-          
-          <div className="children-container">
-            {children}
-          </div>
+          {/* Conditional Back Button: only shows on detail/booking pages per your screenshot */}
+          {showBackBtn && (
+            <div className="back-btn-con">
+              <button className="back-button" onClick={() => navigate(-1)}>
+                <span className="back-btn-text">← Back</span>
+              </button>
+            </div>
+          )}
+          {children}
         </div>
       </div>
     </div>
