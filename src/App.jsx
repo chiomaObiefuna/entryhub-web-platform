@@ -43,7 +43,7 @@ function App() {
         } />
 
         <Route path="/event/:id" element={
-          <DashboardLayout title="Book Ticket">
+          <DashboardLayout title="Book Event">
             <BookEvents />
           </DashboardLayout>
         } />

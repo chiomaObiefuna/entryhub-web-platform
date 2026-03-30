@@ -1,161 +1,171 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
+import { useNavigate, useParams } from 'react-router-dom';
 import "./BookEvents.css";
-import { useNavigate, useLocation, useParams } from 'react-router-dom';
 
-// ─────────────────────────────────────────────────────────────
-// DROPDOWN component
-// ─────────────────────────────────────────────────────────────
-function Dropdown({ label, value, options, onChange }) {
-  const [open, setOpen] = useState(false);
-  const ref = useRef(null);
+const CINEMA_PLACEHOLDER = "https://images.unsplash.com/photo-1485846234645-a62644f84728?q=80&w=500";
 
-  // Close dropdown when clicking outside
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (ref.current && !ref.current.contains(event.target)) {
-        setOpen(false);
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
-
-  return (
-    <div className="field-group" ref={ref}>
-      <label className="field-label">{label}</label>
-      <div
-        className={`field-ctrl${open ? " open" : ""}`}
-        onClick={() => setOpen(o => !o)}
-        role="combobox"
-        aria-expanded={open}
-        tabIndex={0}
-      >
-        <span className="field-val">{value}</span>
-        <span className="chev-pair">
-          <svg className="chev" viewBox="0 0 12 7" fill="none"><path d="M1 6L6 1L11 6" stroke="#7a8c7a" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"/></svg>
-          <svg className="chev" viewBox="0 0 12 7" fill="none"><path d="M1 1L6 6L11 1" stroke="#7a8c7a" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"/></svg>
-        </span>
-      </div>
-      {open && (
-        <ul className="drop-list">
-          {options.map(opt => (
-            <li key={opt} className="drop-item" onClick={() => { onChange(opt); setOpen(false); }}>{opt}</li>
-          ))}
-        </ul>
-      )}
-    </div>
-  );
-}
-
-// ─────────────────────────────────────────────────────────────
-// MAIN COMPONENT
-// ─────────────────────────────────────────────────────────────
-export default function BookEvents() {
+const BookEvents = () => {
   const navigate = useNavigate();
-  const location = useLocation();
   const { id } = useParams();
 
-  const movie = location.state?.movie;
-
-  const [liked, setLiked] = useState(false);
-  const [saved, setSaved] = useState(false);
-  const [toast, setToast] = useState(false);
+  const [eventData, setEventData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  
+  // Booking States matching your image
   const [ticketQuantity, setTicketQuantity] = useState(1);
   const [sector, setSector] = useState("107");
   const [row, setRow] = useState("4");
   const [ticketType, setTicketType] = useState("Cinema");
   const [seat, setSeat] = useState("7");
 
-  const ticketPrice = movie?.price || 15000; 
-  const totalAmount = ticketQuantity * ticketPrice;
+  // Dynamic Price Logic: VIP is double the base price
+  const ticketTiers = useMemo(() => ({
+    Cinema: eventData?.price || 15000,
+    VIP: (eventData?.price || 15000) * 2,
+  }), [eventData]);
 
-  if (!movie) {
-    return (
-      <div style={{ padding: "40px", textAlign: "center" }}>
-        <p>No movie details found. Please select a movie from the events page.</p>
-        <button className="btn btn-home" onClick={() => navigate("/cinema")}>Go to Cinema</button>
-      </div>
-    );
-  }
+  useEffect(() => {
+    const fetchEvent = async () => {
+      try {
+        const res = await fetch(`https://eventhub-backend-pxoz.onrender.com/api/events/${id}`);
+        const data = await res.json();
+        if (data) setEventData(data);
+        setLoading(false);
+      } catch (err) {
+        console.error("Fetch error:", err);
+        setLoading(false);
+      }
+    };
+    if (id) fetchEvent();
+  }, [id]);
 
-  const handleProceedToPayment = () => {
+  const currentPrice = ticketTiers[ticketType] || 15000;
+  const totalAmount = ticketQuantity * currentPrice;
+
+  const handleBooking = () => {
     localStorage.setItem("ticketData", JSON.stringify({
       quantity: ticketQuantity,
-      price: ticketPrice,
-      total: totalAmount,
-      sector, row, seat, ticketType,
-      movieTitle: movie.title
+      price: totalAmount,
+      ticketType,
+      eventTitle: eventData?.title,
+      sector, 
+      row, 
+      seat,
+      eventId: id
     }));
-
-    navigate(`/eventDetails/${id || movie._id}`, { state: { movie } });
+    navigate(`/eventDetails/${id}`);
   };
 
-  const handleShare = () => {
-    navigator.clipboard?.writeText(window.location.href);
-    setToast(true);
-    setTimeout(() => setToast(false), 2400);
-  };
+  if (loading) return <div className="status-message"><p>Loading showtimes...</p></div>;
 
   return (
-    <div className="book-events-container">
-      <div className="event-row">
-        <div className="poster-wrap">
-          <img 
-            /* ✅ FIXED: Use the absolute path to your public/assets folder */
-            src={movie.image.startsWith('http') ? movie.image : `/assets/${movie.image.split('/').pop()}`} 
-            alt={movie.title} 
-            style={{ width: '90px', height: '112px', borderRadius: '7px', objectFit: 'cover' }}
-          />
-        </div>
+    <div className="page-bg">
+      <div className="page-inner">
+        <div className="card">
+          
+          {/* --- EVENT INFO ROW --- */}
+          <div className="event-row">
+            <div className="poster-wrap">
+              <img 
+                src={eventData?.image || CINEMA_PLACEHOLDER} 
+                alt="Poster" 
+                className="dynamic-poster-img"
+                onError={(e) => e.target.src = CINEMA_PLACEHOLDER}
+              />
+            </div>
 
-        <div className="event-meta">
-          <p className="ev-title">{movie.title}</p>
-          <p className="ev-cat">{movie.category || "Cinema"}</p>
-          <p className="ev-date">{movie.date ? new Date(movie.date).toDateString() : "30th March, 2026"} / 5:00 Pm</p>
-          <p className="ev-loc">📍 {movie.location || "Lagos, Nigeria"}</p>
-        </div>
+            <div className="event-meta">
+              <h2 className="ev-title">{eventData?.title || "Shelter in Cinema Now"}</h2>
+              <p className="ev-cat">{eventData?.category || "Cinema"}</p>
+              <p className="ev-date">30th March, 2026 / 5:00 Pm</p>
+              <p className="ev-loc">📍 {eventData?.location || "Abuja"}</p>
+            </div>
 
-        <div className="ev-icons">
-          <button className="icon-btn" onClick={() => setLiked(!liked)}>
-            <svg width="23" height="21" viewBox="0 0 24 22" fill={liked ? "#f5a623" : "none"} stroke={liked ? "#f5a623" : "#bbb"} strokeWidth="2">
-              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
-            </svg>
-          </button>
-          <div className="icons-row">
-            <button className="icon-btn" onClick={handleShare}>
-              <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#999" strokeWidth="2">
-                <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>
-                <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
-              </svg>
+            {/* Figma Icons - Fully Transparent Backgrounds */}
+            <div className="ev-actions-side">
+               <button className="icon-btn-naked heart" type="button">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ff8a00" strokeWidth="2.5">
+                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+                  </svg>
+               </button>
+               <div className="bottom-icons">
+                  <button className="icon-btn-naked" type="button">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5c7269" strokeWidth="2">
+                      <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>
+                      <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
+                    </svg>
+                  </button>
+                  <button className="icon-btn-naked" type="button">
+                    {/* Fixed SVG: Removed duplicate fill attribute */}
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="#ff8a00" stroke="#ff8a00" strokeWidth="2.5">
+                      <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>
+                    </svg>
+                  </button>
+               </div>
+            </div>
+          </div>
+
+          {/* --- FORM SECTION --- */}
+          <div className="form-section">
+            <div className="field-group">
+              <label className="field-label">Number of Tickets</label>
+              <select className="field-ctrl" value={ticketQuantity} onChange={(e) => setTicketQuantity(Number(e.target.value))}>
+                {[1,2,3,4,5].map(n => <option key={n} value={n}>{n}</option>)}
+              </select>
+            </div>
+
+            <div className="field-group">
+              <label className="field-label">Sector</label>
+              <select className="field-ctrl" value={sector} onChange={(e) => setSector(e.target.value)}>
+                <option value="107">107</option>
+                <option value="108">108</option>
+              </select>
+            </div>
+
+            <div className="field-group">
+              <label className="field-label">Row</label>
+              <select className="field-ctrl" value={row} onChange={(e) => setRow(e.target.value)}>
+                <option value="4">4</option>
+                <option value="5">5</option>
+              </select>
+            </div>
+
+            <div className="field-group">
+              <label className="field-label">Ticket Type</label>
+              <select className="field-ctrl" value={ticketType} onChange={(e) => setTicketType(e.target.value)}>
+                <option value="Cinema">Cinema</option>
+                <option value="VIP">VIP</option>
+              </select>
+            </div>
+
+            <div className="field-group">
+              <label className="field-label">Seat Selection</label>
+              <select className="field-ctrl" value={seat} onChange={(e) => setSeat(e.target.value)}>
+                <option value="7">7</option>
+                <option value="8">8</option>
+              </select>
+            </div>
+
+            <div className="field-group">
+              <label className="field-label">Ticket Price</label>
+              <div className="field-ctrl static-price">₦{totalAmount.toLocaleString()}</div>
+            </div>
+          </div>
+
+          {/* --- FOOTER BUTTONS --- */}
+          <div className="footer-row">
+            <button className="btn btn-pill-orange" type="button" onClick={() => navigate("/")}>
+              🏠 Home
             </button>
-            <button className="icon-btn" onClick={() => setSaved(!saved)}>
-              <svg width="16" height="21" viewBox="0 0 24 28" fill={saved ? "#f5a623" : "none"} stroke={saved ? "#f5a623" : "#bbb"} strokeWidth="2">
-                <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>
-              </svg>
+            <button className="btn btn-pill-orange" type="button" onClick={handleBooking}>
+              Book Event
             </button>
           </div>
+
         </div>
       </div>
-
-      <div className="form-section">
-        <Dropdown label="Number of Tickets" value={String(ticketQuantity)} options={["1","2","3","4","5"]} onChange={(val) => setTicketQuantity(Number(val))} />
-        <Dropdown label="Sector" value={sector} options={["101","107","108"]} onChange={setSector} />
-        <Dropdown label="Row" value={row} options={["1","2","3","4"]} onChange={setRow} />
-        <Dropdown label="Ticket Type" value={ticketType} options={["Cinema","VIP"]} onChange={setTicketType} />
-        <Dropdown label="Seat Selection" value={seat} options={["1","7","12"]} onChange={setSeat} />
-      </div>
-
-      <div className="total-preview">
-        <span className="total-label">Total</span>
-        <span className="total-value">₦{totalAmount.toLocaleString()}</span>
-      </div>
-
-      <div className="footer-row">
-        <button className="btn btn-home" onClick={() => navigate("/")}>Home</button>
-        <button className="btn btn-book" onClick={handleProceedToPayment}>Book Event</button>
-      </div>
-
-      {toast && <div className="toast show">Link copied to clipboard!</div>}
     </div>
   );
-}
+};
+
+export default BookEvents;

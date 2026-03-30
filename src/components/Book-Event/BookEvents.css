@@ -1,152 +1,144 @@
-@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
-
 :root {
-  --page-bg:     #eae6df;
-  --card-bg:     #e3dfd6;
-  --white:       #ffffff;
-  --input-bg:    #dbd7ce;
-  --input-bdr:   #fae2a7;
-  --amber:       #FF8C00;   /* ✅ Matched your theme orange */
-  --amber-dk:    #df9310;
-  --green-dark:  #2d4a2d;
-  --orange-text: #FF8C00;
-  --r-field:     14px;
-  --r-card:      22px;
-  --r-pill:      50px;
-  --font:        'Plus Jakarta Sans', 'Nunito', sans-serif;
+  --page-bg:     #eae6df;   
+  --card-bg:     #e3dfd6;   
+  --white:       #ffffff;   
+  --input-bg:    #dbd7ce;   
+  --amber:       #ff8a00;   
+  --green-dark:  #5c7269;   
+  --font:        'Nunito', sans-serif;
 }
 
-/* ── Container Fix ── */
-.book-events-container {
-  width: 100%;
-  max-width: 900px; /* ✅ Increased for desktop comfort */
-  margin: 0 auto;
-  padding: 20px;
+.page-bg {
+  min-height: 100vh;
+  background: var(--page-bg);
   display: flex;
-  flex-direction: column;
-  gap: 20px;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
 }
 
-/* ── Event Info Row ── */
+.page-inner {
+  width: 100%;
+  max-width: 520px;
+}
+
+.card {
+  background: var(--card-bg);
+  border-radius: 24px;
+  padding: 30px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+}
+
+/* --- EVENT INFO ROW --- */
 .event-row {
   background: var(--white);
-  border-radius: 16px;
-  padding: 20px; /* ✅ More padding for desktop */
+  border-radius: 18px;
+  padding: 15px;
   display: flex;
-  align-items: center;
-  gap: 24px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  gap: 15px;
+  margin-bottom: 25px;
+  border: 1px solid #CBD5E0;
 }
 
 .poster-wrap {
-  flex-shrink: 0;
-  width: 120px; /* ✅ Larger for desktop */
-  height: 160px;
+  width: 85px;
+  height: 85px;
   border-radius: 12px;
   overflow: hidden;
+  flex-shrink: 0;
 }
 
-.poster-wrap img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
+.dynamic-poster-img { width: 100%; height: 100%; object-fit: cover; }
 
-.event-meta {
-  flex: 1;
-}
+.event-meta { flex: 1; }
+.ev-title { font-size: 1.15rem; font-weight: 800; color: #1a1a1a; margin-bottom: 2px; }
+.ev-cat { color: var(--amber); font-weight: 800; font-size: 0.8rem; text-transform: uppercase; }
+.ev-date { color: var(--amber); font-weight: 700; font-size: 0.85rem; margin-top: 2px; }
+.ev-loc { color: var(--green-dark); font-size: 0.9rem; font-weight: 700; margin-top: 4px; }
 
-.ev-title {
-  font-size: 22px; /* ✅ Scale up for desktop */
-  font-weight: 800;
-  margin-bottom: 8px;
-}
-
-/* ── Form Grid ── */
-.form-section {
-  display: grid;
-  /* ✅ Grid layout: 2 columns on desktop, 1 on mobile */
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 20px;
-  background: var(--card-bg);
-  padding: 30px;
-  border-radius: var(--r-card);
-}
-
-.field-group {
+/* ✅ NAKED ICONS */
+.ev-actions-side {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.icon-btn-naked {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: transform 0.2s;
+}
+
+.bottom-icons { display: flex; gap: 12px; }
+
+/* --- FORM FIELDS --- */
+.form-section {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-bottom: 30px;
+}
+
+.field-group { display: flex; flex-direction: column; gap: 6px; }
+
+.field-label {
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: var(--green-dark);
 }
 
 .field-ctrl {
+  width: 100%;
   background: var(--input-bg);
-  border: 1.5px solid transparent;
-  border-radius: var(--r-field);
-  padding: 15px;
-  display: flex;
-  justify-content: space-between;
-  cursor: pointer;
-}
-
-/* ── Total Preview ── */
-.total-preview {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 20px;
-  background: var(--green-dark);
-  color: white;
+  border: 1.5px solid #a0aec0;
   border-radius: 14px;
-  margin: 10px 0;
+  padding: 12px 15px;
+  font-family: var(--font);
+  font-weight: 700;
+  color: #2d3748;
+  outline: none;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%235c7269' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 16px;
 }
 
-.total-value {
-  font-size: 24px;
-  font-weight: 800;
-  color: #FF8C00;
+.static-price {
+  background-image: none; /* No arrow for the price display */
+  cursor: default;
 }
 
-/* ── Buttons ── */
+/* --- PILL BUTTONS --- */
 .footer-row {
   display: flex;
   gap: 15px;
-  margin-top: 10px;
 }
 
 .btn {
-  padding: 18px 30px;
-  border-radius: var(--r-pill);
-  font-weight: 700;
-  cursor: pointer;
-  border: none;
-  transition: 0.3s;
-}
-
-.btn-home {
-  background: #eee;
-  color: #333;
-}
-
-.btn-book {
   flex: 1;
-  background: #FF8C00;
-  color: white;
+  padding: 14px;
+  border-radius: 50px;
+  font-weight: 800;
+  font-size: 1rem;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
 }
 
-/* ── RESPONSIVE ── */
-@media (max-width: 768px) {
-  .event-row {
-    flex-direction: column;
-    text-align: center;
-  }
-  
-  .ev-icons {
-    align-items: center;
-    width: 100%;
-  }
+.btn-pill-orange {
+  background: var(--amber);
+  color: white;
+  box-shadow: 0 4px 15px rgba(255, 138, 0, 0.2);
+}
 
-  .footer-row {
-    flex-direction: column;
-  }
+@media (max-width: 500px) {
+  .footer-row { flex-direction: column; }
+  .btn { width: 100%; }
 }
