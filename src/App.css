@@ -3,51 +3,77 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: 'DM Sans', sans-serif;
+  font-family: 'DM Sans', 'Nunito', sans-serif;
 }
 
 body {
-  background-color: #fff;
+  background-color: #eae6df; /* Warm greige to match Figma */
   color: #5c7269;
   overflow-x: hidden;
+  min-height: 100vh;
 }
 
-/* --- Layout Containers --- */
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 20px;
-}
-
-/* --- Hero Section Fix --- */
-.hero-section {
+/* --- Dashboard Layout Fixes --- */
+/* This ensures the content sits next to the sidebar, not under it */
+.dashboard-layout {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 80px 5%;
-  min-height: 80vh;
+  min-height: 100vh;
 }
 
-/* --- Explore Events Grid --- */
-.explore-events {
-  padding: 60px 5%;
+.dashboard-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  background-color: #eae6df;
+  overflow-y: auto;
 }
 
-.event-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 30px;
-  margin-top: 40px;
+/* --- Centering the Booking & Details Cards --- */
+.dashboard-content-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  width: 100%;
+  padding-top: 20px;
 }
 
-/* --- Image Scaling (Fixes the giant circles) --- */
+/* --- Event Details (QR/Tabs Page) Specific Fix --- */
+.event-details-container {
+  width: 100%;
+  max-width: 1000px; /* Prevents it from stretching too wide on desktop */
+  margin: 0 auto;
+  animation: fadeIn 0.4s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- Image Scaling --- */
 img {
   max-width: 100%;
   height: auto;
   display: block;
+  border-radius: 8px;
 }
 
-/* --- Navbar Spacing --- */
+/* --- UI Component Utilities --- */
+.btn-pill {
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+  font-weight: 700;
+}
+
+.btn-pill:hover {
+  transform: translateY(-2px);
+  filter: brightness(0.95);
+}
+
+/* --- Navbar (Landing Page Only) --- */
 nav {
   display: flex;
   justify-content: space-between;
@@ -57,4 +83,16 @@ nav {
   position: sticky;
   top: 0;
   z-index: 1000;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+/* --- Responsive Helpers --- */
+@media (max-width: 768px) {
+  .dashboard-layout {
+    flex-direction: column;
+  }
+  
+  .dashboard-main {
+    padding: 15px;
+  }
 }

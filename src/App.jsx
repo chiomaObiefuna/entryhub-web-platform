@@ -10,17 +10,19 @@ import DashboardLayout from "./components/Dashboard-Layout/DashboardLayout";
 // Pages & Components
 import Hero from "./components/Home-page/Hero/Hero";
 import Events from "./components/Home-page/Explore-Events/Events";
-import EventDetails from "./components/Home-page/Event-Details/EventDetails";
+import EventDetails from "./components/Home-page/Event-Details/EventDetails"; // The QR/Tabs page
 import AboutUs from "./pages/AboutUs";
 import SignUp from "./pages/SignUp";
 import EventPage from "./components/Event-Page/EventPage";
 import TicketResales from "./components/Ticket/TicketResales";
-import DetailsEvents from "./components/Details-Events/DetailsEvents";
-import BookEvents from "./components/Book-Event/BookEvents";
+import DetailsEvents from "./components/Details-Events/DetailsEvents"; // The Checkout page
+import BookEvents from "./components/Book-Event/BookEvents"; // The Selection page
 import PaymentComplete from "./components/Payment-Complete/PaymentComplete";
 import Bankdetails from "./components/Home-page/Payment-method/bank-details";
 
 import "./App.css";
+
+// ... other imports
 
 function App() {
   return (
@@ -29,50 +31,46 @@ function App() {
       
       <Routes>
         {/* --- PUBLIC LANDING PAGES --- */}
-        <Route path="/" element={<><Navbar /><Hero /><Events /><EventDetails /><Footer /></>} />
-        <Route path="/about-us" element={<><Navbar /><AboutUs /><Footer /></>} />
-        <Route path="/sign-up" element={<><Navbar /><SignUp /><Footer /></>} />
+        <Route path="/" element={<><Navbar /><Hero /><Events /><Footer /></>} />
 
         {/* --- DASHBOARD / INTERNAL PAGES --- */}
-        {/* We wrap these in the DashboardLayout so the sidebar stays visible */}
         
+        {/* Step 1: Browse */}
         <Route path="/cinema" element={
           <DashboardLayout title="Cinema Events">
             <EventPage />
           </DashboardLayout>
         } />
 
+        {/* Step 2: Pick Tickets (Sector, Row, Seat) */}
         <Route path="/event/:id" element={
           <DashboardLayout title="Book Event">
             <BookEvents />
           </DashboardLayout>
         } />
 
+        {/* Step 3: THE TARGET - QR Code, Description, and Tabs */}
+        {/* ✅ This is where "Book Event" should lead */}
         <Route path="/eventDetails/:id" element={
-          <DashboardLayout title="Checkout">
-            <DetailsEvents />
+          <DashboardLayout title="Event Details">
+            <EventDetails />
           </DashboardLayout>
         } />
 
-        <Route path="/resale" element={
-          <DashboardLayout title="Ticket Resale">
-            <TicketResales />
-          </DashboardLayout>
-        } />
-
+        {/* Step 4: Final Checkout / Payment Successful */}
         <Route path="/completePayment" element={
-          <DashboardLayout title="Payment Success">
+          <DashboardLayout title="Payment Successful">
             <PaymentComplete />
           </DashboardLayout>
         } />
 
-        <Route path="/bankdetails" element={
-          <DashboardLayout title="Bank Details">
-            <Bankdetails />
+        {/* Other Routes */}
+        <Route path="/checkout/:id" element={
+          <DashboardLayout title="Checkout Details">
+            <DetailsEvents />
           </DashboardLayout>
         } />
 
-        {/* Catch-all: Redirect unknown routes to Home */}
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </>
