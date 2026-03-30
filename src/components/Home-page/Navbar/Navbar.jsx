@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
-import logo from "../../../assets/logo/logo.svg";
+// ❌ REMOVED: import logo from "../../../assets/logo/logo.svg";
 import "./Navbar.css";
 
 const NAV_LINKS = [
   { label: "Home", to: "/", type: "navlink" },
-  { label: "Events", to: "/#Explore-Events", type: "anchor" },
+  { label: "Events", to: "/cinema", type: "navlink" }, // ✅ Updated to match our new /cinema route
   { label: "In-Events", to: "/#in-events", type: "anchor" },
-  { label: "My Ticket", to: "/#my ticket", type: "anchor" },
+  { label: "My Ticket", to: "/resale", type: "navlink" }, // ✅ Updated to match /resale
   { label: "About Us", to: "/about-us", type: "navlink" },
 ];
 
@@ -20,26 +20,22 @@ const Navbar = () => {
   // Lock body scroll when sidebar is open
   useEffect(() => {
     document.body.style.overflow = isOpen ? "hidden" : "";
-    return () => {
-      document.body.style.overflow = "";
-    };
+    return () => { document.body.style.overflow = ""; };
   }, [isOpen]);
 
   // Close on ESC key
   useEffect(() => {
-    const handleKey = (e) => {
-      if (e.key === "Escape") closeMenu();
-    };
+    const handleKey = (e) => { if (e.key === "Escape") closeMenu(); };
     window.addEventListener("keydown", handleKey);
     return () => window.removeEventListener("keydown", handleKey);
   }, []);
 
   return (
     <>
-      {/* ─── Top Navbar ─── */}
       <nav className='navbar'>
         <Link to='/' className='navbar__logo'>
-          <img src={logo} alt='EntryHub logo' />
+          {/* ✅ UPDATED: Direct path to public folder logo */}
+          <img src='/entry-hub.png' alt='EntryHub logo' />
         </Link>
 
         {/* Desktop Links */}
@@ -69,10 +65,6 @@ const Navbar = () => {
           Sign Up
         </Link>
 
-        {/* <Link to='/sign-up' className='navbar__signup-btn'>
-          Log In
-        </Link> */}
-
         {/* Hamburger – mobile only */}
         <button
           className={`navbar__hamburger${isOpen ? " is-active" : ""}`}
@@ -84,23 +76,24 @@ const Navbar = () => {
           <span className='bar' />
           <span className='bar' />
         </button>
+        
         <div>
-          {/* ─── Backdrop ─── */}
+          {/* Backdrop */}
           <div
             className={`sidebar-backdrop${isOpen ? " is-visible" : ""}`}
             onClick={closeMenu}
             aria-hidden='true'
           />
 
-          {/* ─── Mobile Sidebar ─── */}
+          {/* Mobile Sidebar */}
           <aside
             className={`sidebar${isOpen ? " is-open" : ""}`}
             aria-hidden={!isOpen}
           >
-            {/* Sidebar Header */}
             <div className='sidebar__header'>
               <Link to='/' className='sidebar__logo' onClick={closeMenu}>
-                <img src={logo} alt='EntryHub logo' />
+                {/* ✅ UPDATED: Use same public path here */}
+                <img src='/entry-hub.png' alt='EntryHub logo' />
               </Link>
 
               <button
@@ -108,23 +101,13 @@ const Navbar = () => {
                 onClick={closeMenu}
                 aria-label='Close navigation menu'
               >
-                {/* Inline SVG X – never missing, no file dependency */}
-                <svg
-                  width='22'
-                  height='22'
-                  viewBox='0 0 24 24'
-                  fill='none'
-                  stroke='currentColor'
-                  strokeWidth='2.5'
-                  strokeLinecap='round'
-                >
+                <svg width='22' height='22' viewBox='0 0 24 24' fill='none' stroke='currentColor' strokeWidth='2.5' strokeLinecap='round'>
                   <line x1='18' y1='6' x2='6' y2='18' />
                   <line x1='6' y1='6' x2='18' y2='18' />
                 </svg>
               </button>
             </div>
 
-            {/* Sidebar Links */}
             <ul className='sidebar__links'>
               {NAV_LINKS.map(({ label, to, type }) => (
                 <li key={label}>
@@ -147,20 +130,14 @@ const Navbar = () => {
               ))}
             </ul>
 
-            {/* Sidebar Sign Up */}
             <div className='sidebar__footer'>
-              <Link
-                to='/sign-up'
-                className='sidebar__signup-btn'
-                onClick={closeMenu}
-              >
+              <Link to='/sign-up' className='sidebar__signup-btn' onClick={closeMenu}>
                 Sign Up
               </Link>
             </div>
           </aside>
         </div>
       </nav>
-     
     </>
   );
 };

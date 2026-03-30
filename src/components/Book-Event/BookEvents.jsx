@@ -9,6 +9,17 @@ function Dropdown({ label, value, options, onChange }) {
   const [open, setOpen] = useState(false);
   const ref = useRef(null);
 
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (ref.current && !ref.current.contains(event.target)) {
+        setOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
   return (
     <div className="field-group" ref={ref}>
       <label className="field-label">{label}</label>
@@ -16,6 +27,7 @@ function Dropdown({ label, value, options, onChange }) {
         className={`field-ctrl${open ? " open" : ""}`}
         onClick={() => setOpen(o => !o)}
         role="combobox"
+        aria-expanded={open}
         tabIndex={0}
       >
         <span className="field-val">{value}</span>
@@ -41,12 +53,10 @@ function Dropdown({ label, value, options, onChange }) {
 export default function BookEvents() {
   const navigate = useNavigate();
   const location = useLocation();
-  const { id } = useParams(); // ✅ Get ID from URL
+  const { id } = useParams();
 
-  // 1. Catch dynamic movie data
   const movie = location.state?.movie;
 
-  // 2. State hooks
   const [liked, setLiked] = useState(false);
   const [saved, setSaved] = useState(false);
   const [toast, setToast] = useState(false);
@@ -56,11 +66,9 @@ export default function BookEvents() {
   const [ticketType, setTicketType] = useState("Cinema");
   const [seat, setSeat] = useState("7");
 
-  // 3. Derived Data
   const ticketPrice = movie?.price || 15000; 
   const totalAmount = ticketQuantity * ticketPrice;
 
-  // 4. Guard: If no movie data, show simple message (App.jsx handles the layout)
   if (!movie) {
     return (
       <div style={{ padding: "40px", textAlign: "center" }}>
@@ -70,7 +78,6 @@ export default function BookEvents() {
     );
   }
 
-  // 5. Handlers
   const handleProceedToPayment = () => {
     localStorage.setItem("ticketData", JSON.stringify({
       quantity: ticketQuantity,
@@ -80,7 +87,6 @@ export default function BookEvents() {
       movieTitle: movie.title
     }));
 
-    // ✅ CRITICAL: Navigate with the ID so DetailsEvents works
     navigate(`/eventDetails/${id || movie._id}`, { state: { movie } });
   };
 
@@ -90,13 +96,13 @@ export default function BookEvents() {
     setTimeout(() => setToast(false), 2400);
   };
 
-  // 6. Return ONLY content (No DashboardLayout here!)
   return (
     <div className="book-events-container">
       <div className="event-row">
         <div className="poster-wrap">
           <img 
-            src={movie.image} 
+            /* ✅ FIXED: Use the absolute path to your public/assets folder */
+            src={movie.image.startsWith('http') ? movie.image : `/assets/${movie.image.split('/').pop()}`} 
             alt={movie.title} 
             style={{ width: '90px', height: '112px', borderRadius: '7px', objectFit: 'cover' }}
           />

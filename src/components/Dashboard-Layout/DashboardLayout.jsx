@@ -1,20 +1,27 @@
-import "./DashboardLayout.css"; // ✅ Ensure filename is exactly DashboardLayout.css
-import { useState, useEffect } from "react";
-import logo from "./entry-hub.png"; // ✅ Ensure image is in this same folder
+import "./DashboardLayout.css"; 
+import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 
-function DashboardLayout({ title, children }) { // ✅ Standardized to Capital L
+function DashboardLayout({ title, children }) { 
   const [menuOpen, setMenuOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Mapping paths to active menu states
-  const getActiveTab = () => {
+ const getActiveTab = () => {
     const path = location.pathname;
-    if (path === "/") return "home";
-    if (path.includes("/event")) return "events";
-    if (path.includes("/ticket")) return "my ticket";
-    if (path.includes("/payment")) return "payment";
+    
+    // Exact match for Home
+    if (path === "/" || path === "/home") return "home";
+    
+    // Match anything related to booking or cinema
+    if (path.includes("/cinema") || path.includes("/book") || path.includes("/event")) return "events";
+    
+    // Match tickets and resales
+    if (path.includes("/resale") || path.includes("/ticket")) return "my ticket";
+    
+    // Match both card and bank payment pages
+    if (path.includes("/payment") || path.includes("/bank")) return "payment";
+    
     return "dashboard";
   };
 
@@ -22,48 +29,37 @@ function DashboardLayout({ title, children }) { // ✅ Standardized to Capital L
 
   return (
     <div className="dashboard-layout">
-      {/* Mobile Overlay */}
       {menuOpen && (
         <div className="overlay" onClick={() => setMenuOpen(false)} />
       )}
 
-      {/* Sidebar Section */}
       <div className={`menu-section ${menuOpen ? "open" : ""}`}>
         <div className="pp">
           <div className="logo-container" onClick={() => navigate("/")} style={{cursor: 'pointer'}}>
-            <img src={logo} alt="Entry-Hub logo" className="entryhub-logo" />
+            {/* ✅ Using public folder path directly */}
+            <img src="/entry-hub.png" alt="Entry-Hub logo" className="entryhub-logo" />
           </div>
 
           <div className="menubar">
             <p className="MM">Main menu</p>
             <ul className="menu-list">
-              {/* Dashboard */}
-              <li className={`menu-item ${active === "dashboard" && "active"}`} onClick={() => { navigate("/dashboard"); setMenuOpen(false); }}>
+              <li className={`menu-item ${active === "dashboard" ? "active" : ""}`} onClick={() => { navigate("/dashboard"); setMenuOpen(false); }}>
                 <div className="left"><span className="word">Dashboard</span></div>
               </li>
 
-              {/* Home */}
-              <li className={`menu-item ${active === "home" && "active"}`} onClick={() => { navigate("/"); setMenuOpen(false); }}>
+              <li className={`menu-item ${active === "home" ? "active" : ""}`} onClick={() => { navigate("/"); setMenuOpen(false); }}>
                 <div className="left"><span className="word">Home</span></div>
               </li>
 
-              {/* Events */}
-              <li className={`menu-item ${active === "events" && "active"}`} onClick={() => { navigate("/events"); setMenuOpen(false); }}>
+              <li className={`menu-item ${active === "events" ? "active" : ""}`} onClick={() => { navigate("/cinema"); setMenuOpen(false); }}>
                 <div className="left"><span className="word">Events</span></div>
               </li>
 
-              {/* In Events */}
-              <li className={`menu-item ${active === "in-events" && "active"}`} onClick={() => { navigate("/in-events"); setMenuOpen(false); }}>
-                <div className="left"><span className="word">In events</span></div>
-              </li>
-
-              {/* My Tickets */}
-              <li className={`menu-item ${active === "my ticket" && "active"}`} onClick={() => { navigate("/my-tickets"); setMenuOpen(false); }}>
+              <li className={`menu-item ${active === "my ticket" ? "active" : ""}`} onClick={() => { navigate("/resale"); setMenuOpen(false); }}>
                 <div className="left"><span className="word">My tickets</span></div>
               </li>
               
-              {/* Payment */}
-              <li className={`menu-item ${active === "payment" && "active"}`} onClick={() => { navigate("/payment"); setMenuOpen(false); }}>
+              <li className={`menu-item ${active === "payment" ? "active" : ""}`} onClick={() => { navigate("/bankdetails"); setMenuOpen(false); }}>
                 <div className="left"><span className="word">Payment</span></div>
               </li>
             </ul>
@@ -72,10 +68,10 @@ function DashboardLayout({ title, children }) { // ✅ Standardized to Capital L
           <div className="others-section">
             <p className="others">Others</p>
             <ul className="help">
-              <li className={`menu-item ${active === "settings" && "active"}`} onClick={() => navigate("/settings")}>
+              <li className={`menu-item ${active === "settings" ? "active" : ""}`} onClick={() => navigate("/settings")}>
                 <div className="left"><span className="word">Settings</span></div>
               </li>
-              <li className={`menu-item ${active === "help&support" && "active"}`} onClick={() => navigate("/support")}>
+              <li className={`menu-item ${active === "support" ? "active" : ""}`} onClick={() => navigate("/support")}>
                 <div className="left"><span className="word">Help & Support</span></div>
               </li>
             </ul>
@@ -83,7 +79,6 @@ function DashboardLayout({ title, children }) { // ✅ Standardized to Capital L
         </div>
       </div>
 
-      {/* Main Content Area */}
       <div className="main-content">
         <div className="head-text">
           <button className="hamburger-btn" onClick={() => setMenuOpen(true)}>
@@ -99,7 +94,6 @@ function DashboardLayout({ title, children }) { // ✅ Standardized to Capital L
             </button>
           </div>
           
-          {/* This is where your page content (TicketResales, BookEvents, etc.) renders */}
           <div className="children-container">
             {children}
           </div>
@@ -109,4 +103,4 @@ function DashboardLayout({ title, children }) { // ✅ Standardized to Capital L
   );
 }
 
-export default DashboardLayout; 
+export default DashboardLayout;

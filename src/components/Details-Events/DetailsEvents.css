@@ -1,88 +1,43 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800;900&family=Nunito:wght@400;600;700;800;900&display=swap');
+
 :root {
-  --page-bg:    #f4f1ec;    /* outer warm off-white            */
-  --card-bg:    #edeade;    /* card surface — warm greige      */
-  --white:      #ffffff;    /* event-row white card            */
-  --chip-bg:    #ffffff;    /* ticket chips                    */
-  --field-bg:   #e8e4db;    /* input field background          */
-  --method-bg:  #e8e4db;    /* payment method row              */
-  --bdr:        #d8d4ca;    /* subtle border                   */
+  --page-bg:    #f4f1ec;
+  --card-bg:    #edeade;
+  --white:      #ffffff;
+  --chip-bg:    #ffffff;
+  --field-bg:   #e8e4db;
+  --method-bg:  #e8e4db;
+  --bdr:        #d8d4ca;
 
-  --amber:      #f5a623;    /* ALL orange accents & buttons    */
-  --amber-dk:   #df9310;    /* hover darken                    */
-  --amber-glow: rgba(245,166,35,.28);
+  /* ✅ Matched to your theme orange */
+  --amber:      #FF8C00;   
+  --amber-dk:   #df9310;
+  --amber-glow: rgba(255, 140, 0, 0.28);
 
-  --green-title: #263c2a;   /* "Event Details" page title      */
-  --green-head:  #2d3d2a;   /* section headings                */
-  --text-main:   #2d3a2d;   /* body text                       */
-  --text-muted:  #8a9a82;   /* muted / labels                  */
-  --orange-text: #f5a623;   /* Cinema, date                    */
+  --green-title: #2c3e36;
+  --green-head:  #2d3d2a;
+  --text-main:   #2d3a2d;
+  --text-muted:  #8a9a82;
+  --orange-text: #FF8C00;
 
   --r-card:  22px;
   --r-field: 12px;
   --r-chip:  10px;
   --r-pill:  50px;
 
-  --font: 'Nunito', sans-serif;
+  --font: 'Plus Jakarta Sans', 'Nunito', sans-serif;
 }
 
-body {
-  font-family: var(--font);
-  background: var(--page-bg);
-  color: var(--text-main);
-  min-height: 100vh;
-  -webkit-font-smoothing: antialiased;
-}
-
-/* ═══════════════════════════════════════════════════
-   PAGE SHELL
-   ═══════════════════════════════════════════════════ */
-.ed-page {
-  min-height: 100vh;
-  background: var(--page-bg);
-  padding: 28px 16px 52px;
+/* ── Content Container ── */
+/* Removed fixed centering so it fills the Dashboard main-content area */
+.details-events-content {
+  width: 100%;
+  max-width: 800px; /* ✅ Optimal reading width for desktop */
+  margin: 0 auto;
+  padding: 10px 0;
   display: flex;
   flex-direction: column;
-  align-items: center;
 }
-
-/* Page title — sits above the card */
-.ed-page-title {
-  width: 100%;
-  max-width: 700px;
-  font-size: 26px;
-  font-weight: 900;
-  color: var(--green-title);
-  margin-bottom: 18px;
-  letter-spacing: -0.3px;
-}
-
-/* ═══════════════════════════════════════════════════
-   CARD
-   ═══════════════════════════════════════════════════ */
-.ed-card {
-  width: 100%;
-  max-width: 700px;
-  background: var(--card-bg);
-  border-radius: var(--r-card);
-  padding: 22px 20px 26px;
-}
-
-/* ── Back button ────────────────────────────────── */
-.ed-back {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  background: none;
-  border: none;
-  font-family: var(--font);
-  font-size: 15px;
-  font-weight: 700;
-  color: var(--text-main);
-  cursor: pointer;
-  padding: 0 0 18px;
-  transition: opacity .18s;
-}
-.ed-back:hover { opacity: .6; }
 
 /* ═══════════════════════════════════════════════════
    EVENT INFO ROW
@@ -90,326 +45,177 @@ body {
 .ed-event-row {
   background: var(--white);
   border-radius: 16px;
-  padding: 13px;
+  padding: 20px;
   display: flex;
-  align-items: flex-start;
-  gap: 13px;
-  margin-bottom: 22px;
-  box-shadow: 0 2px 10px rgba(0,0,0,.05);
+  align-items: center; /* ✅ Better alignment for desktop */
+  gap: 20px;
+  margin-bottom: 25px;
+  box-shadow: 0 4px 15px rgba(0,0,0,.05);
 }
 
-/* Poster */
 .poster-wrap {
   flex-shrink: 0;
-  width: 82px;
-  height: 102px;
+  width: 100px;
+  height: 130px;
   border-radius: 10px;
   overflow: hidden;
 }
-.poster-wrap svg { width: 100%; height: 100%; display: block; }
 
-/* Event text */
-.ed-event-info {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  padding-top: 2px;
-  min-width: 0;
+.poster-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .ed-ev-title {
-  font-size: 16px;
+  font-size: 20px;
   font-weight: 800;
   color: var(--text-main);
-  line-height: 1.25;
+  margin-bottom: 5px;
 }
 
-.ed-ev-cat  { font-size: 13px; font-weight: 700; color: var(--orange-text); }
-.ed-ev-date { font-size: 13px; font-weight: 700; color: var(--orange-text); margin-top: 1px; }
-
-.ed-ev-loc {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  font-size: 12.5px;
-  font-weight: 600;
-  color: var(--text-main);
-  margin-top: 5px;
-}
-
-/* Action icons — column on right */
+/* Action icons */
 .ed-ev-icons {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  justify-content: space-between;
-  align-self: stretch;
-  flex-shrink: 0;
-  padding: 2px 0 2px;
-}
-
-.ed-icons-bottom {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.ed-icon-btn {
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 4px;
-  display: flex;
-  align-items: center;
-  border-radius: 50%;
-  transition: transform .18s;
-}
-.ed-icon-btn:hover { transform: scale(1.18); }
-.ed-icon-btn:active { transform: scale(.93); }
-
-/* ═══════════════════════════════════════════════════
-   SECTION TITLE
-   ═══════════════════════════════════════════════════ */
-.ed-sec-title {
-  font-size: 16px;
-  font-weight: 800;
-  color: var(--green-head);
-  margin-bottom: 12px;
+  gap: 15px;
+  margin-left: auto; /* ✅ Pushes icons to the far right */
 }
 
 /* ═══════════════════════════════════════════════════
    TICKET DETAIL CHIPS
    ═══════════════════════════════════════════════════ */
 .ed-chips-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  align-items: stretch;
-  margin-bottom: 16px;
+  display: grid;
+  /* ✅ Modern grid layout: 3 columns on desktop, 2 on mobile */
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 10px;
+  margin-bottom: 20px;
 }
 
 .ed-chip {
   background: var(--chip-bg);
   border: 1.5px solid var(--bdr);
   border-radius: var(--r-chip);
-  padding: 9px 14px;
+  padding: 12px;
   display: flex;
   flex-direction: column;
-  gap: 3px;
-  min-width: 66px;
+  gap: 4px;
 }
 
 .ed-chip-lbl {
-  font-size: 10.5px;
+  font-size: 11px;
   font-weight: 700;
   color: var(--text-muted);
-  white-space: nowrap;
+  text-transform: uppercase;
 }
 
 .ed-chip-val {
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 800;
   color: var(--text-main);
 }
 
-/* × close / edit button */
-.ed-chip-x {
-  background: var(--chip-bg);
-  border: 1.5px solid var(--bdr);
-  border-radius: var(--r-chip);
-  width: 42px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  color: var(--text-muted);
-  align-self: stretch;
-  transition: background .15s, color .15s;
-}
-.ed-chip-x:hover { background: #fdf0e0; color: var(--amber); border-color: var(--amber); }
-
 /* ═══════════════════════════════════════════════════
-   TOTAL AMOUNT ROW
+   TOTAL & FIELDS
    ═══════════════════════════════════════════════════ */
 .ed-total-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 2px;
-  margin-bottom: 22px;
+  padding: 20px;
+  background: var(--green-title);
+  border-radius: 14px;
+  color: white;
+  margin-bottom: 30px;
 }
 
-.ed-total-lbl { font-size: 15px; font-weight: 700; color: var(--text-main); }
-.ed-total-val { font-size: 16px; font-weight: 900; color: var(--text-main); }
-
-/* ═══════════════════════════════════════════════════
-   PERSONAL INFO FIELDS
-   ═══════════════════════════════════════════════════ */
-.ed-fields {
-  display: flex;
-  flex-direction: column;
-  gap: 11px;
-  margin-bottom: 22px;
+.ed-total-val {
+  font-size: 22px;
+  font-weight: 900;
+  color: var(--amber);
 }
 
 .ed-field {
   background: var(--field-bg);
   border: 1.5px solid var(--bdr);
   border-radius: var(--r-field);
-  padding: 10px 15px 12px;
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-  transition: border-color .15s;
-}
-.ed-field:focus-within { border-color: var(--amber); }
-
-.ed-field-lbl {
-  font-size: 11px;
-  font-weight: 700;
-  color: var(--text-muted);
-  letter-spacing: 0.2px;
+  padding: 15px;
+  margin-bottom: 12px;
+  transition: 0.2s;
 }
 
 .ed-field-input {
-  background: transparent;
-  border: none;
-  outline: none;
-  font-family: var(--font);
-  font-size: 15px;
-  font-weight: 600;
-  color: var(--text-main);
-  padding: 0;
-}
-.ed-field-input::placeholder { color: var(--text-muted); }
-
-/* ═══════════════════════════════════════════════════
-   PAYMENT METHOD ROWS
-   ═══════════════════════════════════════════════════ */
-.ed-methods {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  margin-bottom: 28px;
-}
-
-.pay-row {
   width: 100%;
-  display: flex;
-  align-items: center;
-  gap: 13px;
-  background: var(--method-bg);
-  border: 1.5px solid var(--bdr);
-  border-radius: var(--r-field);
-  padding: 15px 16px;
-  cursor: pointer;
-  font-family: var(--font);
-  text-align: left;
-  color: var(--text-main);
-  transition: border-color .15s, background .15s;
+  border: none;
+  background: transparent;
+  outline: none;
+  font-size: 16px;
+  margin-top: 5px;
 }
-.pay-row:hover   { border-color: var(--amber); background: #dedad0; }
-.pay-selected    { border-color: var(--amber); background: #fdf4e7; }
-
-.pay-ico  { flex-shrink: 0; display: flex; align-items: center; }
-.pay-lbl  { flex: 1; font-size: 14.5px; font-weight: 700; }
-.pay-chev { flex-shrink: 0; color: var(--text-muted); }
 
 /* ═══════════════════════════════════════════════════
-   FOOTER BUTTONS
+   FOOTER
    ═══════════════════════════════════════════════════ */
 .ed-footer {
   display: flex;
-  gap: 12px;
+  gap: 15px;
+  margin-top: 20px;
+  padding-bottom: 40px;
 }
 
 .ed-btn {
-  font-family: var(--font);
-  font-weight: 700;
-  font-size: 15px;
-  border: none;
+  padding: 18px 30px;
   border-radius: var(--r-pill);
-  padding: 15px 20px;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 7px;
-  letter-spacing: .2px;
-  transition: background .18s, transform .14s, box-shadow .18s;
+  font-weight: 700;
+  font-size: 16px;
+  transition: all 0.3s ease;
 }
-.ed-btn:active { transform: translateY(0); box-shadow: none; }
 
-/* Home — shorter left pill */
 .ed-btn-home {
-  flex: 0 0 auto;
-  min-width: 130px;
-  background: var(--amber);
-  color: #fff;
-}
-.ed-btn-home:hover {
-  background: var(--amber-dk);
-  transform: translateY(-1px);
-  box-shadow: 0 6px 18px var(--amber-glow);
+  background: #f0f0f0;
+  color: #555;
+  min-width: 140px;
 }
 
-/* Proceed — wider right pill */
 .ed-btn-proceed {
-  flex: 1;
   background: var(--amber);
-  color: #fff;
+  color: white;
+  flex: 1;
 }
+
 .ed-btn-proceed:hover {
   background: var(--amber-dk);
-  transform: translateY(-1px);
-  box-shadow: 0 6px 22px var(--amber-glow);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px var(--amber-glow);
 }
 
-/* ═══════════════════════════════════════════════════
-   TOAST
-   ═══════════════════════════════════════════════════ */
+/* ── Toast ── */
 .ed-toast {
   position: fixed;
-  bottom: 32px;
+  bottom: 30px;
   left: 50%;
-  transform: translateX(-50%) translateY(70px);
-  opacity: 0;
-  background: #1e3a2f;
-  color: #fff;
-  padding: 12px 28px;
-  border-radius: var(--r-pill);
-  font-family: var(--font);
-  font-size: 13.5px;
-  font-weight: 700;
-  white-space: nowrap;
-  pointer-events: none;
-  z-index: 999;
-  transition: transform .28s ease, opacity .28s ease;
-}
-.ed-toast.show {
-  transform: translateX(-50%) translateY(0);
-  opacity: 1;
+  transform: translateX(-50%);
+  background: #2c3e36;
+  color: white;
+  padding: 12px 25px;
+  border-radius: 50px;
+  z-index: 1000;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.2);
 }
 
-/* ═══════════════════════════════════════════════════
-   RESPONSIVE
-   ═══════════════════════════════════════════════════ */
-@media (max-width: 480px) {
-  .ed-page       { padding: 20px 12px 44px; }
-  .ed-page-title { font-size: 22px; }
-  .ed-card       { padding: 16px 14px 22px; }
-  .ed-ev-title   { font-size: 14.5px; }
-  .poster-wrap   { width: 70px; height: 88px; }
-  .ed-chip       { padding: 7px 10px; min-width: 58px; }
-  .ed-chip-val   { font-size: 13px; }
-  .ed-btn-home   { min-width: 108px; font-size: 13.5px; }
-  .ed-btn-proceed { font-size: 14px; }
-}
-
-@media (max-width: 360px) {
-  .ed-chips-row  { gap: 6px; }
-  .ed-chip       { min-width: 50px; }
-  .ed-btn        { padding: 13px 12px; }
-  .ed-btn-home   { min-width: 90px; font-size: 13px; gap: 5px; }
+/* ── Mobile ── */
+@media (max-width: 600px) {
+  .ed-event-row {
+    flex-direction: column;
+    text-align: center;
+  }
+  .ed-ev-icons {
+    align-items: center;
+    margin-left: 0;
+  }
+  .ed-chips-row {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }

@@ -30,20 +30,15 @@ const DetailsEvents = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Catch the dynamic movie data from navigation state
   const movie = location.state?.movie;
 
-  // Personal info state (Starting blank)
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
-
-  // UI interaction state
   const [liked, setLiked] = useState(false);
   const [saved, setSaved] = useState(false);
   const [payMethod, setPayMethod] = useState("");
   const [toast, setToast] = useState({ show: false, msg: "" });
 
-  // Read ticket details from localStorage
   const stored = JSON.parse(localStorage.getItem("ticketData") || "{}");
   const quantity = stored.quantity || 1;
   const ticketPrice = stored.price || 15000;
@@ -76,10 +71,12 @@ const DetailsEvents = () => {
       total: totalAmount
     }));
 
-    navigate("/completePayment", { state: { movie } });
+    // Navigate to specific payment pages based on selection
+    if (payMethod === "Bank Transfer") navigate("/bankdetails", { state: { movie } });
+    else if (payMethod === "New Card") navigate("/completePayment", { state: { movie } });
+    else showToast("Bitcoin payment integration coming soon!");
   };
 
-  // Guard: If no movie is selected, show a simple error state within the layout
   if (!movie) {
     return (
       <div style={{ padding: "50px", textAlign: "center" }}>
@@ -89,23 +86,17 @@ const DetailsEvents = () => {
     );
   }
 
-  // Icons
-  const BankIcon = (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><line x1="3" y1="22" x2="21" y2="22"/><line x1="6" y1="18" x2="6" y2="11"/><line x1="10" y1="18" x2="10" y2="11"/><line x1="14" y1="18" x2="14" y2="11"/><line x1="18" y1="18" x2="18" y2="11"/><polygon points="12 2 20 7 4 7"/></svg>
-  );
-  const BitcoinIcon = (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M9.5 2H14a3.5 3.5 0 0 1 0 7H9.5V2z"/><path d="M9.5 9H15a3.5 3.5 0 0 1 0 7H9.5V9z"/><line x1="9.5" y1="2" x2="9.5" y2="22"/><line x1="7" y1="2" x2="12" y2="2"/><line x1="7" y1="22" x2="12" y2="22"/></svg>
-  );
-  const CardIcon = (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
-  );
+  const BankIcon = (<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><line x1="3" y1="22" x2="21" y2="22"/><line x1="6" y1="18" x2="6" y2="11"/><line x1="10" y1="18" x2="10" y2="11"/><line x1="14" y1="18" x2="14" y2="11"/><line x1="18" y1="18" x2="18" y2="11"/><polygon points="12 2 20 7 4 7"/></svg>);
+  const BitcoinIcon = (<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M9.5 2H14a3.5 3.5 0 0 1 0 7H9.5V2z"/><path d="M9.5 9H15a3.5 3.5 0 0 1 0 7H9.5V9z"/><line x1="9.5" y1="2" x2="9.5" y2="22"/><line x1="7" y1="2" x2="12" y2="2"/><line x1="7" y1="22" x2="12" y2="22"/></svg>);
+  const CardIcon = (<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>);
 
   return (
     <div className="details-events-content">  
       <div className="ed-event-row">
         <div className="poster-wrap">
           <img 
-            src={movie.image} 
+            /* ✅ FIXED: Pathing logic for assets in public folder */
+            src={movie.image.startsWith('http') ? movie.image : `/assets/${movie.image.split('/').pop()}`} 
             alt={movie.title} 
             style={{ width: '90px', height: '112px', borderRadius: '6px', objectFit: 'cover' }} 
           />
@@ -115,9 +106,7 @@ const DetailsEvents = () => {
           <p className="ed-ev-title">{movie.title}</p>
           <p className="ed-ev-cat">{movie.category || "Cinema"}</p>
           <p className="ed-ev-date">{movie.date || "30th March, 2026"} / 5:00 Pm</p>
-          <p className="ed-ev-loc">
-            📍 {movie.location || "Abuja"}
-          </p>
+          <p className="ed-ev-loc">📍 {movie.location || "Abuja"}</p>
         </div>
 
         <div className="ed-ev-icons">

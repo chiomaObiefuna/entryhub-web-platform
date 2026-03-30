@@ -3,15 +3,13 @@ import { useNavigate } from "react-router-dom";
 import QRCode from "react-qr-code"; 
 import check from "./check.png";
 import failed from "./failed.png";
-
 import "./payment-method.css";
 
-// Utility to generate a random seat number
 const generateUniqueSeat = (usedSeats) => {
   let seat;
   do {
-    const row = String.fromCharCode(65 + Math.floor(Math.random() * 10)); // Rows A-J
-    const number = Math.floor(Math.random() * 20) + 1; // Seat numbers 1-20
+    const row = String.fromCharCode(65 + Math.floor(Math.random() * 10)); 
+    const number = Math.floor(Math.random() * 20) + 1; 
     seat = `${row}${number}`;
   } while (usedSeats.includes(seat));
   return seat;
@@ -22,16 +20,16 @@ function BankDetails() {
   const [paymentData, setPaymentData] = useState({
     ticketQty: 0,
     ticketPrice: 0,
-    bankName: "Flutterwave",
+    bankName: "Flutterwave (EntryHub)",
     accountNumber: "0067100155",
   });
 
   const [tickets, setTickets] = useState([]); 
   const [currentTicket, setCurrentTicket] = useState(null); 
-  const [paymentStatus, setPaymentStatus] = useState("idle"); // idle | pending | success
+  const [paymentStatus, setPaymentStatus] = useState("idle"); 
+  const [copied, setCopied] = useState(false);
   const statusRef = useRef(null);
 
-  // Load data from localStorage
   useEffect(() => {
     const storedData = localStorage.getItem("ticketData");
     const storedTickets = localStorage.getItem("mockTickets");
@@ -41,28 +39,34 @@ function BankDetails() {
       setPaymentData((prev) => ({
         ...prev,
         ticketQty: parsed.quantity || 1,
-        ticketPrice: parsed.price || 0,
+        ticketPrice: Number(parsed.price) || 0, // Ensure it's a number
       }));
     }
     if (storedTickets) setTickets(JSON.parse(storedTickets));
   }, []);
 
-  // Scroll to status
   useEffect(() => {
     if (statusRef.current && paymentStatus !== "idle") {
-      statusRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+      statusRef.current.scrollIntoView({ behavior: "smooth", block: "center" });
     }
   }, [paymentStatus]);
 
   const totalAmount = paymentData.ticketQty * paymentData.ticketPrice;
 
+  const handleCopy = () => {
+    navigator.clipboard.writeText(paymentData.accountNumber);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
   const handleCompletePayment = () => {
     setPaymentStatus("pending");
 
+    // Mocking an API call delay
     setTimeout(() => {
       const usedSeats = tickets.map((t) => t.seat);
       const seat = generateUniqueSeat(usedSeats);
-      const qrToken = `${seat}-${Date.now()}`;
+      const qrToken = `ETH-${Math.random().toString(36).substr(2, 9).toUpperCase()}`;
 
       const ticket = {
         seat,
@@ -71,23 +75,25 @@ function BankDetails() {
         isUsed: false,
         row: seat.charAt(0),
         number: parseInt(seat.slice(1)),
+        purchaseDate: new Date().toLocaleDateString()
       };
 
       const updatedTickets = [...tickets, ticket];
       setTickets(updatedTickets);
       setCurrentTicket(ticket);
 
-      // Save locally
       localStorage.setItem("mockTickets", JSON.stringify(updatedTickets));
       setPaymentStatus("success");
-    }, 1500);
+    }, 2500);
   };
 
-  // ✅ REMOVED <DashboardLayout> wrap
   return (
     <div className="bank-details-wrapper">
       {paymentStatus === "idle" && (
         <div className="bank-content">
+          <h3 className="bank-title">Transfer to Bank Account</h3>
+          <p className="bank-instruction">Please make a transfer to the account below via your banking app.</p>
+          
           <div className="details-cons">
             <div className="sub-details">
               <p className="d-name">Bank Name</p>
@@ -95,32 +101,33 @@ function BankDetails() {
             </div>
             <div className="sub-details">
               <p className="d-name">Account Number</p>
-              <p className="d-info">{paymentData.accountNumber}</p>
+              <div className="account-copy-row">
+                <p className="d-info">{paymentData.accountNumber}</p>
+                <button className="copy-btn" onClick={handleCopy}>
+                  {copied ? "Copied!" : "Copy"}
+                </button>
+              </div>
             </div>
             <div className="sub-details">
-              <p className="d-name">Amount</p>
-              <p className="d-info">₦{paymentData.ticketPrice.toLocaleString()}</p>
+              <p className="d-name">Amount to Pay</p>
+              <p className="d-info highlight-price">₦{totalAmount.toLocaleString()}</p>
             </div>
           </div>
 
           <div className="ticket-detail-con">
             <div className="ticket-details">
-              <p className="ticket-info">Ticket Qty</p>
-              <p>{paymentData.ticketQty}</p>
+              <p className="ticket-info">Ticket(s)</p>
+              <p>{paymentData.ticketQty} x ₦{paymentData.ticketPrice.toLocaleString()}</p>
             </div>
-            <div className="ticket-details">
-              <p className="ticket-info">Ticket Price</p>
-              <p>₦{paymentData.ticketPrice.toLocaleString()}</p>
-            </div>
-            <div className="ticket-details">
-              <p className="ticket-info">Total Amount</p>
-              <p>₦{totalAmount.toLocaleString()}</p>
+            <div className="ticket-details total-row">
+              <p className="ticket-info">Total Payable</p>
+              <p className="total-val">₦{totalAmount.toLocaleString()}</p>
             </div>
           </div>
 
           <div className="bank-details-btn-con">
-            <button className="bank-details-btn go-home-btn" onClick={handleCompletePayment}>
-              Complete Payment ₦{totalAmount.toLocaleString()}
+            <button className="bank-details-btn" onClick={handleCompletePayment}>
+              I have Made the Transfer
             </button>
           </div>
         </div>
@@ -128,37 +135,33 @@ function BankDetails() {
 
       {paymentStatus === "pending" && (
         <div className="center-state" ref={statusRef}>
-          <div className="spinner"></div>
-          <p className="pending">Processing payment...</p>
+          <div className="custom-loader"></div>
+          <p className="pending-text">Confirming payment with your bank...</p>
         </div>
       )}
 
       {paymentStatus === "success" && currentTicket && (
-        <div className="center-state success">
-          <img src={check} alt="Success" className="check-img" />
-          <h2 className="payment-success-title">Payment Successful</h2>
-          <p className="success-message">Your ticket has been generated!</p>
+        <div className="center-state success-container animate-fade-in">
+          <img src={check} alt="Success" className="check-img bounce-in" />
+          <h2 className="payment-success-title">Payment Received!</h2>
+          <p className="success-message">Your seat has been reserved successfully.</p>
 
-          <div className="qr-container" style={{ background: "white", padding: "16px", margin: "16px 0", borderRadius: "8px" }}>
-            <QRCode
-              value={`https://entryhub.vercel.app/scan?token=${currentTicket.qrToken}`}
-              size={180}
-            />
-            <p style={{marginTop: "10px", fontWeight: "600"}}>Seat: {currentTicket.seat}</p>
+          <div className="ticket-card-ui">
+             <div className="qr-wrapper">
+                <QRCode
+                  value={`https://entryhub.vercel.app/scan?token=${currentTicket.qrToken}`}
+                  size={160}
+                  level="H"
+                />
+             </div>
+             <div className="ticket-meta">
+                <p className="meta-label">SEAT NUMBER</p>
+                <p className="meta-value">{currentTicket.seat}</p>
+             </div>
           </div>
 
-          <button className="go-home-btn" onClick={() => navigate("/")}>
-            Finish & Go Home
-          </button>
-        </div>
-      )}
-
-      {paymentStatus === "failed" && (
-        <div className="center-state failed">
-          <img src={failed} alt="Failed" className="check-img failed-img" />
-          <h2 className="payment-error-title">Payment Failed</h2>
-          <button className="go-home-btn" onClick={() => setPaymentStatus("idle")}>
-            Please Try Again
+          <button className="finish-btn" onClick={() => navigate("/")}>
+            View in "My Tickets"
           </button>
         </div>
       )}

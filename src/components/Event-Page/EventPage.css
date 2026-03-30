@@ -4,11 +4,12 @@
   flex-direction: column;
   gap: 1.5rem;
   width: 100%;
-  max-width: 900px;
+  max-width: 1000px; /* ✅ Increased to let desktop cards breathe */
   margin: 0 auto;
+  padding: 20px 0;
 }
 
-/* --- THE MOVIE CARDS (Figma Style) --- */
+/* --- THE MOVIE CARDS --- */
 .event-list-card {
   display: flex;
   background: #ffffff;
@@ -17,54 +18,59 @@
   gap: 1.5rem;
   align-items: center;
   border: 1px solid #eef2f1;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
-  transition: transform 0.2s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+  transition: all 0.3s ease;
+  cursor: pointer;
 }
 
 .event-list-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.04);
+  transform: translateX(8px); /* ✅ Subtle "slide" effect on hover */
+  border-color: #ff9f2b;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.06);
 }
 
 .event-card-img {
-  width: 110px;
-  height: 110px;
+  width: 130px; /* ✅ Consistent size */
+  height: 130px;
   border-radius: 1rem;
   object-fit: cover;
+  flex-shrink: 0;
 }
 
 /* --- TEXT CONTENT --- */
 .event-card-info {
   flex: 1;
   text-align: left;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .event-card-info h3 {
-  font-size: 1.25rem;
-  color: #4d6460; /* Dark Teal from your Suposed to look image */
+  font-size: 1.4rem;
+  color: #2c3e36; 
   margin-bottom: 0.3rem;
-  font-weight: 700;
+  font-weight: 800;
 }
 
 .card-category {
-  color: #ff9f2b; /* Matching your Dashboard button color */
+  color: #ff9f2b; 
   font-size: 0.85rem;
   font-weight: 800;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
   margin-bottom: 0.4rem;
 }
 
 .card-meta {
-  color: #ffa726; /* Lighter orange for date */
-  font-size: 0.9rem;
+  color: #ffa726; 
+  font-size: 1rem;
   font-weight: 600;
-  margin-bottom: 0.2rem;
+  margin-bottom: 0.4rem;
 }
 
 .card-meta-loc {
-  color: #5c7269; /* Gray-teal for location */
-  font-size: 0.9rem;
+  color: #5c7269; 
+  font-size: 0.95rem;
   font-weight: 700;
   display: flex;
   align-items: center;
@@ -76,45 +82,32 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  height: 100px;
+  height: 110px;
   align-items: flex-end;
+  padding-left: 1rem;
 }
 
 .bottom-actions-row {
   display: flex;
-  gap: 0.8rem;
+  gap: 1rem;
 }
 
-.event-card-actions svg {
-  cursor: pointer;
-  transition: opacity 0.2s;
-}
+/* --- RESPONSIVE FIX --- */
 
-.event-card-actions svg:hover {
-  opacity: 0.7;
-}
+@media (max-width: 768px) {
+  .event-list {
+    padding: 10px;
+  }
 
-/* --- LOADING & EMPTY STATES --- */
-.loading-text,
-.no-events {
-  text-align: center;
-  font-size: 1.1rem;
-  color: #5c7269;
-  margin-top: 3rem;
-  font-weight: 600;
-}
-
-/* --- RESPONSIVE FIX FOR CARDS --- */
-@media (max-width: 596px) {
   .event-list-card {
     flex-direction: column;
     align-items: flex-start;
-    gap: 1rem;
+    padding: 1rem;
   }
 
   .event-card-img {
     width: 100%;
-    height: 180px;
+    height: 200px;
   }
 
   .event-card-actions {
@@ -122,84 +115,8 @@
     width: 100%;
     height: auto;
     justify-content: space-between;
-    align-items: center;
-    border-top: 1px solid #eee;
-    padding-top: 10px;
-  }
-}
-
-/* --- DESKTOP FIX --- */
-@media (min-width: 768px) {
-  .event-list {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 0 2rem;
-  }
-
-  .event-list-card {
-    flex-direction: row; /* image left, text right */
-    align-items: center;
-    gap: 1.5rem;
-    padding: 1.2rem;
-  }
-
-  .event-card-img {
-    width: 110px;
-    height: 110px;
-    flex-shrink: 0; /* prevents image from squishing */
-  }
-
-  .event-card-info {
-    flex: 1;
-  }
-
-  .event-card-actions {
-    flex-direction: column;
-    height: 100px;
-    align-items: flex-end;
-    width: auto;
-  }
-}
-
-@media (min-width: 1024px) {
-  .event-list {
-    max-width: 900px;
-  }
-
-  .event-list-card {
-    padding: 1.5rem;
-    gap: 2rem;
-  }
-
-  .event-card-img {
-    width: 130px;
-    height: 130px;
-  }
-}
-
-@media (min-width: 1050px) {
-  .event-list {
-    max-width: 750px;
-    padding: 0 2rem;
-  }
-
-  .event-list-card {
-    flex-direction: row;
-    align-items: center;
-    gap: 1.5rem;
-    padding: 1.2rem;
-  }
-
-  .event-card-img {
-    width: 110px;
-    height: 110px;
-    flex-shrink: 0;
-  }
-
-  .event-card-actions {
-    flex-direction: column;
-    width: auto;
-    height: 100px;
-    align-items: flex-end;
+    border-top: 1px solid #f0f0f0;
+    margin-top: 10px;
+    padding: 10px 0 0 0;
   }
 }

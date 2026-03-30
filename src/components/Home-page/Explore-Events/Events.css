@@ -1,179 +1,200 @@
-.event-section{
-  padding: 60px 5%;
+/* --- Section & Animation --- */
+.event-section {
+  padding: 80px 5%; /* Increased padding for better breathing room */
   background-color: #fff; 
-  opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
   overflow: hidden; 
 }
 
-.event-section.hidden{
+.event-section.hidden {
   opacity: 0;
   transform: translateY(40px);
 }
 
-.event-section.fade-in-up{
+.event-section.fade-in-up {
   opacity: 1;
   transform: translateY(0);
   transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
 } 
 
-.event-container{
-  width: 100%;
+.event-container {
+  max-width: 1200px; 
   margin: 0 auto; 
 }
 
-.event-content{
- text-align: center;
+.event-content {
+  text-align: center;
   margin-bottom: 40px;
 }
 
-.event-header{
-  font-size: 2.4375rem;
-  font-weight: 600;
-  font-style: semibold;
-  margin-bottom: 20px;
+.event-header {
+  font-size: 2.5rem;
+  font-weight: 800; /* Made bolder to match Figma */
+  margin-bottom: 15px;
+  color: #0B2B1E; /* Deep green from your theme */
 }
 
-.event-text{
-  font-size: 1.2rem;
-  font-weight: 500;
-  line-height: 100%;
+.event-text {
+  font-size: 1.1rem;
+  color: #666;
+  max-width: 600px;
   margin: 0 auto;
-
 } 
 
-/* Filter Styling */
-.filter-group{
-  display:flex;
-  gap: 12px;
+/* --- Filter Styling --- */
+.filter-group {
+  display: flex;
+  gap: 15px;
   justify-content: center;
-  margin-bottom: 40px;
+  margin-bottom: 50px;
   flex-wrap: wrap;
-   
 }
 
-.filter-btn{
-  background-color: transparent;
-  padding: 10px 25px;
-  font-size: 14px;
-  font-weight: 500;
+.filter-btn {
+  background-color: #fff;
+  padding: 10px 28px;
+  font-size: 0.9rem;
+  font-weight: 600;
   cursor: pointer;
-  border: 1,5px solid #000;
-  border-radius: 8px;
-  outline: none;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  border: 1.5px solid #E2E8F0;
+  border-radius: 12px; /* Rounded rectangle like Figma */
+  transition: all 0.2s ease;
+  color: #4A5568;
 }
 
-.filter-btn.active{
-  background-color:  #FF8C00;
-  border: none;
-  color: #fff;
-  padding: 10px 25px;
+.filter-btn:hover {
+  border-color: #FF8C00;
+  color: #FF8C00;
 }
 
-/* Make Cinema always look like CTA */
-.filter-btn.cinema-cta{
+.filter-btn.active {
   background-color: #FF8C00;
-  border: none;
+  border-color: #FF8C00;
   color: #fff;
+  box-shadow: 0 4px 12px rgba(255, 140, 0, 0.2);
 }
 
-.filter-btn.cinema-cta:hover{
-  background-color: #e67e00;
-}
-
-/* Grid styling */
-.event-grid{
+/* --- Grid & Card Styling --- */
+.event-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 30px;
 }
 
-/* Event-card styling */
-
-.event-card-container{
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-}
-
-.event-card{
-  background: #f8f9fa;
-  color: #CED5D2;
-  border-radius: 20px;
+.event-card {
+  background: #ffffff;
+  border-radius: 24px; /* More rounded as per modern design */
   overflow: hidden;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-  transition: transform 0.3s ease;
-  width: 100%;
-  max-width: 400px;
-  margin: 0 auto;
-  flex-direction: column;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.04);
+  border: 1px solid #f0f0f0;
+  transition: all 0.3s ease;
   display: flex;
-  
-}
-.event-card:hover{
-  transform: translateY(-5px);
+  flex-direction: column;
+  cursor: pointer;
 }
 
+.event-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+}
 
-
-.card-image img{
+/* --- Card Image & Status Tag --- */
+.card-image {
+  position: relative;
   width: 100%;
   height: 200px;
-  object-fit: cover;
-  display: block;
-  flex-shrink: 0;
-
-   /* display: grid;
-   grid-template-columns: repeat(3, 1fr); */
 }
 
-.card-body{
+.card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.status-tag {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: white;
+  padding: 5px 12px;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+/* --- Card Body & Footer Flex --- */
+.card-body {
   padding: 20px;
-  background-color: #CED5D2;
-  object-fit: cover;
-
+  background: #fff;
 }
 
-.card-title{
-  font-size: 1.1rem;
-  font-weight: 600;
-  margin-bottom: 15px;
-  color: #333;
+.card-title {
+  font-size: 1.15rem;
+  font-weight: 800;
+  margin-bottom: 12px;
+  color: #1a1a1a;
 }
 
-.card-meta p {
-  font-size: 0.9rem;
-  color: #777;
-  margin: 5px 0;
+/* THE KEY FIX: Aligns Meta Data and Button side-by-side */
+.card-footer-flex {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end; /* Keeps button at the bottom of the content area */
+  gap: 10px;
+}
+
+.card-meta-info {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.icon-text {
+  font-size: 0.85rem;
+  color: #718096;
   display: flex;
   align-items: center;
-  justify-content: flex-start;
   gap: 8px;
 }
 
-.icon-wrapper-loa{
-  width: 20px;
-  height: 20px;
-   display: flex;
-   align-items: center;
-   justify-content: center;
-  flex-shrink: 0;
+.icon-wrapper-loa img {
+  width: 16px;
+  height: 16px;
 }
 
-.card-price{
-  font-weight: 700;
+.card-price-text {
+  font-weight: 800;
   color: #1a1a1a;
-  margin-top: 10px !important;
+  margin-top: 8px;
+  font-size: 1rem;
 }
 
-.btn-filled:hover{
+/* --- Button Styling --- */
+.btn-get-tickets {
+  background-color: #FF8C00;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 0.85rem;
+  cursor: pointer;
+  white-space: nowrap; /* Prevents text from breaking into two lines */
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 10px rgba(255, 140, 0, 0.15);
+}
+
+.btn-get-tickets:hover {
   background-color: #e67e00;
+  transform: scale(1.05);
 }
 
-
-
-
-
-
+/* No events state */
+.no-events {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 50px;
+  color: #a0aec0;
+  font-weight: 600;
+}
