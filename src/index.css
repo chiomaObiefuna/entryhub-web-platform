@@ -1,50 +1,78 @@
-
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap');
 
-*{
+* {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
   font-family: "Plus Jakarta Sans", sans-serif;
 }
-body{
+
+body {
   background-color: #FFFFFF;
-  
+  color: #5c7269;
+  line-height: 1.5;
+  overflow-x: hidden;
 }
- .link-nav{
+
+/* --- THE FIX FOR THE "SCATTERED" LAYOUT --- */
+
+/* This ensures the Dashboard sidebar and content are side-by-side */
+.dashboard-layout {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  height: 100vh;
+  width: 100%;
+}
+
+/* This fixes the Home Page (Explore Events) Grid */
+.event-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 24px;
+  padding: 20px 0;
+}
+
+/* Navbar Layout */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 10%;
+  width: 100%;
+}
+
+/* Ensure images don't blow up and break the layout */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* --- YOUR EXISTING STYLES --- */
+
+.link-nav {
   text-decoration: none;
   color: inherit;
-  line-height: 1;
   cursor: pointer;
- }
- /* .navbar{
- master
-  padding-left: 10%;
-  padding-right: 10%;
-  font-weight: 400;
-  transition: all 0.3s ;
-  width: 100%; 
-  box-sizing: border-box;
-}  */
- .sign-but{
-  
-  background-color:#FF8C00;
+}
+
+.sign-but {
+  background-color: #FF8C00;
   color: #FFFFFF;
   padding: 14px 25px;
   font-size: 16px;
-   cursor: pointer;
+  cursor: pointer;
   border: none;
   border-radius: 8px;
-  outline: 0;
-  transition: background-color 0.3s ease, color 0.3s ease;
-  
- }
-  .sign-but:hover{
-    background-color: #FFf;
-    color: #888;
-    border: 1px solid #FF8C00;
-  }
+  transition: all 0.3s ease;
+}
 
-  .and-span{
-    color: #FF8C00;
-  }
+.sign-but:hover {
+  background-color: #FFF;
+  color: #FF8C00;
+  border: 1px solid #FF8C00;
+}
+
+.and-span {
+  color: #FF8C00;
+}
