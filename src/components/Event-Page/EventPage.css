@@ -77,19 +77,47 @@
   gap: 0.4rem;
 }
 
-/* --- ACTION ICONS (Far Right) --- */
+/* --- ACTION ICONS (Far Right) FIX --- */
+
 .event-card-actions {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  height: 110px;
+  height: 110px; /* Maintains vertical spacing */
   align-items: flex-end;
   padding-left: 1rem;
 }
 
 .bottom-actions-row {
   display: flex;
-  gap: 1rem;
+  gap: 1.2rem; /* Matches Figma spacing */
+}
+
+.card-icon-btn {
+  background: transparent; /* ✅ Removes the gray square box */
+  border: none;             /* ✅ Removes the border */
+  padding: 0;               /* ✅ Removes inner spacing */
+  cursor: pointer;
+  color: #5c7269;           /* ✅ Matches the dark teal color in Figma */
+  transition: transform 0.2s ease, color 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card-icon-btn:hover {
+  color: #ff9f2b;           /* ✅ Subtle orange highlight on hover */
+  transform: scale(1.1);    /* ✅ Small pop effect */
+}
+
+/* Ensure SVG strokes are consistent with Figma */
+.card-icon-btn svg {
+  stroke-width: 1.5px;      /* ✅ Matches the thin, elegant Figma lines */
+}
+
+/* Adjust Heart Icon specifically if needed */
+.card-icon-btn:first-child {
+  margin-top: 5px;          /* Positions heart at the top corner */
 }
 
 /* --- RESPONSIVE FIX --- */
