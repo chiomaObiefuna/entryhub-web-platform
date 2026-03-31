@@ -44,9 +44,10 @@ const TicketResales = () => {
   const formatNGN = (val) => "₦" + val.toLocaleString();
 
   return (
-    <div className="resale-page-wrapper">
+    /* ✅ Added ID for smooth scrolling from the homescreen */
+    <div id="ticket-resale-section" className="resale-page-wrapper">
       
-      {/* STEP 1: PREVIEW */}
+      {/* STEP 1: PREVIEW (The card shown on homescreen) */}
       {currentStep === 1 && (
         <div className="step-container animate-in">
           <div className="hero-poster-container">
@@ -58,6 +59,7 @@ const TicketResales = () => {
               <p className="price-main">{formatNGN(price)}</p>
               <p className="price-orig">Market Value: <span>{formatNGN(30000)}</span></p>
             </div>
+            {/* Navigates to the form step */}
             <button className="orange-btn" onClick={() => setCurrentStep(2)}>List for Sale</button>
           </div>
         </div>
@@ -123,7 +125,7 @@ const TicketResales = () => {
           <div className="success-icon-green">✓</div>
           <h2 className="success-title">Successfully Listed!</h2>
           <p className="success-sub">We will notify you once a buyer is found.</p>
-          <button className="orange-btn-full" onClick={() => navigate("/")}>Return Home</button>
+          <button className="orange-btn-full" onClick={() => { setCurrentStep(1); navigate("/"); }}>Return Home</button>
         </div>
       )}
 

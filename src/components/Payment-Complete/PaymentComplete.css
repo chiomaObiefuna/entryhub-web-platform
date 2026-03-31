@@ -1,51 +1,62 @@
-/* ── Loading / Disabled State ────────────────────────── */
-.btn:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-  filter: grayscale(0.5);
-  transform: none !important;
-  box-shadow: none !important;
+.payment-complete-container {
+  width: 100%;
+  padding: 5px 60px 40px 60px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
 }
 
-/* ── Specific Button Hierarchy ───────────────────────── */
-/* If you want the "Home" button to look like a 'secondary' action */
-.btn-home {
+.payment-content-body {
+  width: 100%;
+  max-width: 900px;
   background: transparent;
-  border: 2px solid var(--amber);
-  color: var(--amber);
+  margin-top: -10px;
 }
 
-.btn-home:hover {
-  background: var(--amber-glow);
-  color: var(--amber-dk);
-  border-color: var(--amber-dk);
+.secure-label { font-size: 10px; font-weight: 800; color: #a0afa8; text-transform: uppercase; margin-bottom: 4px; }
+.section-heading { font-size: 28px; font-weight: 800; color: #5c7269; margin-bottom: 25px; }
+
+.fields-stack { display: flex; flex-direction: column; gap: 12px; }
+.row-half { display: flex; gap: 15px; }
+
+.float-wrap { flex: 1; border: 1px solid #dcd8ce; border-radius: 12px; padding: 10px 18px; display: flex; flex-direction: column; }
+.float-wrap.focused { border-color: #ff9f2b; }
+.float-label { font-size: 10px; font-weight: 800; color: #a0afa8; text-transform: uppercase; }
+.float-input { border: none; outline: none; background: transparent; font-size: 16px; font-weight: 700; color: #5c7269; padding: 2px 0; }
+
+.or-divider { display: flex; align-items: center; gap: 15px; margin: 25px 0; }
+.or-line { flex: 1; height: 1px; background: #dcd8ce; }
+.or-text { font-weight: 800; color: #a0afa8; font-size: 13px; }
+
+.method-row { width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 15px 20px; border: 1px solid #dcd8ce; border-radius: 15px; background: transparent; cursor: pointer; }
+.method-lhs { display: flex; align-items: center; gap: 12px; font-weight: 800; color: #5c7269; }
+.method-ico { color: #ff9f2b; font-size: 22px; }
+.pay-chev { color: #a0afa8; }
+
+/* Combined Row logic */
+.payment-footer-combined {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-top: 40px;
+  border-top: 1px solid #dcd8ce;
+  padding-top: 25px;
+  width: 100%;
 }
 
-/* ── Fix for iOS Input Zoom ─────────────────────────── */
-/* Prevents iPhones from zooming in automatically on focus */
-@media screen and (max-width: 768px) {
-  .float-input {
-    font-size: 16px; /* 16px is the magic number to stop auto-zoom */
-  }
-}
+.sum-item { display: flex; gap: 10px; font-weight: 700; color: #5c7269; margin-bottom: 4px; }
+.orange { color: #ff9f2b; }
 
-/* ── Success Animation for the Pay Button ────────────── */
-.btn-pay.loading {
-  position: relative;
-  color: transparent; /* Hide text while loading */
-}
+.footer-actions { display: flex; gap: 15px; }
+.btn-cancel { padding: 14px 30px; border: 1px solid #ff9f2b; background: white; color: #ff9f2b; border-radius: 12px; font-weight: 800; cursor: pointer; white-space: nowrap; }
+.btn-pay-now { padding: 14px 40px; background: #ff9f2b; color: white; border: none; border-radius: 12px; font-weight: 800; cursor: pointer; white-space: nowrap; }
 
-.btn-pay.loading::after {
-  content: "";
-  position: absolute;
-  width: 20px;
-  height: 20px;
-  border: 3px solid rgba(255,255,255,0.3);
-  border-top-color: #fff;
-  border-radius: 50%;
-  animation: btn-spin 0.8s linear infinite;
-}
+.bank-back-btn { background: transparent; border: none; display: flex; align-items: center; gap: 8px; color: #5c7269; font-weight: 700; cursor: pointer; margin-bottom: 15px; }
 
-@keyframes btn-spin {
-  to { transform: rotate(360deg); }
+.btn:hover { filter: brightness(0.95); }
+
+@media (max-width: 600px) {
+  .footer-row { flex-direction: column-reverse; }
+  .row-half { flex-direction: column; }
+  .payment-card { padding: 20px; }
 }

@@ -20,12 +20,12 @@ function DashboardLayout({ title, children }) {
 
   const active = getActiveTab();
 
-  // Logic to show/hide "Back" based on current route (matching your screenshots)
-  const showBackBtn = location.pathname.includes("/book") || location.pathname.includes("/event/");
+  // Logic to identify the DetailsEvent page
+  const isDetailsPage = location.pathname.includes("/event/");
+  const showBackBtn = location.pathname.includes("/book") || isDetailsPage;
 
   return (
     <div className="dashboard-layout">
-      {/* Mobile Overlay */}
       {menuOpen && <div className="overlay" onClick={() => setMenuOpen(false)} />}
 
       {/* --- SIDEBAR SECTION --- */}
@@ -41,19 +41,15 @@ function DashboardLayout({ title, children }) {
               <li className={`menu-item ${active === "dashboard" ? "active" : ""}`} onClick={() => { navigate("/dashboard"); setMenuOpen(false); }}>
                 <span className="word">Dashboard</span>
               </li>
-
               <li className={`menu-item ${active === "home" ? "active" : ""}`} onClick={() => { navigate("/"); setMenuOpen(false); }}>
                 <span className="word">Home</span>
               </li>
-
               <li className={`menu-item ${active === "events" ? "active" : ""}`} onClick={() => { navigate("/cinema"); setMenuOpen(false); }}>
                 <span className="word">Events</span>
               </li>
-
               <li className={`menu-item ${active === "my ticket" ? "active" : ""}`} onClick={() => { navigate("/resale"); setMenuOpen(false); }}>
                 <span className="word">My tickets</span>
               </li>
-
               <li className={`menu-item ${active === "payment" ? "active" : ""}`} onClick={() => { navigate("/bankdetails"); setMenuOpen(false); }}>
                 <span className="word">Payment</span>
               </li>
@@ -77,13 +73,12 @@ function DashboardLayout({ title, children }) {
       {/* --- MAIN CONTENT AREA --- */}
       <div className="main-content">
         <div className="head-text">
-          {/* This button is hidden by DashboardLayout.css on desktop */}
           <button className="hamburger-btn" onClick={() => setMenuOpen(true)}>☰</button>
           <h1 className="page-title">{title}</h1>
         </div>
 
-        <div className="page-body">
-          {/* Conditional Back Button: only shows on detail/booking pages per your screenshot */}
+        {/* ✅ ADDED CONDITIONAL CLASS HERE */}
+        <div className={`page-body ${isDetailsPage ? "transparent-body" : ""}`}>
           {showBackBtn && (
             <div className="back-btn-con">
               <button className="back-button" onClick={() => navigate(-1)}>

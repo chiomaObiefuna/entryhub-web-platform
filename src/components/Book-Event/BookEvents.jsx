@@ -11,14 +11,14 @@ const BookEvents = () => {
   const [eventData, setEventData] = useState(null);
   const [loading, setLoading] = useState(true);
   
-  // Booking States matching your image
+  // Booking States
   const [ticketQuantity, setTicketQuantity] = useState(1);
   const [sector, setSector] = useState("107");
   const [row, setRow] = useState("4");
   const [ticketType, setTicketType] = useState("Cinema");
   const [seat, setSeat] = useState("7");
 
-  // Dynamic Price Logic: VIP is double the base price
+  // Dynamic Price Logic
   const ticketTiers = useMemo(() => ({
     Cinema: eventData?.price || 15000,
     VIP: (eventData?.price || 15000) * 2,
@@ -32,7 +32,6 @@ const BookEvents = () => {
         if (data) setEventData(data);
         setLoading(false);
       } catch (err) {
-        console.error("Fetch error:", err);
         setLoading(false);
       }
     };
@@ -42,10 +41,11 @@ const BookEvents = () => {
   const currentPrice = ticketTiers[ticketType] || 15000;
   const totalAmount = ticketQuantity * currentPrice;
 
+  // ✅ FIXED: Now leads to Step 2 (Details-Events)
   const handleBooking = () => {
     localStorage.setItem("ticketData", JSON.stringify({
       quantity: ticketQuantity,
-      price: totalAmount,
+      price: currentPrice, // Store unit price for calculations in Step 2
       ticketType,
       eventTitle: eventData?.title,
       sector, 
@@ -53,7 +53,9 @@ const BookEvents = () => {
       seat,
       eventId: id
     }));
-    navigate(`/eventDetails/${id}`);
+
+    // Redirect to Checkout (Details-Events)
+    navigate(`/checkout/${id}`);
   };
 
   if (loading) return <div className="status-message"><p>Loading showtimes...</p></div>;
@@ -81,7 +83,6 @@ const BookEvents = () => {
               <p className="ev-loc">📍 {eventData?.location || "Abuja"}</p>
             </div>
 
-            {/* Figma Icons - Fully Transparent Backgrounds */}
             <div className="ev-actions-side">
                <button className="icon-btn-naked heart" type="button">
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ff8a00" strokeWidth="2.5">
@@ -96,7 +97,6 @@ const BookEvents = () => {
                     </svg>
                   </button>
                   <button className="icon-btn-naked" type="button">
-                    {/* Fixed SVG: Removed duplicate fill attribute */}
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="#ff8a00" stroke="#ff8a00" strokeWidth="2.5">
                       <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>
                     </svg>
@@ -155,7 +155,7 @@ const BookEvents = () => {
           {/* --- FOOTER BUTTONS --- */}
           <div className="footer-row">
             <button className="btn btn-pill-orange" type="button" onClick={() => navigate("/")}>
-              🏠 Home
+              Home
             </button>
             <button className="btn btn-pill-orange" type="button" onClick={handleBooking}>
               Book Event

@@ -1,25 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from 'react-router-dom';
+import { IoHeartOutline, IoShareSocialOutline, IoBookmarkOutline, IoArrowBack, IoHomeOutline, IoChevronForward } from "react-icons/io5";
 import "./DetailsEvents.css";
-
-// ─────────────────────────────────────────────────────────────
-// PAYMENT METHOD ROW COMPONENT
-// ─────────────────────────────────────────────────────────────
-function PayMethod({ icon, label, selected, onClick }) {
-  return (
-    <button
-      className={`pay-row${selected ? " pay-selected" : ""}`}
-      onClick={onClick}
-      type="button"
-    >
-      <div className="pay-left">
-        <span className="pay-ico">{icon}</span>
-        <span className="pay-lbl">{label}</span>
-      </div>
-      <span className="pay-chev">›</span>
-    </button>
-  );
-}
 
 const DetailsEvents = () => {
   const navigate = useNavigate();
@@ -27,20 +9,17 @@ const DetailsEvents = () => {
 
   const [eventData, setEventData] = useState(null);
   const [loading, setLoading] = useState(true);
-
-  // Figma Default values
-  const [fullName, setFullName] = useState("Korede Bello");
-  const [email, setEmail] = useState("koredebello4life@gmail.com");
+  const [fullName, setFullName] = useState("");
+  const [email, setEmail] = useState("");
   const [payMethod, setPayMethod] = useState("");
-  const [toast, setToast] = useState({ show: false, msg: "" });
 
   const stored = JSON.parse(localStorage.getItem("ticketData") || "{}");
   const { 
     quantity = 1, 
-    price = 30000, 
+    price = 15000, 
     sector = "107", 
     row = "4", 
-    ticketType = "cinema", 
+    ticketType = "Cinema", 
     seat = "7" 
   } = stored;
 
@@ -61,108 +40,93 @@ const DetailsEvents = () => {
   }, [id]);
 
   const handleProceed = () => {
-    if (!fullName.trim() || !email.trim() || !payMethod) {
-      setToast({ show: true, msg: "Please complete all fields" });
-      setTimeout(() => setToast({ show: false, msg: "" }), 2000);
-      return;
-    }
-    navigate("/completePayment");
+    if (!fullName.trim() || !email.trim() || !payMethod) return;
+    localStorage.setItem("ticketData", JSON.stringify({ ...stored, fullName, email, payMethod }));
+    payMethod === "bank" ? navigate("/bankdetails") : navigate(`/payment/${id}`);
   };
 
-  if (loading) return <div className="ed-loading">Preparing checkout...</div>;
+  if (loading) return <div className="ed-loading">Loading...</div>;
 
   return (
-    <div className="details-events-content">
-      <h1 className="ed-main-page-title">Event Details</h1>
-      
-      <div className="ed-card">
-        
-        {/* ── Event Header (White Banner) ── */}
-        <div className="ed-event-row">
+    <div className="ed-main-wrapper">
+      <div className="ed-content-body">
+        {/* --- Back Button --- */}
+        <button className="bank-back-btn" onClick={() => navigate(-1)}>
+          <IoArrowBack /> Back
+        </button>
+
+        {/* --- Event Banner --- */}
+        <div className="ed-banner-row">
           <div className="poster-wrap">
              <img src={eventData?.image || "https://via.placeholder.com/300"} alt="Poster" />
           </div>
 
           <div className="ed-event-info">
-            <p className="ed-ev-title">{eventData?.title || "Shelter in Cinema Now"}</p>
-            <p className="ed-ev-cat">Cinema</p>
+            <p className="ed-ev-title">{eventData?.title || "Black Panther"}</p>
+            <p className="ed-ev-cat">cinema</p>
             <p className="ed-ev-date-orange">30th March, 2026 / 5:00 Pm</p>
-            <p className="ed-ev-loc-gray">📍 Abuja</p>
+            <p className="ed-ev-loc-gray">📍 Lagos</p>
           </div>
 
           <div className="ed-ev-icons">
-             <span className="heart-icon-orange">🧡</span>
-             <div className="bottom-icons-group">
-                <span>🔗</span>
-                <span className="bookmark-icon-orange">🔖</span>
-             </div>
+             <IoHeartOutline className="ed-ico-orange" />
+             <IoShareSocialOutline />
+             <IoBookmarkOutline className="ed-ico-orange" />
           </div>
         </div>
 
-        {/* ── Ticket Details Summary Bar ── */}
+        {/* --- Ticket Details --- */}
         <h2 className="ed-sec-title">Ticket Details</h2>
-        <div className="ed-summary-bar">
-          <div className="ed-sum-item">
-            <span className="ed-sum-lbl">Number of tickets</span>
-            <span className="ed-sum-val">{quantity}</span>
-          </div>
-          <div className="ed-sum-item">
-            <span className="ed-sum-lbl">Sector</span>
-            <span className="ed-sum-val">{sector}</span>
-          </div>
-          <div className="ed-sum-item">
-            <span className="ed-sum-lbl">Row</span>
-            <span className="ed-sum-val">{row}</span>
-          </div>
-          <div className="ed-sum-item">
-            <span className="ed-sum-lbl">Ticket type</span>
-            <span className="ed-sum-val">{ticketType}</span>
-          </div>
-          <div className="ed-sum-item">
-            <span className="ed-sum-lbl">Seat</span>
-            <span className="ed-sum-val">{seat}</span>
-          </div>
-          <div className="ed-sum-item last">
-            <span className="ed-sum-lbl">Price</span>
-            <span className="ed-sum-val">₦{price.toLocaleString()}</span>
-          </div>
-          <button className="ed-sum-close">✕</button>
+        <div className="ed-summary-grid">
+          <div className="ed-sum-pill"><span className="ed-sum-lbl">Tickets</span><span className="ed-sum-val">{quantity}</span></div>
+          <div className="ed-sum-pill"><span className="ed-sum-lbl">Sector</span><span className="ed-sum-val">{sector}</span></div>
+          <div className="ed-sum-pill"><span className="ed-sum-lbl">Row</span><span className="ed-sum-val">{row}</span></div>
+          <div className="ed-sum-pill"><span className="ed-sum-lbl">Type</span><span className="ed-sum-val">{ticketType}</span></div>
+          <div className="ed-sum-pill"><span className="ed-sum-lbl">Seat</span><span className="ed-sum-val">{seat}</span></div>
+          <div className="ed-sum-pill"><span className="ed-sum-lbl">Price</span><span className="ed-sum-val">₦{price.toLocaleString()}</span></div>
         </div>
 
-        <div className="ed-total-display">
+        <div className="ed-total-row-inline">
           <span className="ed-total-lbl">Total Amount</span>
           <span className="ed-total-price">₦{totalAmount.toLocaleString()}</span>
         </div>
 
-        {/* ── Personal Information ── */}
+        {/* --- Personal Info --- */}
         <h2 className="ed-sec-title">Personal Information</h2>
         <div className="ed-input-stack">
           <div className="ed-input-group">
             <label>Full Name</label>
-            <input type="text" value={fullName} onChange={e => setFullName(e.target.value)} />
+            <input type="text" placeholder="Korede Bello" value={fullName} onChange={e => setFullName(e.target.value)} />
           </div>
           <div className="ed-input-group">
             <label>Email</label>
-            <input type="email" value={email} onChange={e => setEmail(e.target.value)} />
+            <input type="email" placeholder="koredebello4life@gmail.com" value={email} onChange={e => setEmail(e.target.value)} />
           </div>
         </div>
 
-        {/* ── Payment Methods ── */}
+        {/* --- Payment Methods --- */}
         <h2 className="ed-sec-title">Choose Payment Method</h2>
-        <div className="ed-methods-list">
-          <PayMethod icon="🏛️" label="Bank Transfer" selected={payMethod === "bank"} onClick={() => setPayMethod("bank")} />
-          <PayMethod icon="₿" label="Bitcoin Wallet" selected={payMethod === "crypto"} onClick={() => setPayMethod("crypto")} />
-          <PayMethod icon="💳" label="New Card" selected={payMethod === "card"} onClick={() => setPayMethod("card")} />
+        <div className="ed-methods-stack">
+          <div className={`pay-row ${payMethod === "bank" ? "selected" : ""}`} onClick={() => setPayMethod("bank")}>
+            <span className="pay-left-content">🏛️ Bank Transfer</span>
+            <IoChevronForward className="pay-chev" />
+          </div>
+          <div className={`pay-row ${payMethod === "card" ? "selected" : ""}`} onClick={() => setPayMethod("card")}>
+            <span className="pay-left-content">💳 New Card</span>
+            <IoChevronForward className="pay-chev" />
+          </div>
         </div>
 
-        {/* ── Action Buttons ── */}
-        <div className="ed-footer">
-          <button className="ed-btn ed-btn-home" onClick={() => navigate("/")}>🏠 Home</button>
-          <button className="ed-btn ed-btn-proceed" onClick={handleProceed}>Proceed To Payment</button>
+        {/* --- Footer Buttons --- */}
+        <div className="ed-footer-combined">
+          <button className="ed-btn-home" onClick={() => navigate("/")}>
+            <IoHomeOutline /> Home
+          </button>
+          <button className="ed-btn-proceed" onClick={handleProceed}>
+            Proceed To Payment
+          </button>
         </div>
       </div>
-
-      {toast.show && <div className="ed-toast show">{toast.msg}</div>}
     </div>
   );
 };
