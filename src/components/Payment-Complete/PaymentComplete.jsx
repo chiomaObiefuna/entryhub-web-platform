@@ -47,15 +47,41 @@ export default function PaymentComplete() {
     setExpiry(raw);
   };
 
-  const handlePay = () => {
-    setIsProcessing(true);
-    const loadingToast = toast.loading("Processing...");
-    setTimeout(() => {
-      toast.dismiss(loadingToast);
-      toast.success("Payment Successful!");
-      navigate('/');
-    }, 2500);
-  };
+ const handlePay = () => {
+  if (!fullName || cardNumber.length < 19 || !expiry || cvv.length < 3) {
+    toast.error("Please fill in all card details correctly");
+    return;
+  }
+
+  setIsProcessing(true);
+  const loadingToast = toast.loading("Verifying with Bank...");
+
+  setTimeout(() => {
+    toast.dismiss(loadingToast);
+    
+    // 1. Generate a mock token (In a real app, this comes from your database)
+    const mockToken = "TKT-" + Math.random().toString(36).substr(2, 9).toUpperCase();
+    
+    // 2. Create the ticket object
+    const newTicket = {
+      qrToken: mockToken,
+      seat: _raw.seat || "7",
+      row: _raw.row || "4",
+      eventTitle: _raw.eventTitle || "Black Panther",
+      isUsed: false, // Important for ScanPage logic
+      customerName: fullName
+    };
+
+    // 3. Save to the "mockTickets" array for the ScanPage to find
+    const existingTickets = JSON.parse(localStorage.getItem("mockTickets") || "[]");
+    localStorage.setItem("mockTickets", JSON.stringify([...existingTickets, newTicket]));
+
+    toast.success("Payment Successful!");
+
+    // 4. Navigate to the success screen, passing the token so we can "view" it
+    navigate(`/completePayment?token=${mockToken}`);
+  }, 2500);
+};
 
   return (
     <div className="payment-complete-container">

@@ -64,8 +64,8 @@
   height: 18px;
   width: auto;
   /* If your SVGs are black, this makes them white to match the text */
-  filter: brightness(0) invert(1); 
-  opacity: 0.8;
+  /* filter: brightness(0) invert(1);  */
+  opacity: 1;
 }
 
 .icon-sm {

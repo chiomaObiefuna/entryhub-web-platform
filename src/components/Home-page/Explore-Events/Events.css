@@ -76,25 +76,33 @@
 /* --- Grid & Card Styling --- */
 .event-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-  gap: 30px;
+  /* ✅ CHANGE: Forces exactly 3 columns on desktop */
+  grid-template-columns: repeat(3, 1fr); 
+  /* Reduced gap slightly to ensure fit on smaller laptops */
+  gap: 20px; 
+  width: 100%;
 }
 
 .event-card {
-  background: #ffffff;
-  border-radius: 24px; /* More rounded as per modern design */
+  /* ✅ CHANGE: Light grey background instead of pure white */
+  background: #f8f9fa; 
+  border-radius: 24px;
   overflow: hidden;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.04);
-  border: 1px solid #f0f0f0;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.02); /* Softer shadow for grey cards */
+  border: 1px solid #eef0f2; /* Light border to define the edges */
   transition: all 0.3s ease;
   display: flex;
   flex-direction: column;
   cursor: pointer;
+  width: 100%;
 }
 
 .event-card:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+  transform: translateY(-8px);
+  /* ✅ TIP: Make it turn white on hover to create a "lift" effect */
+  background: #ffffff; 
+  border-color: #FF8C00; /* Orange border on hover */
+  box-shadow: 0 15px 35px rgba(0,0,0,0.1);
 }
 
 /* --- Card Image & Status Tag --- */
@@ -126,7 +134,7 @@
 /* --- Card Body & Footer Flex --- */
 .card-body {
   padding: 20px;
-  background: #fff;
+  background: transparent; /* Changed from #fff to let the card color show */
 }
 
 .card-title {
@@ -197,4 +205,26 @@
   padding: 50px;
   color: #a0aec0;
   font-weight: 600;
+}
+
+/* --- Responsive Adjustments --- */
+
+/* For Tablets (2 cards) */
+@media (max-width: 1100px) {
+  .event-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+}
+
+/* For Mobile (1 card) */
+@media (max-width: 650px) {
+  .event-grid {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+  
+  .event-section {
+    padding: 40px 15px;
+  }
 }

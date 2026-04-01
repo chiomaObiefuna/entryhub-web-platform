@@ -176,31 +176,26 @@
     flex-direction: column;
     text-align: center;
     gap: 40px;
-    flex-wrap: wrap; /* Allows wrapping on mobile */
+    /* Allow wrapping for mobile layout */
+    flex-wrap: wrap; 
   }
 
   .hero-text-container {
     align-items: center;
     max-width: 100%;
-  }
-
-  .hero-subtitle {
-    margin-left: auto;
-    margin-right: auto;
+    /* ✅ Optional: Force text to be first */
+    order: 1; 
   }
 
   .hero-image-container {
     justify-content: center;
-    order: -1; /* Image appears above text on mobile */
+    /* ✅ CHANGE: Remove -1 and set to 2 to ensure it stays below text */
+    order: 0; 
   }
 
   .profile-img {
     width: 320px;
     height: 320px;
-  }
-
-  .hero-btn-group {
-    justify-content: center;
   }
 }
 

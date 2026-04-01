@@ -59,16 +59,38 @@ function App() {
         <Route path="/bankdetails" element={<DashboardLayout title="Bank Transfer Details"><Bankdetails /></DashboardLayout>} />
 
         {/* Success Screen */}
+        // Inside your Routes in App.jsx
         <Route path="/completePayment" element={
-          <DashboardLayout title="Payment Successful">
-            <div style={{ textAlign: 'center', padding: '50px' }}>
-              <div style={{ fontSize: '64px' }}>✅</div>
-              <h2 style={{ color: '#5c7269', fontWeight: '800' }}>Payment Successful</h2>
-              <p>Check your email for your ticket.</p>
-              <button onClick={() => window.location.href = '/'} className="orange-btn-small">🏠 Home</button>
-            </div>
-          </DashboardLayout>
-        } />
+        <DashboardLayout title="Payment Successful">
+          <div style={{ textAlign: 'center', padding: '50px' }}>
+          <div style={{ fontSize: '80px', marginBottom: '20px' }}>✅</div>
+          <h2 style={{ color: '#5c7269', fontWeight: '800', fontSize: '2rem' }}>Success!</h2>
+          <p style={{ color: '#a0afa8', marginBottom: '30px' }}>Your payment was processed successfully.</p>
+      
+          <div style={{ display: 'flex', gap: '15px', justifyContent: 'center' }}>
+            <button 
+            onClick={() => {
+            const params = new URLSearchParams(window.location.search);
+            const token = params.get("token");
+            window.location.href = `/scan?token=${token}`;
+          }} 
+          className="ed-btn-proceed" 
+          style={{ padding: '12px 30px', width: 'auto' }}
+        >
+          🎫 View My Ticket
+        </button>
+
+        <button 
+          onClick={() => window.location.href = '/'} 
+          className="ed-btn-home"
+          style={{ padding: '12px 30px', width: 'auto' }}
+        >
+          🏠 Home
+        </button>
+      </div>
+    </div>
+  </DashboardLayout>
+} />
 
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
