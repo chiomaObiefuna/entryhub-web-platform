@@ -119,6 +119,11 @@ const BookEvents = () => {
               <select className="field-ctrl" value={sector} onChange={(e) => setSector(e.target.value)}>
                 <option value="107">107</option>
                 <option value="108">108</option>
+                <option value="109">109</option>
+                <option value="110">110</option>
+                <option value="111">111</option>
+                <option value="112">112</option>
+                <option value="113">113</option>
               </select>
             </div>
 
@@ -127,6 +132,11 @@ const BookEvents = () => {
               <select className="field-ctrl" value={row} onChange={(e) => setRow(e.target.value)}>
                 <option value="4">4</option>
                 <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+                <option value="10">10</option>
               </select>
             </div>
 
@@ -134,13 +144,21 @@ const BookEvents = () => {
               <label className="field-label">Ticket Type</label>
               <select className="field-ctrl" value={ticketType} onChange={(e) => setTicketType(e.target.value)}>
                 <option value="Cinema">Cinema</option>
+                <option value="Regular">Regular</option>
                 <option value="VIP">VIP</option>
+                <option value="VVIP">VVIP</option>
               </select>
             </div>
 
             <div className="field-group">
               <label className="field-label">Seat Selection</label>
               <select className="field-ctrl" value={seat} onChange={(e) => setSeat(e.target.value)}>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
                 <option value="7">7</option>
                 <option value="8">8</option>
               </select>

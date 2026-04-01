@@ -33,7 +33,8 @@ export default function PaymentComplete() {
 
   const _raw = JSON.parse(localStorage.getItem("ticketData") || "{}");
   const tickets = Number(_raw.quantity) || 1;
-  const total = tickets * (Number(_raw.price) || 15000);
+  const pricePerTicket = Number(_raw.price) || 15000;
+  const total = tickets * pricePerTicket;
 
   const handleCard = (e) => {
     const raw = e.target.value.replace(/\D/g, "").slice(0, 16);
@@ -47,41 +48,56 @@ export default function PaymentComplete() {
     setExpiry(raw);
   };
 
- const handlePay = () => {
-  if (!fullName || cardNumber.length < 19 || !expiry || cvv.length < 3) {
-    toast.error("Please fill in all card details correctly");
-    return;
-  }
+  const handlePay = async () => {
+    if (!fullName || cardNumber.length < 19 || !expiry || cvv.length < 3) {
+      toast.error("Please fill in all card details correctly");
+      return;
+    }
 
-  setIsProcessing(true);
-  const loadingToast = toast.loading("Verifying with Bank...");
+    setIsProcessing(true);
+    const loadingToast = toast.loading("Verifying transaction...");
 
-  setTimeout(() => {
-    toast.dismiss(loadingToast);
-    
-    // 1. Generate a mock token (In a real app, this comes from your database)
-    const mockToken = "TKT-" + Math.random().toString(36).substr(2, 9).toUpperCase();
-    
-    // 2. Create the ticket object
-    const newTicket = {
-      qrToken: mockToken,
-      seat: _raw.seat || "7",
-      row: _raw.row || "4",
-      eventTitle: _raw.eventTitle || "Black Panther",
-      isUsed: false, // Important for ScanPage logic
-      customerName: fullName
-    };
+    try {
+      const response = await fetch("https://eventhub-backend-pxoz.onrender.com/api/tickets", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          event: _raw.eventId || "69c80423974cc4062fc32c5b",
+          seat: { 
+            row: _raw.row || "A", 
+            number: Number(_raw.seat) || 7 
+          },
+          buyer_email: _raw.email || `${fullName.toLowerCase().replace(/\s/g, '')}@entryhub.com`
+        })
+      });
 
-    // 3. Save to the "mockTickets" array for the ScanPage to find
-    const existingTickets = JSON.parse(localStorage.getItem("mockTickets") || "[]");
-    localStorage.setItem("mockTickets", JSON.stringify([...existingTickets, newTicket]));
+      const data = await response.json();
+      console.log("Full Server Response:", data);
 
-    toast.success("Payment Successful!");
+      if (response.ok) {
+        toast.dismiss(loadingToast);
 
-    // 4. Navigate to the success screen, passing the token so we can "view" it
-    navigate(`/completePayment?token=${mockToken}`);
-  }, 2500);
-};
+        // ✅ MATCHES CONSOLE: ticket -> id
+        const realToken = data.ticket?.id || data.id;
+
+        if (realToken) {
+          toast.success("Payment Successful!");
+          navigate(`/completePayment?token=${realToken}`);
+        } else {
+          toast.error("Success, but ticket ID retrieval failed.");
+          setIsProcessing(false);
+        }
+      } else {
+        toast.dismiss(loadingToast);
+        toast.error(data.message || "Payment Failed");
+        setIsProcessing(false);
+      }
+    } catch (err) {
+      toast.dismiss(loadingToast);
+      toast.error("Server is waking up. Please wait 30 seconds.");
+      setIsProcessing(false);
+    }
+  };
 
   return (
     <div className="payment-complete-container">
@@ -103,29 +119,18 @@ export default function PaymentComplete() {
         </div>
 
         <div className="or-divider">
-          <span className="or-line" />
-          <span className="or-text">or pay with</span>
-          <span className="or-line" />
+          <span className="or-line" /><span className="or-text">or pay with</span><span className="or-line" />
         </div>
 
         <button className="method-row" onClick={() => navigate("/bankdetails")}>
-          <span className="method-lhs">
-            <IoLibraryOutline className="method-ico" />
-            Bank Transfer
-          </span>
+          <span className="method-lhs"><IoLibraryOutline className="method-ico" />Bank Transfer</span>
           <IoChevronForward className="pay-chev" />
         </button>
 
         <div className="payment-footer-combined">
           <div className="summary-section">
-            <div className="sum-item">
-              <span className="sum-key">Tickets:</span>
-              <span className="sum-val">{tickets}</span>
-            </div>
-            <div className="sum-item">
-              <span className="sum-key">Total Payable:</span>
-              <span className="sum-val orange">₦{total.toLocaleString()}</span>
-            </div>
+            <div className="sum-item"><span>Tickets:</span><span>{tickets}</span></div>
+            <div className="sum-item"><span>Total Payable:</span><span className="orange">₦{total.toLocaleString()}</span></div>
           </div>
 
           <div className="footer-actions">

@@ -21,6 +21,7 @@ const TicketResales = () => {
   const serviceFee = 400;
   const totalPayout = price - serviceFee;
 
+  // Validation: Checks if all fields are properly filled
   const isFormValid = 
     formData.fullName.trim().length > 2 && 
     formData.email.includes("@") && 
@@ -30,24 +31,18 @@ const TicketResales = () => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    
-    // Prevent non-numeric characters for specific fields
-    if ((name === "accountNumber" || name === "phone") && !/^\d*$/.test(value)) {
-      return;
-    }
-    
+    // Numeric only for specific fields
+    if ((name === "accountNumber" || name === "phone") && !/^\d*$/.test(value)) return;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const banks = ["Access Bank", "First Bank", "GTBank", "Kuda Bank", "MoniePoint", "Opay", "Zenith Bank"];
-
   const formatNGN = (val) => "₦" + val.toLocaleString();
 
   return (
-    /* ✅ Added ID for smooth scrolling from the homescreen */
     <div id="ticket-resale-section" className="resale-page-wrapper">
       
-      {/* STEP 1: PREVIEW (The card shown on homescreen) */}
+      {/* STEP 1: PREVIEW CARD */}
       {currentStep === 1 && (
         <div className="step-container animate-in">
           <div className="hero-poster-container">
@@ -59,31 +54,32 @@ const TicketResales = () => {
               <p className="price-main">{formatNGN(price)}</p>
               <p className="price-orig">Market Value: <span>{formatNGN(30000)}</span></p>
             </div>
-            {/* Navigates to the form step */}
-            <button className="orange-btn" onClick={() => setCurrentStep(2)}>List for Sale</button>
+            <button className="orange-btn" onClick={() => setCurrentStep(2)}>
+              List for Sale
+            </button>
           </div>
         </div>
       )}
 
-      {/* STEP 2: FORM & ACCOUNT DETAILS */}
+      {/* STEP 2: DETAILS & PAYOUT FORM */}
       {currentStep === 2 && (
         <div className="step-container animate-in">
           <div className="gray-group-box">
             <p className="summary-title">Payout Summary</p>
             <div className="s-line"><span>Listing Price</span> <span>{formatNGN(price)}</span></div>
-            <div className="s-line fee"><span>Service Fee</span> <span>-{formatNGN(serviceFee)}</span></div>
+            <div className="s-line fee"><span>Service Fee</span> <span style={{color: '#e53e3e'}}>-{formatNGN(serviceFee)}</span></div>
             <div className="s-total"><span>You Receive</span> <span>{formatNGN(totalPayout)}</span></div>
           </div>
 
           <div className="gray-group-box">
-            <p className="input-group-label">Personal Info</p>
+            <p className="input-group-label">Personal Information</p>
             <div className="input-row">
               <label>Full Name</label>
-              <input name="fullName" type="text" placeholder="John Doe" value={formData.fullName} onChange={handleInputChange} />
+              <input name="fullName" type="text" placeholder="Enter your full name" value={formData.fullName} onChange={handleInputChange} />
             </div>
             <div className="input-row">
               <label>Email Address</label>
-              <input name="email" type="email" placeholder="email@example.com" value={formData.email} onChange={handleInputChange} />
+              <input name="email" type="email" placeholder="example@email.com" value={formData.email} onChange={handleInputChange} />
             </div>
             <div className="input-row">
               <label>Phone Number</label>
@@ -92,10 +88,10 @@ const TicketResales = () => {
           </div>
 
           <div className="gray-group-box">
-            <p className="input-group-label">Payment Destination</p>
+            <p className="input-group-label">Bank Payout Details</p>
             <div className="input-row">
               <label>Account Number (10 digits)</label>
-              <input name="accountNumber" type="text" maxLength={10} placeholder="0123456789" value={formData.accountNumber} onChange={handleInputChange} />
+              <input name="accountNumber" type="text" maxLength={10} placeholder="enter your account number" value={formData.accountNumber} onChange={handleInputChange} />
             </div>
             <div className="input-row">
               <label>Bank Name</label>
@@ -108,24 +104,24 @@ const TicketResales = () => {
 
           <div className="action-footer">
              <button 
-              className={`orange-btn-full ${!isFormValid ? "disabled" : ""}`} 
+              className="orange-btn-full" 
               onClick={() => setCurrentStep(3)}
               disabled={!isFormValid}
             >
-              Confirm Listing
+              {isFormValid ? "Confirm Listing" : "Please Complete Form"}
             </button>
             <button className="text-link-btn" onClick={() => setCurrentStep(1)}>Go Back</button>
           </div>
         </div>
       )}
       
-      {/* STEP 3: SUCCESS */}
+      {/* STEP 3: SUCCESS SCREEN */}
       {currentStep === 3 && (
         <div className="success-screen animate-in">
           <div className="success-icon-green">✓</div>
-          <h2 className="success-title">Successfully Listed!</h2>
-          <p className="success-sub">We will notify you once a buyer is found.</p>
-          <button className="orange-btn-full" onClick={() => { setCurrentStep(1); navigate("/"); }}>Return Home</button>
+          <h2 className="success-title" style={{fontWeight: '800', color: '#2d3748'}}>Successfully Listed!</h2>
+          <p className="success-sub" style={{color: '#718096', margin: '10px 0 30px'}}>We will notify you once a buyer is found.</p>
+          <button className="orange-btn-full" onClick={() => navigate("/")}>Return Home</button>
         </div>
       )}
 

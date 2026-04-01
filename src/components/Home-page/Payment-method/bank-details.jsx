@@ -1,11 +1,11 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { IoArrowBack, IoHomeOutline, IoCheckmarkCircle } from "react-icons/io5";
 import "./payment-method.css";
 
 export default function BankDetails() {
   const navigate = useNavigate();
-  const [paymentStatus, setPaymentStatus] = useState("idle"); // idle | pending | success
+  const [paymentStatus, setPaymentStatus] = useState("idle"); 
   const [generatedToken, setGeneratedToken] = useState("");
 
   const _raw = JSON.parse(localStorage.getItem("ticketData") || "{}");
@@ -16,37 +16,50 @@ export default function BankDetails() {
 
   const handleCopy = () => {
     navigator.clipboard.writeText(accountNumber);
-    // Using a simple alert or you could use your toast library here
     alert("Account Number Copied!");
   };
 
-  const handleConfirmTransfer = () => {
+  const handleConfirmTransfer = async () => {
     setPaymentStatus("pending");
 
-    // Simulate bank verification delay (3 seconds)
-    setTimeout(() => {
-      // 1. Generate the unique token for the ScanPage
-      const newToken = "BNK-" + Math.random().toString(36).substr(2, 9).toUpperCase();
-      setGeneratedToken(newToken);
+    try {
+      const response = await fetch("https://eventhub-backend-pxoz.onrender.com/api/tickets", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          event: _raw.eventId || "69c80423974cc4062fc32c5b", 
+          seat: { 
+            row: _raw.row || "B", 
+            number: Number(_raw.seat) || 10 
+          },
+          buyer_email: _raw.email || "user@entryhub.com"
+        })
+      });
 
-      // 2. Create the ticket object
-      const newTicket = {
-        qrToken: newToken,
-        seat: _raw.seat || "7",
-        row: _raw.row || "4",
-        eventTitle: _raw.eventTitle || "Black Panther",
-        isUsed: false,
-        customerName: _raw.fullName || "Guest User",
-        paymentMethod: "Bank Transfer"
-      };
+      const data = await response.json();
+      console.log("Full Server Response:", data);
 
-      // 3. Update the "mockTickets" in localStorage so ScanPage can find it
-      const existingTickets = JSON.parse(localStorage.getItem("mockTickets") || "[]");
-      localStorage.setItem("mockTickets", JSON.stringify([...existingTickets, newTicket]));
+      if (response.ok) {
+        // ✅ MATCHES CONSOLE: ticket -> id
+        const token = data.ticket?.id || data.id;
 
-      // 4. Move to success state
-      setPaymentStatus("success");
-    }, 3000);
+        if (token) {
+          setGeneratedToken(token);
+          setPaymentStatus("success");
+        } else {
+          console.error("ID missing in response:", data);
+          alert("Payment confirmed, but ticket ID retrieval failed.");
+          setPaymentStatus("idle");
+        }
+      } else {
+        alert("Verification failed: " + (data.message || "Unknown error"));
+        setPaymentStatus("idle");
+      }
+    } catch (err) {
+      console.error("Network Error:", err);
+      alert("Server is waking up. Please wait 30 seconds and try again.");
+      setPaymentStatus("idle");
+    }
   };
 
   if (paymentStatus === "idle") {
@@ -96,14 +109,7 @@ export default function BankDetails() {
   }
 
   return (
-    <div className="center-state" style={{ 
-      display: 'flex', 
-      flexDirection: 'column', 
-      alignItems: 'center', 
-      justifyContent: 'center', 
-      minHeight: '60vh',
-      textAlign: 'center' 
-    }}>
+    <div className="center-state" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '60vh', textAlign: 'center' }}>
       {paymentStatus === "pending" ? (
         <>
           <div className="spinner"></div>
