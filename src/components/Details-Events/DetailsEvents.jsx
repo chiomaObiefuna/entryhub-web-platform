@@ -96,11 +96,11 @@ const DetailsEvents = () => {
         <div className="ed-input-stack">
           <div className="ed-input-group">
             <label>Full Name</label>
-            <input type="text" placeholder="Korede Bello" value={fullName} onChange={e => setFullName(e.target.value)} />
+            <input type="text" placeholder="Full name" value={fullName} onChange={e => setFullName(e.target.value)} />
           </div>
           <div className="ed-input-group">
             <label>Email</label>
-            <input type="email" placeholder="koredebello4life@gmail.com" value={email} onChange={e => setEmail(e.target.value)} />
+            <input type="email" placeholder="example@gmail.com" value={email} onChange={e => setEmail(e.target.value)} />
           </div>
         </div>
 

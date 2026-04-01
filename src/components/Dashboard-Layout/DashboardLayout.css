@@ -142,7 +142,9 @@
   font-weight: 700;
   font-size: 1.1rem;
 }
-
+.mobile-top-logo {
+  display: none;
+}
 /* --- MOBILE RESPONSIVENESS --- */
 @media (max-width: 1049px) {
   .dashboard-layout {
@@ -152,8 +154,17 @@
   /* ✅ Show hamburger on mobile screens */
   .hamburger-btn {
     display: block;
+    font-size: 1.8rem;
+    margin-top: -4px; /* Minor alignment tweak */
   }
-
+  .mobile-top-logo {
+    display: block;
+    height: 1.4rem; /* Change this to 1.2rem if you want it even smaller */
+    width: auto;
+    object-fit: contain;
+    cursor: pointer;
+  }
+  
   .menu-section {
     position: fixed;
     left: -285px; /* Hidden by default */
