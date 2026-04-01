@@ -53,14 +53,44 @@
 
 @keyframes spin { to { transform: rotate(360deg); } }
 /* --- Mobile Responsiveness --- */
+/* --- Mobile Responsiveness --- */
 @media (max-width: 600px) {
-  .bank-content {
-    padding: 1.5rem;
-  }
-  .d-info {
-    font-size: 1rem;
-  }
   .bank-details-wrapper {
-      padding: 10px;
+    padding: 15px; /* Added slight breathing room */
+  }
+
+  .bank-content {
+    padding: 0; /* Remove internal padding to prevent double-nesting issues */
+    margin-top: 0;
+  }
+
+  /* ✅ THE KEY FIX: Stack the footer elements */
+  .bank-footer-combined {
+    flex-direction: column;
+    align-items: stretch; /* Makes children (button) fill width */
+    gap: 20px;
+    padding-top: 20px;
+  }
+
+  .ticket-detail-con {
+    align-items: center; /* Center the "Tickets: 1" text */
+    margin-bottom: 5px;
+  }
+
+  .bank-details-btn {
+    width: 100%; /* Force button to fit inside the background */
+    padding: 16px; /* Larger tap target for mobile */
+    font-size: 1rem;
+    white-space: normal; /* Allows text to wrap if it's very long */
+    text-align: center;
+  }
+
+  .sub-details {
+    padding: 12px 15px;
+  }
+
+  .d-info {
+    font-size: 0.95rem;
+    word-break: break-all; /* Prevents long account names from breaking layout */
   }
 }

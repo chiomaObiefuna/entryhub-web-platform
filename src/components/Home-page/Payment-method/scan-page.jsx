@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { IoCheckmarkCircle, IoCloseCircle, IoSearch } from "react-icons/io5";
 
 function ScanPage() {
   const [message, setMessage] = useState("Verifying Ticket...");
@@ -6,9 +7,7 @@ function ScanPage() {
   const [status, setStatus] = useState("pending"); // pending | success | error
 
   useEffect(() => {
-    // Simulate a brief delay so the "Scanning" state is actually seen
-    const timer = setTimeout(() => {
-      // 1️⃣ Get token from URL
+    const verifyTicketWithBackend = async () => {
       const params = new URLSearchParams(window.location.search);
       const token = params.get("token");
 
@@ -18,38 +17,34 @@ function ScanPage() {
         return;
       }
 
-      // 2️⃣ Get tickets from localStorage
-      const tickets = JSON.parse(localStorage.getItem("mockTickets") || "[]");
-      
-      // Find the ticket and its index
-      const ticketIndex = tickets.findIndex((t) => t.qrToken === token);
-      const ticket = tickets[ticketIndex];
+      try {
+        // ✅ CONNECTING TO YOUR RENDER BACKEND
+        const response = await fetch(`https://eventhub-backend-pxoz.onrender.com/api/tickets/verify/${token}`, {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+        });
 
-      // 3️⃣ Handle invalid token
-      if (!ticket) {
-        setMessage("Invalid Ticket: Not in System");
+        const data = await response.json();
+
+        if (response.ok) {
+          // TICKET VALID & FIRST TIME SCAN
+          setMessage("Access Granted! Welcome to EntryHub.");
+          setStatus("success");
+          setTicketInfo(data.ticket); 
+        } else {
+          // HANDLES "ALREADY USED" (400) OR "NOT FOUND" (404)
+          setMessage(data.message || "Invalid Ticket: Not in System");
+          setStatus("error");
+          if (data.ticket) setTicketInfo(data.ticket);
+        }
+      } catch (err) {
+        setMessage("Connection Error: Backend is unreachable.");
         setStatus("error");
-        return;
       }
+    };
 
-      // 4️⃣ Handle first scan vs already used
-      if (ticket.isUsed) {
-        setMessage("Access Denied: Ticket Already Used");
-        setStatus("error");
-        setTicketInfo(ticket); 
-      } else {
-        // ✅ GRANT ACCESS
-        setMessage("Access Granted! Welcome.");
-        setStatus("success");
-        
-        // Update local storage
-        tickets[ticketIndex].isUsed = true; 
-        localStorage.setItem("mockTickets", JSON.stringify(tickets));
-        
-        setTicketInfo(ticket);
-      }
-    }, 1500); // 1.5 second delay for "Verification" feel
-
+    // 1.5s delay to make the "Scanning" animation feel real
+    const timer = setTimeout(verifyTicketWithBackend, 1500);
     return () => clearTimeout(timer);
   }, []);
 
@@ -66,49 +61,64 @@ function ScanPage() {
       transition: "background-color 0.5s ease"
     }}>
       <div style={{
-        maxWidth: "400px",
+        maxWidth: "420px",
         width: "100%",
         padding: "40px 30px",
         borderRadius: "30px",
         backgroundColor: "#fff",
-        boxShadow: "0 20px 40px rgba(0,0,0,0.05)",
+        boxShadow: "0 20px 50px rgba(0,0,0,0.08)",
         border: `2px solid ${status === "success" ? "#2f855a" : status === "error" ? "#c53030" : "transparent"}`
       }}>
         
-        {/* BIG VISUAL ICON */}
-        <div style={{ fontSize: "70px", marginBottom: "20px" }}>
-          {status === "pending" && "🔍"}
-          {status === "success" && "✅"}
-          {status === "error" && "❌"}
+        {/* DYNAMIC ICON SECTION */}
+        <div style={{ marginBottom: "25px" }}>
+          {status === "pending" && <IoSearch style={{ fontSize: "70px", color: "#ff9f2b", animation: "pulse 1.5s infinite" }} />}
+          {status === "success" && <IoCheckmarkCircle style={{ fontSize: "80px", color: "#2f855a" }} />}
+          {status === "error" && <IoCloseCircle style={{ fontSize: "80px", color: "#c53030" }} />}
         </div>
 
         <h1 style={{ 
           color: status === "success" ? "#2f855a" : status === "error" ? "#c53030" : "#5c7269",
-          fontSize: "1.6rem",
+          fontSize: "1.7rem",
           fontWeight: "800",
-          marginBottom: "10px"
+          marginBottom: "10px",
+          lineHeight: "1.2"
         }}>
           {message}
         </h1>
 
         {status === "pending" && (
-          <p style={{ color: "#a0afa8", fontWeight: "600" }}>Please wait while we validate the QR code...</p>
+          <p style={{ color: "#a0afa8", fontWeight: "600" }}>Querying backend database...</p>
         )}
 
+        {/* TICKET DATA CARD */}
         {ticketInfo && (
           <div style={{ 
             textAlign: "left", 
-            backgroundColor: "#f9fbf9",
-            padding: "20px",
-            borderRadius: "15px",
-            border: "1px solid #eee",
-            marginTop: "20px"
+            backgroundColor: status === "success" ? "#f9fbf9" : "#fffafa",
+            padding: "25px",
+            borderRadius: "20px",
+            border: `1px solid ${status === "success" ? "#e6eee6" : "#f5e6e6"}`,
+            marginTop: "25px"
           }}>
-            <p style={{ margin: "8px 0", color: "#5c7269" }}><strong>Event:</strong> {ticketInfo.eventTitle || "Standard Event"}</p>
-            <p style={{ margin: "8px 0", color: "#5c7269" }}><strong>Seat:</strong> {ticketInfo.seat}</p>
-            <p style={{ margin: "8px 0", color: "#5c7269" }}><strong>Row:</strong> {ticketInfo.row}</p>
-            <p style={{ margin: "15px 0 0 0", fontSize: "0.7rem", color: "#a0afa8", borderTop: "1px solid #eee", paddingTop: "10px" }}>
-              <strong>Token:</strong> {ticketInfo.qrToken}
+            <p style={{ margin: "10px 0", color: "#2c3e36", fontSize: "0.95rem" }}>
+              <strong style={{ color: "#a0afa8", textTransform: "uppercase", fontSize: "0.7rem", display: "block" }}>Event</strong> 
+              {ticketInfo.eventTitle || "Burna Boy Live (BLIC 5)"}
+            </p>
+            
+            <div style={{ display: "flex", gap: "20px", marginTop: "15px" }}>
+               <p style={{ margin: "0", color: "#2c3e36" }}>
+                 <strong style={{ color: "#a0afa8", textTransform: "uppercase", fontSize: "0.7rem", display: "block" }}>Seat</strong> 
+                 {ticketInfo.seat}
+               </p>
+               <p style={{ margin: "0", color: "#2c3e36" }}>
+                 <strong style={{ color: "#a0afa8", textTransform: "uppercase", fontSize: "0.7rem", display: "block" }}>Row</strong> 
+                 {ticketInfo.row}
+               </p>
+            </div>
+
+            <p style={{ margin: "15px 0 0 0", fontSize: "0.75rem", color: "#cbd5e1", borderTop: "1px solid #eee", paddingTop: "12px" }}>
+              <strong>Verified Token:</strong> {ticketInfo.qrToken}
             </p>
           </div>
         )}
@@ -116,22 +126,35 @@ function ScanPage() {
         <button 
           onClick={() => window.location.href = "/"}
           style={{
-            marginTop: "30px",
+            marginTop: "35px",
             width: "100%",
-            padding: "16px",
+            padding: "18px",
             backgroundColor: "#ff9f2b",
             color: "#fff",
             border: "none",
-            borderRadius: "15px",
+            borderRadius: "16px",
             fontWeight: "800",
             fontSize: "1rem",
             cursor: "pointer",
-            boxShadow: "0 10px 20px rgba(255, 159, 43, 0.2)"
+            boxShadow: "0 10px 25px rgba(255, 159, 43, 0.25)",
+            transition: "transform 0.2s"
           }}
+          onMouseOver={(e) => e.target.style.transform = "scale(1.02)"}
+          onMouseOut={(e) => e.target.style.transform = "scale(1)"}
         >
           Return to Dashboard
         </button>
       </div>
+
+      <style>
+        {`
+          @keyframes pulse {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.1); opacity: 0.7; }
+            100% { transform: scale(1); opacity: 1; }
+          }
+        `}
+      </style>
     </div>
   );
 }

@@ -21,6 +21,7 @@ import BookEvents from "./components/Book-Event/BookEvents";
 import DetailsEvents from "./components/Details-Events/DetailsEvents"; 
 import PaymentComplete from "./components/Payment-Complete/PaymentComplete"; 
 import Bankdetails from "./components/Home-page/Payment-method/bank-details"; 
+import ScanPage from "./components/Home-page/Payment-method/scan-page.jsx"
 
 import "./App.css";
 
@@ -58,39 +59,42 @@ function App() {
         <Route path="/payment/:id" element={<DashboardLayout title="Complete your Payment"><PaymentComplete /></DashboardLayout>} />
         <Route path="/bankdetails" element={<DashboardLayout title="Bank Transfer Details"><Bankdetails /></DashboardLayout>} />
 
-        {/* Success Screen */}
-        // Inside your Routes in App.jsx
-        <Route path="/completePayment" element={
-        <DashboardLayout title="Payment Successful">
-          <div style={{ textAlign: 'center', padding: '50px' }}>
-          <div style={{ fontSize: '80px', marginBottom: '20px' }}>✅</div>
-          <h2 style={{ color: '#5c7269', fontWeight: '800', fontSize: '2rem' }}>Success!</h2>
-          <p style={{ color: '#a0afa8', marginBottom: '30px' }}>Your payment was processed successfully.</p>
-      
-          <div style={{ display: 'flex', gap: '15px', justifyContent: 'center' }}>
-            <button 
-            onClick={() => {
-            const params = new URLSearchParams(window.location.search);
-            const token = params.get("token");
-            window.location.href = `/scan?token=${token}`;
-          }} 
-          className="ed-btn-proceed" 
-          style={{ padding: '12px 30px', width: 'auto' }}
-        >
-          🎫 View My Ticket
-        </button>
+        {/* ✅ 2. ADD THE SCAN ROUTE HERE */}
+        <Route path="/scan" element={<ScanPage />} />
 
-        <button 
-          onClick={() => window.location.href = '/'} 
-          className="ed-btn-home"
-          style={{ padding: '12px 30px', width: 'auto' }}
-        >
-          🏠 Home
-        </button>
-      </div>
-    </div>
-  </DashboardLayout>
-} />
+        {/* Success Screen */}
+        <Route path="/completePayment" element={
+          <DashboardLayout title="Payment Successful">
+            <div style={{ textAlign: 'center', padding: '50px' }}>
+              <div style={{ fontSize: '80px', marginBottom: '20px' }}>✅</div>
+              <h2 style={{ color: '#5c7269', fontWeight: '800', fontSize: '2rem' }}>Success!</h2>
+              <p style={{ color: '#a0afa8', marginBottom: '30px' }}>Your payment was processed successfully.</p>
+          
+              <div style={{ display: 'flex', gap: '15px', justifyContent: 'center' }}>
+                <button 
+                  onClick={() => {
+                    const params = new URLSearchParams(window.location.search);
+                    const token = params.get("token");
+                    // Using window.location.href works, but navigate is better for React Router
+                    window.location.href = `/scan?token=${token}`;
+                  }} 
+                  className="ed-btn-proceed" 
+                  style={{ padding: '12px 30px', width: 'auto' }}
+                >
+                  🎫 View My Ticket
+                </button>
+
+                <button 
+                  onClick={() => window.location.href = '/'} 
+                  className="ed-btn-home"
+                  style={{ padding: '12px 30px', width: 'auto' }}
+                >
+                  🏠 Home
+                </button>
+              </div>
+            </div>
+          </DashboardLayout>
+        } />
 
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>

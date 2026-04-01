@@ -15,13 +15,29 @@ const EventDetails = () => {
   const ticketEntryRef = useRef(null);
   const [isVisible, setIsVisible] = useState(false);
   const [activeTab, setActiveTab] = useState('Description');
-  const [selectedTicketId, setSelectedTicketId] = useState('regular');
 
   const tickets = useMemo(() => [
     { id: 'regular', label: 'Regular', price: 15000, status: 'Available' },
     { id: 'vip', label: 'VIP', price: 30000, status: 'Available' },
     { id: 'vvip', label: 'VVIP', price: 150000, status: 'Sold out' },
   ], []);
+
+  // ✅ FUNCTION: OPEN GOOGLE MAPS
+  const handleOpenMap = () => {
+    const location = "Filmhouse Cinema Surulere, Lagos";
+    const encodedLocation = encodeURIComponent(location);
+    window.open(`https://www.google.com/maps/search/?api=1&query=${encodedLocation}`, '_blank');
+  };
+
+  // ✅ FUNCTION: DOWNLOAD TICKET SVG
+  const handleDownloadTicket = () => {
+    const link = document.createElement("a");
+    link.href = QrCodeImg;
+    link.download = "EntryHub-Ticket-QR.svg"; // The name the file will have when downloaded
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -59,7 +75,7 @@ const EventDetails = () => {
             
             <div className="ticket-table-card">
               {tickets.map((t) => (
-                <div key={t.id} className="ticket-row">
+                <div key={t.id} className="ticket-row" onClick={() => navigate(`/event/${t.id}`)} style={{cursor: 'pointer'}}>
                   <div className="td-type-col">
                     <span className="td-type">{t.label}</span>
                   </div>
@@ -74,12 +90,14 @@ const EventDetails = () => {
               ))}
             </div>
 
-            <div className="map-card">
+            {/* ✅ UPDATED: Added onClick to the map card footer */}
+            <div className="map-card" onClick={handleOpenMap} style={{ cursor: 'pointer' }}>
               <div className="map-surface">
                   <img src={MapImg} alt="Venue Map" className="map-img-fill" />
               </div>
               <div className="map-footer">
                 <span className="location-name">Film House cinema, Surulere</span>
+                <span style={{ fontSize: '0.7rem', color: '#ff9f2b', marginLeft: '10px' }}>View on Maps</span>
               </div>
             </div>
           </div>
@@ -87,7 +105,6 @@ const EventDetails = () => {
 
         {/* My Ticket Section */}
         <div className="my-ticket-section">
-          {/* ✅ FIXED PILL NAVIGATION */}
           <div className="tab-nav-container">
               <button className="nav-pill active">My Ticket</button>
               <div className="nav-pill-divider"></div>
@@ -120,8 +137,9 @@ const EventDetails = () => {
                   <img src={QrCodeImg} alt="Ticket QR" className="qr-image" />
                </div>
                <div className="qr-actions">
-                  <button className="btn-orange">Download Ticket</button>
-                  <button className="btn-dark">View Ticket</button>
+                  {/* ✅ UPDATED: Added handleDownloadTicket onClick */}
+                  <button className="btn-orange" onClick={handleDownloadTicket}>Download Ticket</button>
+                  <button className="btn-dark" onClick={() => navigate('/scan?token=DEMO_TOKEN')}>View Ticket</button>
                </div>
             </div>
           </div>
