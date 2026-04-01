@@ -10,23 +10,26 @@
 
 .page-bg {
   min-height: 100vh;
-  background: var(--page-bg);
+  /* Remove solid background */
+  background: transparent; 
   display: flex;
   justify-content: center;
-  align-items: center;
-  padding: 20px;
+  align-items: flex-start; /* Move to top since it's a long form */
+  padding: 0; /* Let Dashboard handle padding */
 }
 
 .page-inner {
   width: 100%;
-  max-width: 520px;
+  max-width: 900px; /* Match your Dashboard body width */
 }
 
 .card {
-  background: var(--card-bg);
-  border-radius: 24px;
-  padding: 30px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+  /* Remove the beige card background */
+  background: transparent; 
+  border-radius: 0;
+  padding: 10px 0;
+  /* Remove shadow so it doesn't look like a floating box */
+  box-shadow: none; 
 }
 
 /* --- EVENT INFO ROW --- */
@@ -92,19 +95,15 @@
 
 .field-ctrl {
   width: 100%;
-  background: var(--input-bg);
-  border: 1.5px solid #a0aec0;
-  border-radius: 14px;
+  /* Keep a slight tint so users see the inputs, or set to white */
+  background: #ffffff; 
+  border: 1px solid #dcd8ce;
+  border-radius: 12px;
   padding: 12px 15px;
   font-family: var(--font);
   font-weight: 700;
-  color: #2d3748;
+  color: #5c7269;
   outline: none;
-  appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%235c7269' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 12px center;
-  background-size: 16px;
 }
 
 .static-price {
@@ -115,7 +114,11 @@
 /* --- PILL BUTTONS --- */
 .footer-row {
   display: flex;
+  justify-content: flex-end; /* Align to right to match Figma */
   gap: 15px;
+  margin-top: 30px;
+  border-top: 1px solid #dcd8ce;
+  padding-top: 25px;
 }
 
 .btn {

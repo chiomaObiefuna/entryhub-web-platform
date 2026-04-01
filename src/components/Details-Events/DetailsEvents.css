@@ -1,15 +1,16 @@
 /* --- THE OUTER WRAPPER --- */
-/* This is your primary container. It gets the beige color and corners. */
 .ed-main-wrapper {
   width: 100%;
   max-width: 950px;
-  background-color: #f4f2ec; /* THE FIGMA BEIGE */
-  border-radius: 35px; /* THE MAIN ROUNDED BOX */
-  padding: 40px;
+  /* Changed from beige to transparent */
+  background-color: transparent; 
+  /* Removed border-radius to prevent clipping of children */
+  border-radius: 0; 
+  padding: 20px 0; /* Tightened padding since it's now transparent */
   box-sizing: border-box;
-  margin: 10px auto; 
+  margin: 0 auto; 
   font-family: 'Plus Jakarta Sans', sans-serif;
-  min-height: 85vh; /* Ensures it stays long even with little content */
+  min-height: auto; 
 }
 
 .ed-content-body {
@@ -24,6 +25,7 @@
   padding: 15px 25px;
   display: flex;
   align-items: center;
+  justify-content: space-between; /* Added to push items to ends */
   gap: 20px;
   border: 1px solid #dcd8ce;
   margin-bottom: 25px;
@@ -38,7 +40,15 @@
 .ed-ev-date-orange { color: #ff9f2b; font-size: 11px; font-weight: 700; }
 .ed-ev-loc-gray { color: #a0afa8; font-size: 11px; margin-top: 4px; font-weight: 700; }
 
-.ed-ev-icons { display: flex; flex-direction: column; gap: 8px; color: #5c7269; font-size: 20px; }
+.ed-ev-icons { 
+  display: flex; 
+  flex-direction: column; 
+  gap: 8px; 
+  color: #5c7269; 
+  font-size: 20px; 
+  align-items: flex-end; /* Ensures icons align to the right edge */
+  margin-left: auto; /* Safety fallback to ensure it stays right */
+}
 .ed-ico-orange { color: #ff9f2b; }
 
 /* --- Ticket Details Grid --- */
@@ -50,6 +60,7 @@
 }
 
 .ed-sum-pill {
+  /* Keeping white background for contrast against the beige page background */
   background: white;
   border: 1px solid #dcd8ce;
   border-radius: 12px;
@@ -95,19 +106,25 @@
   border: 1px solid #dcd8ce;
   border-radius: 15px;
   cursor: pointer;
-  background: transparent;
+  /* Making rows white so they stand out on the beige background */
+  background: #ffffff; 
+  transition: background 0.2s;
 }
 .pay-left-content { font-weight: 800; color: #5c7269; font-size: 14px; }
-.pay-row.selected { border-color: #ff9f2b; background: rgba(255, 159, 43, 0.05); }
+.pay-row.selected { 
+  border-color: #ff9f2b; 
+  background: rgba(255, 159, 43, 0.05); 
+}
 .pay-chev { color: #a0afa8; font-size: 20px; }
 
 /* --- Footer --- */
 .ed-footer-combined {
   display: flex;
   gap: 20px;
-  margin-top: 20px;
+  margin-top: 30px;
+  padding-top: 25px;
+  border-top: 1px solid #dcd8ce;
 }
-
 .ed-btn-home, .ed-btn-proceed { 
   background: #ff9f2b; 
   color: white; 
